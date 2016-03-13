@@ -1,0 +1,14 @@
+{
+  "name": "kareljs",
+  "version": "1.0.0",
+  "description": "Implementation of Karel the Robot in JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chris Tsoufakis",
+  "license": "MIT",
+  "dependencies": {
+    "chai": "^3.5.0"
+  }
+}
