@@ -9,6 +9,11 @@
   "author": "Chris Tsoufakis",
   "license": "MIT",
   "dependencies": {
-    "chai": "^3.5.0"
+    "babel-preset-react": "^6.5.0",
+    "babelify": "^7.2.0",
+    "chai": "^3.5.0",
+    "express": "^4.13.4",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7"
   }
 }
