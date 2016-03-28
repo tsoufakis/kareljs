@@ -1,6 +1,7 @@
 'use strict'
 
 const assert = require('chai').assert;
+const util = require('util');
 const { Karel, Cell, Board, Compass } = require('../lib/models');
 
 function testCompass() {
@@ -115,7 +116,36 @@ function testKarel() {
     console.log('Karel tests passed');
 }
 
+function testJSON() {
+    const board = new Board(3, 3);
+    const karel = new Karel(0, 0, Compass.NORTH, board);
+    karel.putBeeper();
+    board.addWall(0, 0, Compass.EAST);
+    board.addWall(0, 0, Compass.NORTH);
+    var json = karel.toJSON();
+    var desiredResult = [
+        [
+            {walls: [0,1,2,3], beepers: 1, karel: true, karelBearing: Compass.NORTH},
+            {walls: [2,3], beepers: 0},
+            {walls: [0,3], beepers: 0}
+        ],
+        [
+            {walls: [2, 3], beepers: 0},
+            {walls: [], beepers: 0},
+            {walls: [0], beepers: 0}
+        ],
+        [
+            {walls: [1,2], beepers: 0},
+            {walls: [1], beepers: 0},
+            {walls: [0, 1], beepers: 0}
+        ]
+    ];
+    assert.deepEqual(json, desiredResult);
+    console.log('JSON test passed');
+}
+
 testCompass();
 testCell();
 testBoard();
 testKarel();
+testJSON();
