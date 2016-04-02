@@ -26,7 +26,8 @@ class Controller {
     }
 
     renderResults() {
-        const id = setInterval(function () {
+        const that = this;
+        const id = setInterval(() => {
             const frame = this.karel.frames.shift();
             this.boardView.setState({ rows: frame });
 
@@ -77,7 +78,7 @@ function rightIsClear() {
 
 let app = new Controller();
 app.setupBoard(3, 3, 100);
-app.evalCode('move(); move(); move();');
+app.evalCode('move(); move();');
 app.renderResults();
 
 },{"./models":2,"./views":3}],2:[function(require,module,exports){
@@ -354,11 +355,21 @@ var Board = React.createClass({
     displayName: 'Board',
 
     getInitialState: function () {
-        return { rows: [] };
+        return { rows: [[]] };
     },
     render: function () {
-        let rows = this.state.rows;
-        rows.reverse();
+        // put board in order it will be drawn
+        const coordSys = this.state.rows;
+        let rows = [];
+        for (let y = coordSys[0].length - 1; y >= 0; y--) {
+            let cells = [];
+            rows.push(cells);
+            for (let x = 0; x < coordSys.length; x++) {
+                cells.push(coordSys[x][y]);
+            }
+        }
+
+        // turn the rows / cells into elements
         rows = rows.map(function (row) {
             let cells = row.map(function (cell) {
                 return React.createElement(Cell, { cell: cell });
