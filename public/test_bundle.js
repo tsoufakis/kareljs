@@ -108,6 +108,22 @@ class Karel {
     rightIsClear() {
         return !this.rightIsBlocked();
     }
+
+    toJSON() {
+        const json = [];
+        for (let x = 0; x < this.board.width; x++) {
+            json.push([]);
+            for (let y = 0; y < this.board.height; y++) {
+                let cell = this.board.board[x][y];
+                json[x][y] = cell.toJSON();
+                if (x == this.x && y == this.y) {
+                    json[x][y].karel = true;
+                    json[x][y].karelBearing = this.bearing;
+                }
+            }
+        }
+        return json;
+    }
 }
 
 class Cell {
@@ -126,6 +142,15 @@ class Cell {
 
     directionIsBlocked(direction) {
         return !!this.walls[direction];
+    }
+
+    toJSON() {
+        var walls = Object.keys(this.walls).filter(function (bearing) {
+            return this.walls[bearing] == true;
+        }.bind(this)).map(function (n) {
+            return parseInt(n, 10);
+        });
+        return { walls: walls, beepers: this.beepers };
     }
 }
 

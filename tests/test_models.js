@@ -38,9 +38,14 @@ function testCell() {
 }
 
 function testBoard() {
-    const board = new Board(3, 3);
-    let cell;
+    let board = new Board(1, 1);
+    let cell = board.getCell(0, 0);
+    assert(cell.directionIsBlocked(Compass.NORTH));
+    assert(cell.directionIsBlocked(Compass.EAST));
+    assert(cell.directionIsBlocked(Compass.SOUTH));
+    assert(cell.directionIsBlocked(Compass.WEST));
 
+    board = new Board(3, 3);
     cell = board.getCell(0, 0);
     assert(!cell.directionIsBlocked(Compass.NORTH));
     assert(!cell.directionIsBlocked(Compass.EAST));
@@ -144,8 +149,43 @@ function testJSON() {
     console.log('JSON test passed');
 }
 
+function testStoreFrames() {
+    const board = new Board(2, 1);
+    const karel = new Karel(0, 0, Compass.EAST, board, true);
+    assert(karel.frames.length === 0, 'Karel should have 1 stored frame');
+    karel.move();
+    karel.turnLeft();
+    karel.putBeeper();
+    assert(karel.frames.length === 3, 'stored frames');
+    const frame0 = [
+        [{ walls: [0,2,3], beepers: 0, karel: true, karelBearing: Compass.EAST }],
+        [{ walls: [0,1,2], beepers: 0 }]
+    ];
+
+    const frame1 = [
+        [{ walls: [0,2,3], beepers: 0 }],
+        [{ walls: [0,1,2], beepers: 0, karel: true, karelBearing: Compass.EAST }]
+    ];
+
+    const frame2 = [
+        [{ walls: [0,2,3], beepers: 0 }],
+        [{ walls: [0,1,2], beepers: 0, karel: true, karelBearing: Compass.NORTH }]
+    ];
+    const frame3 = [
+        [{ walls: [0,2,3], beepers: 0 }],
+        [{ walls: [0,1,2], beepers: 1, karel: true, karelBearing: Compass.NORTH }]
+    ];
+
+    assert.deepEqual(karel.frames[0], frame1);
+    assert.deepEqual(karel.frames[1], frame2);
+    assert.deepEqual(karel.frames[2], frame3);
+
+    console.log('testStoreFrames passed');
+}
+
 testCompass();
 testCell();
 testBoard();
 testKarel();
 testJSON();
+testStoreFrames();
