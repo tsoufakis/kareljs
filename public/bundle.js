@@ -9,20 +9,63 @@ const models = require('./models'),
 
 class Controller {
     constructor() {
-        this.evaled = false;
+        this.runUserCode = this.runUserCode.bind(this);
+        this.onCodePadFocus = this.onCodePadFocus.bind(this);
+        this.onCodePadBlur = this.onCodePadBlur.bind(this);
+        this.resetBoard = this.resetBoard.bind(this);
+
+        this.runButton = document.getElementById('runButton');
+        this.codePad = document.getElementById('codePad');
+        this.initCodePadText = this.codePad.value;
+
+        this.runButton.addEventListener('click', this.runUserCode);
+        this.codePad.addEventListener('focus', this.onCodePadFocus);
+        this.codePad.addEventListener('blur', this.onCodePadBlur);
     }
 
-    setupBoard(nrows, ncols, cellLen) {
-        this.board = new Board(nrows, ncols);
+    newBoard(nrows, ncols, cellLen) {
+        this.nrows = nrows;
+        this.ncols = ncols;
+        this.cellLen = cellLen;
+        this.setupBoard();
+    }
+
+    setupBoard() {
+        this.board = new Board(this.nrows, this.ncols);
         this.karel = new Karel(0, 0, Compass.EAST, this.board, true);
-        this.boardView = views.createBoard(nrows * cellLen, ncols * cellLen);
+        this.boardView = views.createBoard(this.nrows * this.cellLen, this.ncols * this.cellLen);
         this.boardView.setState({ rows: this.karel.toJSON() });
     }
 
-    evalCode(s) {
+    onCodePadFocus() {
+        if (this.codePad.value === this.initCodePadText) {
+            this.codePad.value = '';
+        }
+    }
+
+    onCodePadBlur() {
+        if (!this.codePad.value) {
+            this.codePad.value = this.initCodePadText;
+        }
+    }
+
+    runUserCode(s) {
+        this.runButton.removeEventListener('click', this.runUserCode);
+        const textbox = document.getElementById('codePad');
+
         // Nice XSS vulnerability here!
-        eval(s);
-        this.evaled = true;
+        eval(textbox.value);
+
+        this.runButton.addEventListener('click', this.resetBoard);
+        this.runButton.textContent = 'Reset Board';
+        this.renderResults();
+    }
+
+    resetBoard() {
+        this.runButton.removeEventListener('click', this.resetBoard);
+        this.setupBoard();
+        this.runButton.addEventListener('click', this.runUserCode);
+        this.runButton.textContent = 'Run Code';
     }
 
     renderResults() {
@@ -34,52 +77,23 @@ class Controller {
             if (this.karel.frames.length === 0) {
                 clearInterval(id);
             }
-        }, 500);
+        }, 250);
     }
 }
 
 // defining these in global scope for eval
-function turnLeft() {
-    app.karel.turnLeft();
-}
-function turnRight() {
-    app.karel.turnRight();
-}
-function move() {
-    app.karel.move();
-}
-function beepersPresent() {
-    app.karel.beepersPresent();
-}
-function pickBeeper() {
-    app.karel.pickBeeper();
-}
-function putBeeper() {
-    app.karel.putBeeper();
-}
-function frontIsBlocked() {
-    app.karel.frontIsBlocked();
-}
-function frontIsClear() {
-    app.karel.frontIsClear();
-}
-function leftIsBlocked() {
-    app.karel.leftIsBlocked();
-}
-function leftIsClear() {
-    app.karel.leftIsClear();
-}
-function rightIsClear() {
-    app.karel.rightIsClear();
-}
-function rightIsClear() {
-    app.karel.rightIsClear();
-}
+const karelCommands = ['turnLeft', 'turnRight', 'move', 'beepersPresent', 'pickBeeper', 'putBeeper', 'frontIsBlocked', 'frontIsClear', 'leftIsBlocked', 'leftIsClear', 'rightIsBlocked', 'rightIsClear'];
+
+karelCommands.map(function (cmd) {
+    window[cmd] = function () {
+        return app.karel[cmd]();
+    };
+});
 
 let app = new Controller();
-app.setupBoard(3, 3, 100);
-app.evalCode('move(); move();');
-app.renderResults();
+app.newBoard(4, 3, 100);
+// app.runUserCode('move(); move(); turnLeft(); move(); turnLeft(); move(); putBeeper(); move(); turnRight(); turnRight(); move(); pickBeeper(); move();');
+// app.renderResults();
 
 },{"./models":2,"./views":3}],2:[function(require,module,exports){
 'use strict';
@@ -252,6 +266,20 @@ class Cell {
     }
 }
 
+// boardConfig = {
+//     width: 5,
+//     height: 4,
+//     beepers: [
+//         [2, 0, 1]
+//     ],
+//     walls: [
+//         [3, 0, 0],
+//         [3, 0, 3],
+//         [4, 0, 0]
+//     ],
+//     karel: [0, 0, 1]
+// };
+
 class Board {
     constructor(width, height, beepers = [], walls = []) {
         this.board = [];
@@ -311,8 +339,6 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var models = require('./models.js');
 
-var cellLength = 100; // px
-
 BEARING_TO_CLASS_NAME = {};
 BEARING_TO_CLASS_NAME[models.Compass.NORTH] = 'wallNorth';
 BEARING_TO_CLASS_NAME[models.Compass.EAST] = 'wallEast';
@@ -331,9 +357,8 @@ var Cell = React.createClass({
     displayName: 'Cell',
 
     render: function () {
-        var cell = this.props.cell;
-
-        classes = ['cell'];
+        const cell = this.props.cell;
+        let classes = ['cell'];
 
         classes = classes.concat(cell.walls.map(function (bearing) {
             return BEARING_TO_CLASS_NAME[bearing];

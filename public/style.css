@@ -1,3 +1,35 @@
+.colMask {
+  clear: both;
+  float: left;
+  width: 100%;
+  overflow: hidden;
+}
+
+.colLeft {
+  float: left;
+  right: 50%;
+  width: 100%;
+  position: relative;
+}
+
+.col1 {
+  width: 46%;
+  left: 52%;
+  float: left;
+  position: relative;
+  padding: 0 0 1em 0;
+  overflow: hidden;
+}
+
+.col2 {
+  width: 46%;
+  left: 56%;
+  float: left;
+  position: relative;
+  padding: 0 0 1em 0;
+  overflow: hidden;
+}
+
 #board {
     border: 1px solid;
     /*border-spacing: 0px;*/
