@@ -23,17 +23,17 @@ class Controller {
         this.codePad.addEventListener('blur', this.onCodePadBlur);
     }
 
-    newBoard(nrows, ncols, cellLen) {
-        this.nrows = nrows;
-        this.ncols = ncols;
+    newBoard(config, cellLen) {
+        this.config = config;
         this.cellLen = cellLen;
         this.setupBoard();
     }
 
     setupBoard() {
-        this.board = new Board(this.nrows, this.ncols);
-        this.karel = new Karel(0, 0, Compass.EAST, this.board, true);
-        this.boardView = views.createBoard(this.nrows * this.cellLen, this.ncols * this.cellLen);
+        const r = Board.fromConfig(this.config);
+        this.board = r.board;
+        this.karel = r.karel;
+        this.boardView = views.createBoard(this.config.width * this.cellLen, this.config.height * this.cellLen);
         this.boardView.setState({ rows: this.karel.toJSON() });
     }
 
@@ -90,10 +90,16 @@ karelCommands.map(function (cmd) {
     };
 });
 
+const config = {
+    width: 5,
+    height: 4,
+    beepers: [{ x: 2, y: 0, cnt: 1 }],
+    walls: [{ x: 3, y: 0, bearing: 0 }, { x: 3, y: 0, bearing: 3 }, { x: 4, y: 0, bearing: 0 }],
+    karel: { x: 0, y: 0, bearing: 1 }
+};
+
 let app = new Controller();
-app.newBoard(4, 3, 100);
-// app.runUserCode('move(); move(); turnLeft(); move(); turnLeft(); move(); putBeeper(); move(); turnRight(); turnRight(); move(); pickBeeper(); move();');
-// app.renderResults();
+app.newBoard(config, 100);
 
 },{"./models":2,"./views":3}],2:[function(require,module,exports){
 'use strict';
@@ -140,7 +146,7 @@ Compass.SOUTH = 2;
 Compass.WEST = 3;
 
 class Karel {
-    constructor(x, y, bearing, board, storeFrames = false) {
+    constructor(x, y, bearing, board, storeFrames = true) {
         this.x = x;
         this.y = y;
         this.bearing = bearing;
@@ -266,20 +272,6 @@ class Cell {
     }
 }
 
-// boardConfig = {
-//     width: 5,
-//     height: 4,
-//     beepers: [
-//         [2, 0, 1]
-//     ],
-//     walls: [
-//         [3, 0, 0],
-//         [3, 0, 3],
-//         [4, 0, 0]
-//     ],
-//     karel: [0, 0, 1]
-// };
-
 class Board {
     constructor(width, height, beepers = [], walls = []) {
         this.board = [];
@@ -311,6 +303,17 @@ class Board {
                 this.board[x][y] = cell;
             }
         }
+
+        for (let i = 0; i < walls.length; i++) {
+            const wall = walls[i];
+            this.addWall(wall.x, wall.y, wall.bearing);
+        }
+
+        for (let i = 0; i < beepers.length; i++) {
+
+            const b = beepers[i];
+            this.board[b.x][b.y].beepers = b.cnt;
+        }
     }
 
     getCell(x, y) {
@@ -326,6 +329,12 @@ class Board {
         adjCell.addWall(Compass.reverse(direction));
     }
 }
+
+Board.fromConfig = function (config) {
+    const board = new Board(config.width, config.height, config.beepers, config.walls);
+    const karel = new Karel(config.karel.x, config.karel.y, config.karel.bearing, board);
+    return { board: board, karel: karel };
+};
 
 module.exports = {
     Karel: Karel,

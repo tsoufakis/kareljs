@@ -109,6 +109,9 @@ function testBoardConfig() {
     assert(r.board.getCell(3, 0).directionIsBlocked(Compass.NORTH));
     assert(r.board.getCell(4, 0).directionIsBlocked(Compass.NORTH));
     assert(r.board.getCell(4, 0).directionIsBlocked(Compass.EAST));
+    assert(r.karel.x == 0);
+    assert(r.karel.y == 0);
+    assert(r.karel.bearing == Compass.EAST);
     console.log('testBoardConfig passed');
 }
 
