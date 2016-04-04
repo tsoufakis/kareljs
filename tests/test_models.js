@@ -85,6 +85,33 @@ function testBoard() {
     console.log('Board tests passed');
 }
 
+function testBoardConfig() {
+    const config = {
+        width: 5,
+        height: 4,
+        beepers: [
+            {x: 2, y: 0, cnt: 1}
+        ],
+        walls: [
+            {x: 3, y: 0, bearing: 0},
+            {x: 3, y: 0, bearing: 3},
+            {x: 4, y: 0, bearing: 0}
+        ],
+        karel: {x: 0, y: 0, bearing: 1}
+    };
+
+    const r = Board.fromConfig(config);
+    assert(r.board.width == 5);
+    assert(r.board.height == 4);
+    assert(r.board.getCell(2, 0).beepers == 1);
+    assert(r.board.getCell(2, 0).directionIsBlocked(Compass.EAST));
+    assert(r.board.getCell(3, 0).directionIsBlocked(Compass.WEST));
+    assert(r.board.getCell(3, 0).directionIsBlocked(Compass.NORTH));
+    assert(r.board.getCell(4, 0).directionIsBlocked(Compass.NORTH));
+    assert(r.board.getCell(4, 0).directionIsBlocked(Compass.EAST));
+    console.log('testBoardConfig passed');
+}
+
 function testKarel() {
     const board = new Board(3, 3);
     const karel = new Karel(0, 0, Compass.NORTH, board);
@@ -189,3 +216,4 @@ testBoard();
 testKarel();
 testJSON();
 testStoreFrames();
+testBoardConfig();
