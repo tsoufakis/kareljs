@@ -33,6 +33,7 @@ class Controller {
         const r = Board.fromConfig(this.config);
         this.board = r.board;
         this.karel = r.karel;
+        this.error = null;
         this.boardView = views.createBoard(this.config.width * this.cellLen, this.config.height * this.cellLen);
         this.boardView.setState({ rows: this.karel.toJSON() });
     }
@@ -69,30 +70,40 @@ class Controller {
     }
 
     renderResults() {
-        const that = this;
         const id = setInterval(() => {
             const frame = this.karel.frames.shift();
             this.boardView.setState({ rows: frame });
 
             if (this.karel.frames.length === 0) {
                 clearInterval(id);
+                if (this.error) {
+                    setTimeout(() => {
+                        alert(this.error);
+                    }, Controller.MS_PER_FRAME);
+                }
             }
-        }, 250);
+        }, Controller.MS_PER_FRAME);
     }
 }
+
+Controller.MS_PER_FRAME = 250;
 
 // defining these in global scope for eval
 const karelCommands = ['turnLeft', 'turnRight', 'move', 'beepersPresent', 'pickBeeper', 'putBeeper', 'frontIsBlocked', 'frontIsClear', 'leftIsBlocked', 'leftIsClear', 'rightIsBlocked', 'rightIsClear'];
 
 karelCommands.map(function (cmd) {
     window[cmd] = function () {
-        return app.karel[cmd]();
+        try {
+            return app.karel[cmd]();
+        } catch (e) {
+            app.error = e;
+        }
     };
 });
 
 const config = {
     width: 5,
-    height: 4,
+    height: 3,
     beepers: [{ x: 2, y: 0, cnt: 1 }],
     walls: [{ x: 3, y: 0, bearing: 0 }, { x: 3, y: 0, bearing: 3 }, { x: 4, y: 0, bearing: 0 }],
     karel: { x: 0, y: 0, bearing: 1 }

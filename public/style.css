@@ -31,7 +31,7 @@
 }
 
 #board {
-    border: 1px solid;
+    border: 3px solid;
     /*border-spacing: 0px;*/
     display: table;
 }
@@ -48,19 +48,19 @@
 }
 
 .wallNorth {
-    border-top: 1px solid black
+    border-top: 3px solid black
 }
 
 .wallEast {
-    border-right: 1px solid black
+    border-right: 3px solid black
 }
 
 .wallSouth {
-    border-bottom: 1px solid black
+    border-bottom: 3px solid black
 }
 
 .wallWest {
-    border-left: 1px solid black
+    border-left: 3px solid black
 }
 
 .beeper {
