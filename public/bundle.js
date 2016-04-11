@@ -7,12 +7,31 @@ const models = require('./models'),
       Board = models.Board,
       Compass = models.Compass;
 
+const configs = [{
+    boards: [{
+        width: 5,
+        height: 3,
+        walls: [{ x: 3, y: 0, bearing: 0 }, { x: 3, y: 0, bearing: 3 }, { x: 4, y: 0, bearing: 0 }],
+        initialState: {
+            beepers: [{ x: 2, y: 0, cnt: 1 }],
+            karel: { x: 0, y: 0, bearing: 1 }
+        },
+        finalState: {
+            beepers: [{ x: 3, y: 1, cnt: 1 }]
+        },
+        notes: 'Just a simple board'
+    }],
+    objective: 'Have Karel pick up the beeper at (2, 0) and move it to (3, 1).',
+    title: '1.1: Around the corner'
+}];
+
 class Controller {
     constructor() {
         this.runUserCode = this.runUserCode.bind(this);
         this.onCodePadFocus = this.onCodePadFocus.bind(this);
         this.onCodePadBlur = this.onCodePadBlur.bind(this);
         this.resetBoard = this.resetBoard.bind(this);
+        this.onLevelChange = this.onLevelChange.bind(this);
 
         this.runButton = document.getElementById('runButton');
         this.codePad = document.getElementById('codePad');
@@ -21,6 +40,12 @@ class Controller {
         this.runButton.addEventListener('click', this.runUserCode);
         this.codePad.addEventListener('focus', this.onCodePadFocus);
         this.codePad.addEventListener('blur', this.onCodePadBlur);
+
+        this.levelSelectView = views.createLevelSelect(this.onLevelChange);
+        const levels = configs.map(c => {
+            return c.title;
+        });
+        this.levelSelectView.setState({ levels: levels });
     }
 
     newBoard(config, cellLen) {
@@ -35,7 +60,12 @@ class Controller {
         this.karel = r.karel;
         this.error = null;
         this.boardView = views.createBoard(this.config.width * this.cellLen, this.config.height * this.cellLen);
-        this.boardView.setState({ rows: this.karel.toJSON() });
+        this.boardView.setState({ rows: this.karel.toJSON(), objective: this.config.objective });
+    }
+
+    onLevelChange(i) {
+        console.log('in onLevelChange', i);
+        app.newBoard(configs[i], 100);
     }
 
     onCodePadFocus() {
@@ -101,16 +131,7 @@ karelCommands.map(function (cmd) {
     };
 });
 
-const config = {
-    width: 5,
-    height: 3,
-    beepers: [{ x: 2, y: 0, cnt: 1 }],
-    walls: [{ x: 3, y: 0, bearing: 0 }, { x: 3, y: 0, bearing: 3 }, { x: 4, y: 0, bearing: 0 }],
-    karel: { x: 0, y: 0, bearing: 1 }
-};
-
 let app = new Controller();
-app.newBoard(config, 100);
 
 },{"./models":2,"./views":3}],2:[function(require,module,exports){
 'use strict';
@@ -342,8 +363,10 @@ class Board {
 }
 
 Board.fromConfig = function (config) {
-    const board = new Board(config.width, config.height, config.beepers, config.walls);
-    const karel = new Karel(config.karel.x, config.karel.y, config.karel.bearing, board);
+    const b1 = config.boards[0];
+    const init = b1.initialState;
+    const board = new Board(b1.width, b1.height, init.beepers, b1.walls);
+    const karel = new Karel(init.karel.x, init.karel.y, init.karel.bearing, board);
     return { board: board, karel: karel };
 };
 
@@ -400,7 +423,7 @@ var Board = React.createClass({
     displayName: 'Board',
 
     getInitialState: function () {
-        return { rows: [[]] };
+        return { rows: [[]], objective: '' };
     },
     render: function () {
         // put board in order it will be drawn
@@ -435,17 +458,59 @@ var Board = React.createClass({
 
         return React.createElement(
             'div',
-            { id: 'board', style: style },
-            ' ',
-            rows,
-            ' '
+            null,
+            React.createElement(
+                'div',
+                null,
+                'Objective: ',
+                this.state.objective
+            ),
+            React.createElement(
+                'div',
+                { id: 'board', style: style },
+                ' ',
+                rows,
+                ' '
+            )
+        );
+    }
+});
+
+var LevelSelect = React.createClass({
+    displayName: 'LevelSelect',
+
+    getInitialState: function () {
+        return { levels: [] };
+    },
+    handleLevelChange: function (e) {
+        console.log('levelChange', e.target.value);
+        this.props.onChange(parseInt(e.target.value, 10));
+    },
+    render: function () {
+        const options = this.state.levels.map(function (title, i) {
+            return React.createElement(
+                'option',
+                { value: i },
+                title
+            );
+        });
+
+        options.unshift(React.createElement('option', { selected: true, disabled: true, hidden: true, style: { display: 'none' }, value: '' }));
+
+        return React.createElement(
+            'select',
+            { id: 'levelSelect', onChange: this.handleLevelChange },
+            options
         );
     }
 });
 
 module.exports = {
     createBoard: function (width, height) {
-        return board = ReactDOM.render(React.createElement(Board, { width: width, height: height }), document.getElementById('boardContainer'));
+        return ReactDOM.render(React.createElement(Board, { width: width, height: height }), document.getElementById('boardContainer'));
+    },
+    createLevelSelect: function (onChange) {
+        return ReactDOM.render(React.createElement(LevelSelect, { onChange: onChange }), document.getElementById('levelSelectContainer'));
     }
 };
 
