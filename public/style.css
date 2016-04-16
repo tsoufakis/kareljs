@@ -1,39 +1,40 @@
-.colMask {
-  clear: both;
-  float: left;
-  width: 100%;
-  overflow: hidden;
+#container {
+    display: flex;
+    margin: auto;
+    padding: 10px;
+    height: 600px;
 }
 
-.colLeft {
-  float: left;
-  right: 50%;
-  width: 100%;
-  position: relative;
+#col1 {
+    width: 40%;
 }
 
-.col1 {
-  width: 46%;
-  left: 52%;
-  float: left;
-  position: relative;
-  padding: 0 0 1em 0;
-  overflow: hidden;
+#col2 {
+    width: 60%;
 }
 
-.col2 {
-  width: 46%;
-  left: 56%;
-  float: left;
-  position: relative;
-  padding: 0 0 1em 0;
-  overflow: hidden;
+.columns {
 }
+
+.CodeMirror {
+    border: 1px solid black;
+    height: 500px;
+    font-size: 16px;
+}
+
+/*
+#codePad {
+    font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 16px;
+    background: #faf8f0;
+}
+*/
 
 #board {
     border: 3px solid;
     /*border-spacing: 0px;*/
     display: table;
+    margin: auto;
 }
 
 .row {
