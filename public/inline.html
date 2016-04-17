@@ -18,12 +18,59 @@
             #col2 {
                 width: 60%;
             }
+
+            #board {
+                border: 1px solid black;
+                width: 240px;
+                height: 240px;
+                margin: auto;
+            }
+
+            .cell {
+                width: 80px;
+                height: 80px;
+                border: 1px solid black;
+                box-sizing: border-box;
+                position: relative;
+            }
+
+            .row {
+                display: flex;
+            }
+
+            .obj {
+                position: absolute;
+                width: 70px;
+                height: 70px;
+                margin-left: 5px;
+                margin-top: 5px;
+            }
         </style>
     </head>
     <body>
         <section id="container">
             <section class="columns" id="col1">turd1</section>
             <section class="columns" id="col2">turd2</section>
+        </section>
+        <section id="board">
+            <div class="row">
+                <div class="cell">
+                    <img class="obj" src="./beeper.png"/>
+                    <img class="obj" src="./karel0.png"/>
+                </div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+            </div>
+            <div class="row">
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+            </div>
+            <div class="row">
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+            </div>
         </section>
     </body>
 </html>

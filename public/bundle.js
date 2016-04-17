@@ -60,7 +60,8 @@ class Controller {
         // init the text box
         this.cm = CodeMirror.fromTextArea(document.getElementById('codePad'), {
             mode: "javascript",
-            lineNumbers: true
+            lineNumbers: true,
+            indentUnit: 4
         });
         this.initValue = this.cm.getValue();
         this.cm.setSize('95%', '500px');
@@ -78,9 +79,8 @@ class Controller {
         });
     }
 
-    newBoard(config, cellLen) {
+    newBoard(config) {
         this.config = config;
-        this.cellLen = cellLen;
         this.setupBoard();
     }
 
@@ -89,12 +89,12 @@ class Controller {
         this.board = r.board;
         this.karel = r.karel;
         this.error = null;
-        this.boardView = views.createBoard(this.config.width * this.cellLen, this.config.height * this.cellLen);
+        this.boardView = views.createBoard(this.config.boards[0].width, this.config.boards[0].height);
         this.boardView.setState({ rows: this.karel.toJSON(), objective: this.config.objective });
     }
 
     onLevelChange(i) {
-        app.newBoard(configs[i], 100);
+        app.newBoard(configs[i]);
     }
 
     runUserCode(s) {
@@ -404,11 +404,19 @@ BEARING_TO_CLASS_NAME[models.Compass.EAST] = 'wallEast';
 BEARING_TO_CLASS_NAME[models.Compass.SOUTH] = 'wallSouth';
 BEARING_TO_CLASS_NAME[models.Compass.WEST] = 'wallWest';
 
-var Karel = React.createClass({
-    displayName: 'Karel',
+var CellObject = React.createClass({
+    displayName: 'CellObject',
 
+    margin: 5,
     render: function () {
-        return React.createElement('div', { className: "karel" + this.props.bearing });
+        const imgSize = this.props.cellSize - 2 * this.margin;
+        const style = {
+            width: imgSize,
+            height: imgSize,
+            'marginLeft': this.margin,
+            'marginTop': this.margin
+        };
+        return React.createElement('img', { src: this.props.src, className: 'cellObj', style: style });
     }
 });
 
@@ -417,6 +425,7 @@ var Cell = React.createClass({
 
     render: function () {
         const cell = this.props.cell;
+        const children = [];
         let classes = ['cell'];
 
         classes = classes.concat(cell.walls.map(function (bearing) {
@@ -424,14 +433,23 @@ var Cell = React.createClass({
         }));
 
         if (cell.beepers > 0) {
-            classes.push('beeper');
+            children.push(React.createElement(CellObject, { src: './beeper.png', cellSize: this.props.size }));
         }
 
         if (cell.karel) {
-            classes.push('karel' + cell.karelBearing);
+            children.push(React.createElement(CellObject, { src: `./karel${ cell.karelBearing }.png`, cellSize: this.props.size }));
         }
 
-        return React.createElement('div', { className: classes.join(' ') });
+        const style = {
+            width: this.props.size + 'px',
+            height: this.props.size + 'px'
+        };
+
+        return React.createElement(
+            'div',
+            { className: classes.join(' '), style: style },
+            children
+        );
     }
 });
 
@@ -441,6 +459,7 @@ var Board = React.createClass({
     getInitialState: function () {
         return { rows: [[]], objective: '' };
     },
+    cellSize: 80,
     render: function () {
         // put board in order it will be drawn
         const coordSys = this.state.rows;
@@ -454,9 +473,9 @@ var Board = React.createClass({
         }
 
         // turn the rows / cells into elements
-        rows = rows.map(function (row) {
-            let cells = row.map(function (cell) {
-                return React.createElement(Cell, { cell: cell });
+        rows = rows.map(row => {
+            let cells = row.map(cell => {
+                return React.createElement(Cell, { size: this.cellSize, cell: cell });
             });
             return React.createElement(
                 'div',
@@ -468,8 +487,8 @@ var Board = React.createClass({
         });
 
         var style = {
-            width: this.props.width + 'px',
-            height: this.props.height + 'px'
+            width: this.props.cellsWide * this.cellSize + 'px',
+            height: this.props.cellsTall * this.cellSize + 'px'
         };
 
         return React.createElement(
@@ -521,8 +540,8 @@ var LevelSelect = React.createClass({
 });
 
 module.exports = {
-    createBoard: function (width, height) {
-        return ReactDOM.render(React.createElement(Board, { width: width, height: height }), document.getElementById('boardContainer'));
+    createBoard: function (cellsWide, cellsTall) {
+        return ReactDOM.render(React.createElement(Board, { cellsWide: cellsWide, cellsTall: cellsTall }), document.getElementById('boardContainer'));
     },
     createLevelSelect: function (onChange) {
         return ReactDOM.render(React.createElement(LevelSelect, { onChange: onChange }), document.getElementById('levelSelectContainer'));

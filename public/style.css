@@ -13,39 +13,29 @@
     width: 60%;
 }
 
-.columns {
-}
-
 .CodeMirror {
     border: 1px solid black;
     height: 500px;
     font-size: 16px;
 }
 
-/*
-#codePad {
-    font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
-    font-size: 16px;
-    background: #faf8f0;
-}
-*/
-
 #board {
     border: 3px solid;
-    /*border-spacing: 0px;*/
-    display: table;
     margin: auto;
 }
 
 .row {
-    display: table-row;
+    display: flex;
 }
 
 .cell {
-    display: table-cell;
+    box-sizing: border-box;
     border: 1px dotted gray;
-    width: 100px;
-    height: 100px;
+    position: relative;
+}
+
+.cellObj {
+    position: absolute;
 }
 
 .wallNorth {
@@ -62,24 +52,4 @@
 
 .wallWest {
     border-left: 3px solid black
-}
-
-.beeper {
-    background: no-repeat center/90% url("./beeper.png")
-}
-
-.karel0 {
-    background: no-repeat center/90% url("./karel0.png")
-}
-
-.karel1 {
-    background: no-repeat center/90% url("./karel1.png")
-}
-
-.karel2 {
-    background: no-repeat center/90% url("./karel2.png")
-}
-
-.karel3 {
-    background: no-repeat center/90% url("./karel3.png")
 }
