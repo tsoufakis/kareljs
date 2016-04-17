@@ -17,7 +17,8 @@ const configs = [{
             karel: { x: 0, y: 0, bearing: 1 }
         },
         finalState: {
-            beepers: [{ x: 3, y: 1, cnt: 1 }]
+            beepers: [{ x: 3, y: 1, cnt: 1 }],
+            karel: { x: 4, y: 1, bearing: 1 }
         },
         notes: 'Just a simple board'
     }],
@@ -33,7 +34,8 @@ const configs = [{
             karel: { x: 0, y: 0, bearing: 1 }
         },
         finalState: {
-            beepers: [{ x: 0, y: 0, cnt: 1 }, { x: 1, y: 1, cnt: 1 }, { x: 2, y: 2, cnt: 1 }, { x: 3, y: 3, cnt: 1 }]
+            beepers: [{ x: 0, y: 0, cnt: 1 }, { x: 1, y: 1, cnt: 1 }, { x: 2, y: 2, cnt: 1 }, { x: 3, y: 3, cnt: 1 }],
+            karel: { x: 3, y: 3, bearing: 1 }
         },
         notes: 'Just a simple board'
     }],
@@ -89,8 +91,7 @@ class Controller {
         this.board = r.board;
         this.karel = r.karel;
         this.error = null;
-        this.boardView = views.createBoard(this.config.boards[0].width, this.config.boards[0].height);
-        this.boardView.setState({ rows: this.karel.toJSON(), objective: this.config.objective });
+        this.boardView = views.createBoardPanel(this.karel.toJSON());
     }
 
     onLevelChange(i) {
@@ -148,6 +149,9 @@ karelCommands.map(function (cmd) {
 });
 
 let app = new Controller();
+
+// const r = Board.fromConfig(configs[0], true);
+// const popup = views.createBoardPopup(r.karel.toJSON());
 
 },{"./models":2,"./views":3}],2:[function(require,module,exports){
 'use strict';
@@ -378,9 +382,9 @@ class Board {
     }
 }
 
-Board.fromConfig = function (config) {
+Board.fromConfig = function (config, useFinalState = false) {
     const b1 = config.boards[0];
-    const init = b1.initialState;
+    const init = useFinalState ? b1.finalState : b1.initialState;
     const board = new Board(b1.width, b1.height, init.beepers, b1.walls);
     const karel = new Karel(init.karel.x, init.karel.y, init.karel.bearing, board);
     return { board: board, karel: karel };
@@ -456,13 +460,10 @@ var Cell = React.createClass({
 var Board = React.createClass({
     displayName: 'Board',
 
-    getInitialState: function () {
-        return { rows: [[]], objective: '' };
-    },
     cellSize: 80,
     render: function () {
         // put board in order it will be drawn
-        const coordSys = this.state.rows;
+        const coordSys = this.props.rows;
         let rows = [];
         for (let y = coordSys[0].length - 1; y >= 0; y--) {
             let cells = [];
@@ -472,7 +473,7 @@ var Board = React.createClass({
             }
         }
 
-        // turn the rows / cells into elements
+        // turn the rows and cells into elements
         rows = rows.map(row => {
             let cells = row.map(cell => {
                 return React.createElement(Cell, { size: this.cellSize, cell: cell });
@@ -487,27 +488,26 @@ var Board = React.createClass({
         });
 
         var style = {
-            width: this.props.cellsWide * this.cellSize + 'px',
-            height: this.props.cellsTall * this.cellSize + 'px'
+            width: this.props.rows.length * this.cellSize + 'px',
+            height: this.props.rows[0].length * this.cellSize + 'px'
         };
 
         return React.createElement(
-            'div',
-            null,
-            React.createElement(
-                'div',
-                null,
-                'Objective: ',
-                this.state.objective
-            ),
-            React.createElement(
-                'div',
-                { id: 'board', style: style },
-                ' ',
-                rows,
-                ' '
-            )
+            'section',
+            { className: 'board', style: style },
+            rows
         );
+    }
+});
+
+var BoardPanel = React.createClass({
+    displayName: 'BoardPanel',
+
+    getInitialState() {
+        return { rows: this.props.rows };
+    },
+    render() {
+        return React.createElement(Board, { rows: this.state.rows });
     }
 });
 
@@ -539,10 +539,27 @@ var LevelSelect = React.createClass({
     }
 });
 
+var BoardPopup = React.createClass({
+    displayName: 'BoardPopup',
+
+    render() {
+        return React.createElement(
+            'aside',
+            { className: 'goalPopup' },
+            React.createElement(Board, { rows: this.props.rows })
+        );
+    }
+});
+
 module.exports = {
-    createBoard: function (cellsWide, cellsTall) {
-        return ReactDOM.render(React.createElement(Board, { cellsWide: cellsWide, cellsTall: cellsTall }), document.getElementById('boardContainer'));
+    createBoardPanel: function (rows) {
+        return ReactDOM.render(React.createElement(BoardPanel, { rows: rows }), document.getElementById('boardContainer'));
     },
+
+    createBoardPopup: function (rows) {
+        return ReactDOM.render(React.createElement(BoardPopup, { rows: rows }), document.getElementById('popupContainer'));
+    },
+
     createLevelSelect: function (onChange) {
         return ReactDOM.render(React.createElement(LevelSelect, { onChange: onChange }), document.getElementById('levelSelectContainer'));
     }
