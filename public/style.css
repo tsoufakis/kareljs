@@ -62,4 +62,20 @@
     height: 400px;
     border: 1px solid black;
     box-shadow: 2px 2px 10px 0px rgba(0,0,0,0.75);
+    background-color: #FDFDF1;
+}
+
+.closeButton {
+    color: #777;
+    font: 14px/100% arial, sans-serif;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #fff;
+
+}
+
+.closeButton:after {
+    content: 'X';
 }

@@ -104,7 +104,7 @@ const Cell = React.createClass({
         const style = {
             width: this.props.size + 'px',
             height: this.props.size + 'px'
-        }
+        };
 
         return (
             <div className={classes.join(' ')} style={style}>
@@ -145,14 +145,45 @@ const BoardView = React.createClass({
     }
 });
 
-// const BoardPanel = React.createClass({
-//     getInitialState() {
-//         return {rows: this.props.rows};
-//     },
-//     render() {
-//         return <Board rows={this.state.rows}/>;
-//     }
-// });
+const BoardPanel = React.createClass({
+    getDefaultProps() {
+        return {
+            rows: null,
+            finalRows: null,
+            objective: 'Select a level from the dropdown.'
+        };
+    },
+    getInitialState() {
+        return {
+            popupStyle: {display: 'none'}
+        };
+    },
+    showExample() {
+        if (this.props.finalRows) {
+            this.setState({
+                popupStyle: {display: 'block'}
+            });
+        }
+    },
+    closePopup() {
+        this.setState({
+            popupStyle: {display: 'none'}
+        });
+    },
+    render() {
+        return (
+            <section>
+                <p>{this.props.objective}</p>
+                <a href="#" onClick={this.showExample}>Show example.</a>
+                {this.props.rows && <BoardView rows={this.props.rows}/>}
+                <aside className="goalPopup" style={this.state.popupStyle}>
+                    {this.props.finalRows && <BoardView rows={this.props.finalRows}/>}
+                    <a href="#" className="closeButton" onClick={this.closePopup}></a>
+                </aside> 
+            </section>
+        );
+    }
+});
 
 const LevelSelect = React.createClass({
     handleLevelChange(e) {
@@ -174,16 +205,6 @@ const LevelSelect = React.createClass({
         );
     },
 });
-
-// const BoardPopup = React.createClass({
-//     render() {
-//         return (
-//             <aside className="goalPopup">
-//                 <Board rows={this.props.rows}/>
-//             </aside> 
-//         );
-//     }
-// });
 
 const Editor = React.createClass({
     defaultValue: 'Type your commands for Malstrom here.',
@@ -300,11 +321,15 @@ const App = React.createClass({
         this.onNewLevel(this.state.id);
     },
     onNewLevel(id) {
-        const r = Board.fromConfig(configs[id]);
+        const config = configs[id];
+        const r = Board.fromConfig(config);
+        const finalR = Board.fromConfig(config, true);
         this.setState({
             id: id,
             karel: r.karel,
-            boardRows: r.karel.toJSON()
+            boardRows: r.karel.toJSON(),
+            objective: config.objective,
+            finalRows: finalR.karel.toJSON()
         });
     },
     render() {
@@ -312,15 +337,13 @@ const App = React.createClass({
             return c.title;
         });
 
-        const board = this.state.boardRows ? <BoardView rows={this.state.boardRows}/> : null;
-
         return (
             <section id="container">
                 <section id="col1" className="columns">
                     <CodePanel onRunCode={this.onRunCode} onResetBoard={this.onResetBoard} levels={levels} onNewLevel={this.onNewLevel}/>
                 </section>
                 <section id="col2" className="columns">
-                    {board}
+                    <BoardPanel rows={this.state.boardRows} finalRows={this.state.finalRows} objective={this.state.objective}/>
                 </section>
             </section>
         );
