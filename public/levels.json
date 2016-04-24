@@ -1,0 +1,83 @@
+[
+    {
+        "boards": [
+            {
+                "finalState": {
+                    "beepers": [
+                        { "cnt": 1, "x": 3, "y": 1 }
+                    ],
+                    "karel": { "bearing": 1, "x": 4, "y": 1 }
+                },
+                "height": 3,
+                "initialState": {
+                    "beepers": [
+                        { "cnt": 1, "x": 2, "y": 0 }
+                    ],
+                    "karel": { "bearing": 1, "x": 0, "y": 0 }
+                },
+                "notes": "Just a simple board",
+                "walls": [
+                    { "bearing": 0, "x": 3, "y": 0 },
+                    { "bearing": 3, "x": 3, "y": 0 },
+                    { "bearing": 0, "x": 4, "y": 0 }
+                ],
+                "width": 5
+            }
+        ],
+        "objective": "Have Karel pick up the beeper at (2, 0) and move it to (3, 1).",
+        "title": "On the ledge",
+        "id": 1
+    },
+    {
+        "boards": [
+            {
+                "finalState": {
+                    "beepers": [
+                        { "cnt": 1, "x": 0, "y": 0 },
+                        { "cnt": 1, "x": 1, "y": 1 },
+                        { "cnt": 1, "x": 2, "y": 2 },
+                        { "cnt": 1, "x": 3, "y": 3 }
+                    ],
+                    "karel": { "bearing": 1, "x": 3, "y": 3 }
+                },
+                "height": 4,
+                "initialState": {
+                    "beepers": [],
+                    "karel": { "bearing": 1, "x": 0, "y": 0 }
+                },
+                "notes": "Just a simple board",
+                "walls": [],
+                "width": 4
+            }
+        ],
+        "objective": "Have Karel lay down a diagonal line of beepers going from the bottom left corner to the top right.",
+        "title": "Diagonal",
+        "id": 2
+    },
+    {
+        "boards": [
+            {
+                "finalState": {
+                    "beepers": [
+                        { "cnt": 1, "x": 0, "y": 0 },
+                        { "cnt": 1, "x": 2, "y": 0 },
+                        { "cnt": 1, "x": 4, "y": 0 },
+                        { "cnt": 1, "x": 6, "y": 0 }
+                    ],
+                    "karel": { "bearing": 1, "x": 7, "y": 0 }
+                },
+                "height": 3,
+                "initialState": {
+                    "beepers": [],
+                    "karel": { "bearing": 1, "x": 0, "y": 0 }
+                },
+                "notes": "Just a simple board",
+                "walls": [],
+                "width": 8
+            }
+        ],
+        "objective": "Have Karel lay down beepers on every other square along the bottom row.",
+        "title": "Every Other",
+        "id": 3
+    }
+]

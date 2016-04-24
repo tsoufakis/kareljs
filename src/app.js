@@ -258,6 +258,11 @@ const karelCommands = [
 const App = React.createClass({
     MS_PER_FRAME: 250,
     getInitialState() {
+        return {
+            configs: []
+        };
+    },
+    componentDidMount() {
         karelCommands.map((cmd) => {
             window[cmd] = () => {
                 try {
@@ -267,8 +272,13 @@ const App = React.createClass({
                 }
             };
         });
-
-        return {};
+        const req = new XMLHttpRequest();
+        req.addEventListener('load', () => {
+            const configs = JSON.parse(req.responseText);
+            this.setState({configs: configs});
+        });
+        req.open('GET', './levels.json');
+        req.send();
     },
     onRunCode(code) {
         eval(code);
@@ -293,7 +303,10 @@ const App = React.createClass({
         this.onNewLevel(this.state.id);
     },
     onNewLevel(id) {
-        const config = configs[id];
+        if (this.state.configs.length === 0) {
+            return;
+        }
+        const config = this.state.configs[id];
         const r = Board.fromConfig(config);
         const finalR = Board.fromConfig(config, true);
         this.setState({
@@ -305,7 +318,7 @@ const App = React.createClass({
         });
     },
     render() {
-        const levels = configs.map((c) => {
+        const levels = this.state.configs.map((c) => {
             return c.title;
         });
 
@@ -326,7 +339,5 @@ const App = React.createClass({
         );
     }
 });
-
-const configs = window.configs;
 
 ReactDOM.render(<App/>, document.getElementById('app'));
