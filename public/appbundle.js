@@ -169,6 +169,34 @@ const BoardPanel = React.createClass({
             popupStyle: { display: 'none' }
         });
     },
+    handleTabClick(index) {
+        console.log('tab click', index);
+    },
+    _renderTabBar() {
+        const makeLabel = (label, i) => {
+            let className = 'tab';
+
+            if (i === this.props.activeTabIndex) {
+                className += ' activeTab';
+            }
+
+            return React.createElement(
+                'li',
+                { key: i },
+                React.createElement(
+                    'a',
+                    { href: '#', className: className, onClick: this.handleTabClick.bind(this, i) },
+                    label
+                )
+            );
+        };
+
+        return React.createElement(
+            'ul',
+            { className: 'tabBar' },
+            this.props.tabLabels.map(makeLabel)
+        );
+    },
     render() {
         return React.createElement(
             'section',
@@ -361,7 +389,12 @@ const App = React.createClass({
             React.createElement(
                 'section',
                 { id: 'col2', className: 'columns' },
-                React.createElement(BoardPanel, { rows: this.state.boardRows, finalRows: this.state.finalRows, objective: this.state.objective })
+                React.createElement(BoardPanel, { rows: this.state.boardRows,
+                    finalRows: this.state.finalRows,
+                    objective: this.state.objective,
+                    tabLabels: ['3x3', '4x4', '5x6'],
+                    activeTabIndex: 1
+                })
             )
         );
     }

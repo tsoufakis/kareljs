@@ -170,11 +170,38 @@ const BoardPanel = React.createClass({
             popupStyle: {display: 'none'}
         });
     },
+    handleTabClick(index) {
+        console.log('tab click', index);
+    },
+    _renderTabBar() {
+        const makeLabel = (label, i) => {
+            let className = 'tab';
+
+            if (i === this.props.activeTabIndex) {
+                className += ' activeTab';
+            }
+
+            return (
+                <li key={i}>
+                    <a href="#" className={className} onClick={this.handleTabClick.bind(this, i)}>
+                        {label}
+                    </a>
+                </li>
+            );
+        };
+
+        return (
+            <ul className="tabBar">
+                {this.props.tabLabels.map(makeLabel)}
+            </ul>
+        );
+    },
     render() {
         return (
             <section>
                 <p>{this.props.objective}</p>
                 <a href="#" onClick={this.showExample}>Show example.</a>
+                {/* this._renderTabBar() */}
                 {this.props.rows && <BoardView rows={this.props.rows}/>}
                 <aside className="goalPopup" style={this.state.popupStyle}>
                     {this.props.finalRows && <BoardView rows={this.props.finalRows}/>}
@@ -343,7 +370,12 @@ const App = React.createClass({
                     <CodePanel onRunCode={this.onRunCode} onResetBoard={this.onResetBoard} levels={levels} onNewLevel={this.onNewLevel}/>
                 </section>
                 <section id="col2" className="columns">
-                    <BoardPanel rows={this.state.boardRows} finalRows={this.state.finalRows} objective={this.state.objective}/>
+                    <BoardPanel rows={this.state.boardRows}
+                                finalRows={this.state.finalRows}
+                                objective={this.state.objective}
+                                tabLabels={['3x3', '4x4', '5x6']}
+                                activeTabIndex={1}
+                    />
                 </section>
             </section>
         );

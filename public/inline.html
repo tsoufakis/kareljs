@@ -45,6 +45,18 @@
                 margin-left: 5px;
                 margin-top: 5px;
             }
+            .tabBar {
+                display: flex;
+            }
+            .tab {
+                border: 1px solid gray;
+                width: 50px;
+                height: 25px;
+                box-sizing: border-box;
+            }
+            .activeTab {
+                border-bottom: 2px solid blue;
+            }
         </style>
     </head>
     <body>
@@ -52,25 +64,32 @@
             <section class="columns" id="col1">turd1</section>
             <section class="columns" id="col2">turd2</section>
         </section>
-        <section id="board">
-            <div class="row">
-                <div class="cell">
-                    <img class="obj" src="./beeper.png"/>
-                    <img class="obj" src="./karel0.png"/>
+        <section>
+            <div class="tabBar">
+                <div class="tab activeTab">tab1</div>
+                <div class="tab">tab2</div>
+                <div class="tab">tab3</div>
+            </div>
+            <section id="board">
+                <div class="row">
+                    <div class="cell">
+                        <img class="obj" src="./beeper.png"/>
+                        <img class="obj" src="./karel0.png"/>
+                    </div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
                 </div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-            </div>
-            <div class="row">
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-            </div>
-            <div class="row">
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-            </div>
+                <div class="row">
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                </div>
+                <div class="row">
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                    <div class="cell"></div>
+                </div>
+            </section>
         </section>
     </body>
 </html>
