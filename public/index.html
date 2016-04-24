@@ -5,36 +5,10 @@
         <link rel="stylesheet" type="text/css" href="./codemirror.css">
         <script src="./codemirror.js" type="text/javascript"></script>
         <script src="./javascript.js" type="text/javascript"></script>
+        <script src="./data.js" type="text/javascript"></script>
     </head>
     <body>
-        <section id="container">
-            <section id="col1" class="columns">
-                <form>
-                    <div>
-                        <button type="button" id="runButton">Run Code</button>
-                        <div id="levelSelectContainer"></div>
-                    </div>
-                    <div><textarea id="codePad">Type your commands for Karel here...</textarea></div>
-                </form>
-            </section>
-            <section id="col2" class="columns">
-                <div id="boardContainer">Use the dropdown menu on the right to select a level.</div>
-            </section>
-        </section>
-        <div id="popupContainer"></div>
-        <div>
-            <h3>commands</h3>
-            <ul>
-                <li><code>move()</code> Moves Karel forward one square</li>
-                <li><code>turnLeft()</code> Turns Karel left</li>
-                <li><code>turnRight()</code> Turns Karel right</li>
-                <li><code>frontIsClear()</code> Returns <code>true</code> if there is no wall in front of Karel</li>
-            </ul>
-            <h3>control</h3>
-            <ul>
-                <li><code>if (condition) {<br></code></li>
-            </ul>
-        </div>
-        <script src="./bundle.js" type="text/javascript"></script>
+        <div id="app"></div>
+        <script src="./appbundle.js" type="text/javascript"></script>
     </body>
 </html>
