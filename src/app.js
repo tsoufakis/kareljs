@@ -2,7 +2,7 @@
 
 const React = require('react'),
       ReactDOM = require('react-dom'),
-      models = require('./lib/models.js'),
+      models = require('./models.js'),
       Karel = models.Karel,
       Board = models.Board,
       Compass = models.Compass;

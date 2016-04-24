@@ -2,7 +2,7 @@
 
 const assert = require('chai').assert;
 const util = require('util');
-const { Karel, Cell, Board, Compass } = require('../lib/models');
+const { Karel, Cell, Board, Compass } = require('../src/models');
 
 function testCompass() {
     assert.equal(Compass.WEST, Compass.left90(Compass.NORTH));
