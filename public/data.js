@@ -51,5 +51,30 @@ window.configs = [
         ],
         objective: 'Have Karel lay down a diagonal line of beepers going from the bottom left corner to the top right.',
         title: 'Diagonal'
+    },
+    {
+        boards: [
+            {
+                width: 8,
+                height: 3,
+                walls: [],
+                initialState: {
+                    beepers: [],
+                    karel: {x: 0, y: 0, bearing: 1}
+                },
+                finalState: {
+                    beepers: [
+                        {x: 0, y: 0, cnt: 1},
+                        {x: 2, y: 0, cnt: 1},
+                        {x: 4, y: 0, cnt: 1},
+                        {x: 6, y: 0, cnt: 1}
+                    ],
+                    karel: {x: 7, y: 0, bearing: 1}
+                },
+                notes: 'Just a simple board'
+            }
+        ],
+        objective: 'Have Karel lay down beepers on every other square along the bottom row.',
+        title: 'Every Other'
     }
 ];
