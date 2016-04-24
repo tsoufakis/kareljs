@@ -144,7 +144,7 @@ const BoardPanel = React.createClass({
         const exampleLinkStyle = this.props.finalRows ? {} : {display: 'none'};
         return (
             <section>
-                <p>{this.props.objective} <a href="#" onClick={this.showExample} style={exampleLinkStyle}>Show example.</a></p>
+                <p><strong>Objective:</strong> {this.props.objective} <a href="#" onClick={this.showExample} style={exampleLinkStyle}>Show example.</a></p>
                 {/* this._renderTabBar() */}
                 {this.props.rows && <BoardView rows={this.props.rows}/>}
                 <aside className="goalPopup" style={this.state.popupStyle}>
