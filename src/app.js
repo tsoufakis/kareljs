@@ -7,62 +7,6 @@ const React = require('react'),
       Board = models.Board,
       Compass = models.Compass;
 
-const configs = [
-    {
-        boards: [
-            {
-                width: 5,
-                height: 3,
-                walls: [
-                    {x: 3, y: 0, bearing: 0},
-                    {x: 3, y: 0, bearing: 3},
-                    {x: 4, y: 0, bearing: 0}
-                ],
-                initialState: {
-                    beepers: [
-                        {x: 2, y: 0, cnt: 1}
-                    ],
-                    karel: {x: 0, y: 0, bearing: 1}
-                },
-                finalState: {
-                    beepers: [
-                        {x: 3, y: 1, cnt: 1}
-                    ],
-                    karel: {x: 4, y: 1, bearing: 1}
-                },
-                notes: 'Just a simple board'
-            }
-        ],
-        objective: 'Have Karel pick up the beeper at (2, 0) and move it to (3, 1).',
-        title: '1.1: Around the corner'
-    },
-    {
-        boards: [
-            {
-                width: 4,
-                height: 4,
-                walls: [],
-                initialState: {
-                    beepers: [],
-                    karel: {x: 0, y: 0, bearing: 1}
-                },
-                finalState: {
-                    beepers: [
-                        {x: 0, y: 0, cnt: 1},
-                        {x: 1, y: 1, cnt: 1},
-                        {x: 2, y: 2, cnt: 1},
-                        {x: 3, y: 3, cnt: 1}
-                    ],
-                    karel: {x: 3, y: 3, bearing: 1}
-                },
-                notes: 'Just a simple board'
-            }
-        ],
-        objective: 'Have Karel lay down a diagonal line of beepers going from the bottom left corner to the top right.',
-        title: '1.2: Diagonal'
-    }
-];
-
 const BEARING_TO_CLASS_NAME = {};
 BEARING_TO_CLASS_NAME[models.Compass.NORTH] = 'wallNorth';
 BEARING_TO_CLASS_NAME[models.Compass.EAST]  = 'wallEast';
@@ -197,13 +141,14 @@ const BoardPanel = React.createClass({
         );
     },
     render() {
+        const exampleLinkStyle = this.props.finalRows ? {} : {display: 'none'};
         return (
             <section>
-                <p>{this.props.objective}</p>
-                <a href="#" onClick={this.showExample}>Show example.</a>
+                <p>{this.props.objective} <a href="#" onClick={this.showExample} style={exampleLinkStyle}>Show example.</a></p>
                 {/* this._renderTabBar() */}
                 {this.props.rows && <BoardView rows={this.props.rows}/>}
                 <aside className="goalPopup" style={this.state.popupStyle}>
+                    <p className="goalPopupText">This is what the board should look like after running your program</p>
                     {this.props.finalRows && <BoardView rows={this.props.finalRows}/>}
                     <a href="#" className="closeButton" onClick={this.closePopup}></a>
                 </aside> 
@@ -236,12 +181,12 @@ const LevelSelect = React.createClass({
 const Editor = React.createClass({
     defaultValue: 'Type your commands for Malstrom here.',
     componentDidMount() {
-        const cm = CodeMirror.fromTextArea(this.textarea, {
+        const cm = CodeMirror.fromTextArea(this.refs.textarea, {
             mode:  "javascript",
             lineNumbers: true,
             indentUnit: 4
         });
-        cm.setSize('95%', '500px');
+        cm.setSize('100%', '600px');
         cm.on('focus', this.onFocus);
         cm.on('blur', this.onBlur);
         cm.on('change', this.onCodeMirrorValueChanged);
@@ -263,7 +208,7 @@ const Editor = React.createClass({
     },
     render() {
         return (
-            <textarea className="editor" onChange={this.props.onChange} defaultValue={this.defaultValue} ref={(c) => this.textarea = c}></textarea>
+            <textarea className="editor" onChange={this.props.onChange} defaultValue={this.defaultValue} ref="textarea"></textarea>
         );
     }
 });
@@ -381,5 +326,7 @@ const App = React.createClass({
         );
     }
 });
+
+const configs = window.configs;
 
 ReactDOM.render(<App/>, document.getElementById('app'));
