@@ -347,6 +347,7 @@ const App = React.createClass({
                 return this.state.karel[cmd]();
             };
         });
+
         const req = new XMLHttpRequest();
         req.addEventListener('load', () => {
             const configs = JSON.parse(req.responseText);
@@ -356,12 +357,14 @@ const App = React.createClass({
         req.send();
     },
     onRunCode(code) {
-        try {
-            eval(code);
-        } catch(e) {
-            this.setState({error: `error: ${e}`});
+        if (this.state.karel) {
+            try {
+                eval(code);
+            } catch(e) {
+                this.setState({error: `error: ${e}`});
+            }
+            this.renderResults();
         }
-        this.renderResults();
     },
     renderResults() {
         const id = setInterval(() => {
@@ -383,7 +386,7 @@ const App = React.createClass({
         this.onNewLevel(this.state.id);
     },
     onNewLevel(id) {
-        if (this.state.configs.length === 0) {
+        if (this.state.configs.length === 0 || typeof id === 'undefined') {
             return;
         }
         const config = this.state.configs[id];
