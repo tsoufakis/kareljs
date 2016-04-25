@@ -89,6 +89,60 @@ const BoardView = React.createClass({
     }
 });
 
+const CheatSheet = React.createClass({
+    getInitialState() {
+        return {reference: {commands: [], conditionals: []}};
+    },
+    componentDidMount() {
+        const req = new XMLHttpRequest();
+        req.addEventListener('load', () => {
+            const reference = JSON.parse(req.responseText);
+            this.setState({reference: reference});
+        });
+        req.open('GET', './reference.json');
+        req.send();
+    },
+    render() {
+        function makeItem(data) {
+            return <li><code>{data.code}</code> {data.desc}</li>;
+        }
+
+        const commands = this.state.reference.commands.map(makeItem);
+        const conditionals = this.state.reference.conditionals.map(makeItem);
+
+        return (
+            <div>
+                <h1>Commands</h1>
+                <section>
+                    <ul className="referenceList">
+                        {commands}
+                    </ul>
+                </section>
+                <h1>Conditionals</h1>
+                <section>
+                    <ul className="referenceList">
+                        {conditionals}
+                    </ul>
+                </section>
+            </div>
+        );
+    }
+});
+
+const Popup = React.createClass({
+    propTypes: {
+        onClose: React.PropTypes.func.isRequired
+    },
+    render() {
+        return (
+            <aside className="popup">
+                {this.props.children}
+                <a href="#" className="closeButton" onClick={this.props.onClose}></a>
+            </aside>
+        );
+    }
+});
+
 const BoardPanel = React.createClass({
     getDefaultProps() {
         return {
@@ -98,21 +152,13 @@ const BoardPanel = React.createClass({
         };
     },
     getInitialState() {
-        return {
-            popupStyle: {display: 'none'}
-        };
+        return {showExamplePopup: false};
     },
-    showExample() {
-        if (this.props.finalRows) {
-            this.setState({
-                popupStyle: {display: 'block'}
-            });
-        }
+    openExample() {
+        this.setState({showExamplePopup: true});
     },
-    closePopup() {
-        this.setState({
-            popupStyle: {display: 'none'}
-        });
+    closeExample() {
+        this.setState({showExamplePopup: false});
     },
     handleTabClick(index) {
         console.log('tab click', index);
@@ -141,17 +187,29 @@ const BoardPanel = React.createClass({
         );
     },
     render() {
-        const exampleLinkStyle = this.props.finalRows ? {} : {display: 'none'};
+        let popup;
+        let exampleLink;
+        let board;
+
+        if (this.state.showExamplePopup) {
+            popup = (
+                <Popup onClose={this.closeExample}>
+                    <p className="examplePopupText">This is what the board should look like after running your program</p>
+                    <BoardView rows={this.props.finalRows}/>
+                </Popup>
+            );
+        }
+
+        if (this.props.rows) {
+            board = <BoardView rows={this.props.rows}/>;
+            exampleLink = <a href="#" onClick={this.openExample}>Show example.</a>;
+        }
+
         return (
             <section>
-                <p><strong>Objective:</strong> {this.props.objective} <a href="#" onClick={this.showExample} style={exampleLinkStyle}>Show example.</a></p>
-                {/* this._renderTabBar() */}
-                {this.props.rows && <BoardView rows={this.props.rows}/>}
-                <aside className="goalPopup" style={this.state.popupStyle}>
-                    <p className="goalPopupText">This is what the board should look like after running your program</p>
-                    {this.props.finalRows && <BoardView rows={this.props.finalRows}/>}
-                    <a href="#" className="closeButton" onClick={this.closePopup}></a>
-                </aside> 
+                <p><strong>Objective:</strong> {this.props.objective} {exampleLink}</p>
+                {board}
+                {popup}
             </section>
         );
     }
@@ -217,7 +275,8 @@ const CodePanel = React.createClass({
     getInitialState() {
         return {
             code: '',
-            buttonMsg: 'Run Code'
+            buttonMsg: 'Run Code',
+            cheatSheetOpen: false
         };
     },
     handleSubmit(e) {
@@ -238,13 +297,33 @@ const CodePanel = React.createClass({
     onCodeChange(code) {
         this.setState({code: code})
     },
+    showCheatSheet() {
+        this.setState({cheatSheetOpen: true});
+    },
+    closeCheatSheet() {
+        this.setState({cheatSheetOpen: false});
+    },
     render() {
+        let cheatSheet;
+
+        if (this.state.cheatSheetOpen) {
+            cheatSheet = (
+                <Popup onClose={this.closeCheatSheet}>
+                    <CheatSheet/>
+                </Popup>
+            );
+        }
+
         return (
-            <form onSubmit={this.handleSubmit}>
-                <input type="submit" value={this.state.buttonMsg}></input>
-                <LevelSelect levels={this.props.levels} onNewLevel={this.props.onNewLevel}/>
-                <Editor onChange={this.onCodeChange}/>
-            </form>
+            <div>
+                <form onSubmit={this.handleSubmit}>
+                    <input type="submit" value={this.state.buttonMsg}></input>
+                    <LevelSelect levels={this.props.levels} onNewLevel={this.props.onNewLevel}/>
+                    <Editor onChange={this.onCodeChange}/>
+                </form>
+                <a href="#" onClick={this.showCheatSheet}>Show cheat sheet</a>
+                {cheatSheet}
+            </div>
         );
     }
 });

@@ -1,0 +1,42 @@
+{
+    "commands": [
+        {
+            "code": "move()",
+            "desc": "Move forward one square"
+        },
+        {
+            "code": "turnLeft()",
+            "desc": "Turn 90 degrees to the left"
+        },
+        {
+            "code": "turnRight()",
+            "desc": "Turn 90 degrees to the right"
+        },
+        {
+            "code": "pickBeeper()",
+            "desc": "Pick up a beeper"
+        },
+        {
+            "code": "putBeeper()",
+            "desc": "Lay down a beeper"
+        }
+    ],
+    "conditionals": [
+        {
+            "code": "beepersPresent()",
+            "desc": "Checks if there are any beepers on Karel's square"
+        },
+        {
+            "code": "frontIsClear()",
+            "desc": "Checks if the square in front of Karel is clear"
+        },
+        {
+            "code": "leftIsClear()",
+            "desc": "Checks if the square to Karel's left is clear"
+        },
+        {
+            "code": "rightIsClear()",
+            "desc": "Checks if the square to Karel's right is clear"
+        }
+    ]
+}
