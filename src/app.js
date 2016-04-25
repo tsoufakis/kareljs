@@ -344,11 +344,7 @@ const App = React.createClass({
     componentDidMount() {
         karelCommands.map((cmd) => {
             window[cmd] = () => {
-                try {
-                    return this.state.karel[cmd]();
-                } catch(e) {
-                    this.setState({error: e});
-                }
+                return this.state.karel[cmd]();
             };
         });
         const req = new XMLHttpRequest();
@@ -360,7 +356,11 @@ const App = React.createClass({
         req.send();
     },
     onRunCode(code) {
-        eval(code);
+        try {
+            eval(code);
+        } catch(e) {
+            this.setState({error: `error: ${e}`});
+        }
         this.renderResults();
     },
     renderResults() {
@@ -373,6 +373,7 @@ const App = React.createClass({
                 if (this.state.error) {
                     setTimeout(() => {
                         alert(this.state.error);
+                        this.setState({error: null});
                     }, this.MS_PER_FRAME);
                 }
             }
