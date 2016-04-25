@@ -319,9 +319,9 @@ const CodePanel = React.createClass({
                 <form onSubmit={this.handleSubmit}>
                     <input type="submit" value={this.state.buttonMsg}></input>
                     <LevelSelect levels={this.props.levels} onNewLevel={this.props.onNewLevel}/>
+                    <a href="#" className="cheatSheetLink" onClick={this.showCheatSheet}>Show cheat sheet</a>
                     <Editor onChange={this.onCodeChange}/>
                 </form>
-                <a href="#" onClick={this.showCheatSheet}>Show cheat sheet</a>
                 {cheatSheet}
             </div>
         );

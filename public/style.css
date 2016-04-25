@@ -101,3 +101,7 @@
 .referenceList {
     list-style-type: none;
 }
+
+.cheatSheetLink {
+    padding-left: 10px;
+}
