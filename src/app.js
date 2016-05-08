@@ -220,7 +220,8 @@ const LevelSelect = React.createClass({
         this.props.onNewLevel(parseInt(e.target.value, 10));
     },
     render() {
-        const options = this.props.levels.map(function(title, i) {
+        const titles = this.props.levelTitles || [];
+        const options = titles.map(function(title, i) {
             return <option value={i}>{title}</option>
         });
 
@@ -318,7 +319,7 @@ const CodePanel = React.createClass({
             <div>
                 <form onSubmit={this.handleSubmit}>
                     <input type="submit" value={this.state.buttonMsg}></input>
-                    <LevelSelect levels={this.props.levels} onNewLevel={this.props.onNewLevel}/>
+                    <LevelSelect levelTitles={this.props.levelTitles} onNewLevel={this.props.onNewLevel}/>
                     <a href="#" className="cheatSheetLink" onClick={this.showCheatSheet}>Show cheat sheet</a>
                     <Editor onChange={this.onCodeChange}/>
                 </form>
@@ -334,11 +335,21 @@ const karelCommands = [
     'leftIsClear', 'rightIsBlocked', 'rightIsClear'
 ];
 
+const APP_STATES = {
+    WAITING_FOR_LEVELS_JSON: 0,
+    WAITING_FOR_LEVEL_SELECT: 1,
+    WAITING_FOR_RUN_CODE: 2,
+    RUNNING: 3,
+    ANIMATING: 4,
+    WAITING_FOR_RESET: 5
+};
+
 const App = React.createClass({
     MS_PER_FRAME: 250,
     getInitialState() {
         return {
-            configs: []
+            configs: [],
+            appState: APP_STATES.WAITING_FOR_LEVELS_JSON
         };
     },
     componentDidMount() {
@@ -351,7 +362,14 @@ const App = React.createClass({
         const req = new XMLHttpRequest();
         req.addEventListener('load', () => {
             const configs = JSON.parse(req.responseText);
-            this.setState({configs: configs});
+            const levelTitles = configs.map((c) => {
+                return c.title;
+            });
+            this.setState({
+                configs: configs,
+                levelTitles: levelTitles,
+                appState: APP_STATES.WAITING_FOR_LEVEL_SELECT
+            });
         });
         req.open('GET', './levels.json');
         req.send();
@@ -401,14 +419,10 @@ const App = React.createClass({
         });
     },
     render() {
-        const levels = this.state.configs.map((c) => {
-            return c.title;
-        });
-
         return (
             <section id="container">
                 <section id="col1" className="columns">
-                    <CodePanel onRunCode={this.onRunCode} onResetBoard={this.onResetBoard} levels={levels} onNewLevel={this.onNewLevel}/>
+                    <CodePanel onRunCode={this.onRunCode} onResetBoard={this.onResetBoard} levelTitles={this.state.levelTitles} onNewLevel={this.onNewLevel}/>
                 </section>
                 <section id="col2" className="columns">
                     <BoardPanel rows={this.state.boardRows}
