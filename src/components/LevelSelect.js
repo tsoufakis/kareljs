@@ -17,7 +17,7 @@ export default React.createClass({
     render() {
         function makeLevel(level) {
             const isCompleted = this.state.progress.indexOf(level.id) !== -1 ? '(completed)': '';
-            return <li key={level.id}><Link to={`/level/${level.id}`}>{`${level.title} ${isCompleted}`}</Link></li>
+            return <li key={level.id}><Link to={`/level-description/${level.id}`}>{`${level.title} ${isCompleted}`}</Link></li>
         }
         const levels = this.state.levels.map(makeLevel.bind(this));
         return (
