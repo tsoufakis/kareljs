@@ -6,33 +6,39 @@ var config = require('./config');
 var User = require('./models/user');
 
 var api = express.Router();
+
 mongoose.connect(config.database);
 
-// Public routes
-api.get('/', (req, res) => {
-    res.json({ msg: 'api' });
-});
+/* POST /authenticate
+ *
+ * GET  /user
+ * POST /users
+ * GET  /user/progress
+ * GET  /user/progress/:level_id
+ * PUT  /user/progress/:level_id
+ * GET  /user/code/:level_id
+ * PUT  /user/code/:level_id
+ */
 
-api.get('/setup', (req, res) => {
-    const chris = new User({
-        fistName: 'Chris',
-        email: 'tsoufakis@gmail.com',
-        password: 'password',
-        admin: true
-    });
-    chris.save((err) => {
-        if (err) { 
-            res.json({ success: false, msg: err });
-        } else {
-            res.json({ success: true });
-        }
-    });
-});
 
-api.route('/user')
-    .post(createUser)
-    .get(getUser)
-    .delete(dropUser);
+api.get('/', (req, res) => res.json({ msg: 'api' }));
+
+
+api.post('/authenticate', authenticate);
+api.post('/users', createUser);
+
+api.use('/user', tokenValidationMiddleware);
+api.use('/user', userLookupMiddleware);
+
+api.route('/user').get(getUser).delete(deleteUser);
+
+api.route('/user/code/:level_id').get(getCode).put(putCode);
+
+api.route('/user/progress').get(getProgress);
+api.route('/user/progress/:level_id').get(getProgress).put(putProgress);
+
+api.route('/user/levels').get(listLevels);
+
 
 function createUser(req, res) {
     user = new User({
@@ -40,6 +46,23 @@ function createUser(req, res) {
         password: req.body.password
     });
     user.save((err) => {
+        const token = makeAuthToken(user);
+        if (err) {
+            res.status(403);
+            res.json({ msg: 'Could not create user' });
+        } else {
+            res.json({ success: true, token: token });
+        }
+    });
+}
+
+function getUser(req, res) {
+    const output = { email: req.user.email };
+    res.json({ success: true, user: output });
+}
+
+function deleteUser(req, res) {
+    User.findOneAndRemove({ _id: req.decoded.id }, (err) => {
         if (err) {
             res.json({ success: false, msg: err });
         } else {
@@ -48,28 +71,14 @@ function createUser(req, res) {
     });
 }
 
-function getUser(req, res) {
-    User.findOne({ email: req.body.email }, (err, user) => {
-        if (user) {
-            output = { email: user.email };
-            res.json({ success: true, user: output });
-        } else {
-            res.json({ success: false }, msg: 'user not found');
-        }
+function makeAuthToken(user) {
+    const payload = { id: user._id, email: user.email, admin: user.admin };
+    return jwt.sign(payload, config.secret, {
+        expiresIn: '1440m'
     });
 }
 
-function dropUser(req, res) {
-    User.findOneAndRemove({ email: req.body.email }, (err) => {
-        if (err) {
-            res.json({ success: false }, msg: err);
-        } else {
-            res.json({ success: true });
-        }
-    });
-}
-
-api.post('/authenticate', (req, res) => {
+function authenticate(req, res) {
     User.findOne({ email: req.body.email }, (err, user) => {
         if (user) {
             if (user.password === req.body.password) {
@@ -89,11 +98,9 @@ api.post('/authenticate', (req, res) => {
             res.json({ success: false, msg: 'user not found' });
         }
     })
-});
+}
 
-// Auth routes
-
-api.use((req, res, next) => {
+function tokenValidationMiddleware(req, res, next) {
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
     if (token) {
         jwt.verify(token, config.secret, (err, decoded) => {
@@ -101,7 +108,6 @@ api.use((req, res, next) => {
                 return res.json({ success: false, msg: 'failed to auth' });
             } else {
                 req.decoded = decoded;
-                console.log(decoded);
                 next();
             }
         });
@@ -111,65 +117,74 @@ api.use((req, res, next) => {
             msg: 'no token provided'
         });
     }
-});
+}
 
-api.get('/users', (req, res) => {
-    User.find({}, (err, users) => {
-        res.json(users);
-    });
-});
-
-function getCode(req, res) {
+function userLookupMiddleware(req, res, next) {
     User.findById(req.decoded.id, (err, user) => {
         if (err) {
             res.json({ success: false, msg: 'could not find user' });
         } else {
-            const level = user.savedCode.find((el) => {
-                return el.level_id == req.params.level_id;
-            });
-            if (level) {
-                res.json({ success: true, code: level.code });
-            } else {
-                res.json({ success: false, msg: 'no saved code' });
-            }
+            req.user = user;
+            next();
         }
     });
 }
 
-api.route('/code/:level_id')
-    .get(getCode)
+function getCode(req, res) {
+    const level = req.user.levels.find((el) => el.levelId == req.params.level_id);
+    if (level) {
+        res.json({ success: true, code: level.code });
+    } else {
+        res.json({ success: false, msg: 'no saved code' });
+    }
+}
 
-    .put((req, res) => {
-        User.findById(req.decoded.id, (err, user) => {
-            if (err) {
-                res.json({ success: false, msg: 'could not find user' });
-            } else {
-                const level = user.savedCode.find((el) => el.level_id == req.params.level_id);
-                if (level) {
-                    level.code = req.body.code
-                } else {
-                    user.savedCode.push({ level_id: req.params.level_id, code: req.body.code });
-                }
-                user.save((err) => {
-                    if (err) {
-                        res.json({ success: false, msg: 'could not save code' });
-                    } else {
-                        res.json({ success: true });
-                    }
-                });
-            }
-        });
+function putCode(req, res) {
+    const user = req.user;
+    const level = user.levels.find((el) => el.levelId === req.params.level_id);
+    if (level) {
+        level.code = req.body.code
+    } else {
+        user.levels.push({ levelId: req.params.level_id, code: req.body.code });
+    }
+    user.save((err) => {
+        if (err) {
+            res.sendStatus(403);
+            res.json({ msg: 'could not save code' });
+        } else {
+            res.json({ success: true });
+        }
     });
+}
 
-/* POST /authenticate
- *
- * GET /progress/
- * GET /progress/:level_id
- * PUT /progress/:level_id
- * DELETE /progress/:level_id
- *
- * GET /code/:level_id
- * PUT /code/:level_id
- */
+function getProgress(req, res) {
+    const user = req.user;
+    const levelId = req.params.level_id;
+    var progress;
+    if (levelId) {
+        progress = user.levels.find((x) => x.levelId === levelId) || {levelId: levelId, completed: false};
+    } else {
+        progress = user.levels.map((x) => ({ levelId: x.levelId, completed: x.completed }))
+    }
+    res.json({ progress: progress });
+}
+
+function putProgress(req, res) {
+    const user = req.user;
+    const levelId = req.params.level_id;
+    const completed = req.body.completed;
+    const level = user.levels.find((x) => x.levelId === levelId);
+
+    if (level) {
+        level.completed = req.body.completed;
+    } else {
+        user.levels.push({ levelId: levelId, completed: completed });
+    }
+    res.json({});
+}
+
+function listLevels(req, res) {
+    res.json({ levels: req.user.levels });
+}
 
 module.exports = api;
