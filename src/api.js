@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var express = require('express');
 var jwt = require('jsonwebtoken');
+var bcrypt = require('bcrypt');
 
 var config = require('./config');
 var User = require('./models/user');
@@ -8,18 +9,6 @@ var User = require('./models/user');
 var api = express.Router();
 
 mongoose.connect(config.database);
-
-/* POST /authenticate
- *
- * GET  /user
- * POST /users
- * GET  /user/progress
- * GET  /user/progress/:level_id
- * PUT  /user/progress/:level_id
- * GET  /user/code/:level_id
- * PUT  /user/code/:level_id
- */
-
 
 api.get('/', (req, res) => res.json({ msg: 'api' }));
 
@@ -41,18 +30,21 @@ api.route('/user/levels').get(listLevels);
 
 
 function createUser(req, res) {
-    user = new User({
-        email: req.body.email,
-        password: req.body.password
-    });
-    user.save((err) => {
-        const token = makeAuthToken(user);
-        if (err) {
-            res.status(403);
-            res.json({ msg: 'Could not create user' });
-        } else {
-            res.json({ success: true, token: token });
-        }
+    bcrypt.hash(req.body.password, config.saltRounds, (err, hash) => {
+        const user = new User({
+            email: req.body.email,
+            password: hash
+        });
+
+        user.save((err) => {
+            const token = makeAuthToken(user);
+            if (err) {
+                res.status(403);
+                res.json({ msg: 'Could not create user' });
+            } else {
+                res.json({ success: true, token: token });
+            }
+        });
     });
 }
 
@@ -81,19 +73,21 @@ function makeAuthToken(user) {
 function authenticate(req, res) {
     User.findOne({ email: req.body.email }, (err, user) => {
         if (user) {
-            if (user.password === req.body.password) {
-                const payload = { id: user._id, email: user.email, admin: user.admin };
-                const token = jwt.sign(payload, config.secret, {
-                    expiresIn: '1440m'
-                });
-                res.json({
-                    success: true,
-                    msg: 'enjoy',
-                    token: token
-                });
-            } else {
-                res.json({ success: false, msg: 'wrong password' });
-            }
+            bcrypt.compare(req.body.password, user.password, (err, match) => {
+                if (match) {
+                    const payload = { id: user._id, email: user.email, admin: user.admin };
+                    const token = jwt.sign(payload, config.secret, {
+                        expiresIn: '1440m'
+                    });
+                    res.json({
+                        success: true,
+                        msg: 'enjoy',
+                        token: token
+                    });
+                } else {
+                    res.json({ success: false, msg: 'wrong password' });
+                }
+            });
         } else {
             res.json({ success: false, msg: 'user not found' });
         }
