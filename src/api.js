@@ -176,11 +176,13 @@ function putProgress(req, res) {
     const level = user.levels.find((x) => x.levelId === levelId);
 
     if (level) {
-        level.completed = req.body.completed;
+        level.completed = completed;
     } else {
         user.levels.push({ levelId: levelId, completed: completed });
     }
-    res.json({});
+    user.save((err) => {
+        res.json({});
+    });
 }
 
 function listLevels(req, res) {

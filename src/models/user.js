@@ -14,6 +14,4 @@ module.exports = mongoose.model('User', new Schema({
     password: String,
     admin: Boolean,
     levels: [Progress]
-    // completedLevels: [{ level_id: Number, date: Date }],
-    // savedCode: [{ level_id: Number, code: String }]
 }));
