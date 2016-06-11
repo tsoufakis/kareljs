@@ -40,7 +40,7 @@ function createUser(req, res) {
             const token = makeAuthToken(user);
             if (err) {
                 res.status(403);
-                res.json({ msg: 'Could not create user' });
+                res.json({ msg: 'A user with that email already exists' });
             } else {
                 res.json({ success: true, token: token });
             }
@@ -85,11 +85,11 @@ function authenticate(req, res) {
                         token: token
                     });
                 } else {
-                    res.json({ success: false, msg: 'wrong password' });
+                    res.sendStatus(401);
                 }
             });
         } else {
-            res.json({ success: false, msg: 'user not found' });
+            res.sendStatus(401);
         }
     })
 }

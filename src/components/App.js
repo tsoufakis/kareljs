@@ -7,6 +7,8 @@ export default React.createClass({
             <div>
                 <h1>Mole March</h1>
                 <ul>
+                    <li><Link to="/login">Login</Link></li>
+                    <li><Link to="/signup">Signup</Link></li>
                     <li><Link to="/level-select">Select Level</Link></li>
                 </ul>
                 {this.props.children}
