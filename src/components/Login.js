@@ -1,33 +1,26 @@
 import React from 'react';
 import $ from 'jquery';
+import { fetchUserRequest, fetchUserSuccess, fetchUserFailed } from '../actions'
+import { connect } from 'react-redux'
 
-export default class Login extends React.Component {
+class Login extends React.Component {
     constructor() {
         super();
-
-        this.handleEmailChange = this.handleEmailChange.bind(this);
-        this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
     handleFormSubmit(e) {
         e.preventDefault();
-        console.log(e.target);
-        console.log(this.state);
-        const data = {email: this.state.email, password: this.state.password};
+        const data = {email: this.emailInput.value, password: this.passwordInput.value};
+        this.props.dispatch(fetchUserRequest())
+
         $.post(e.target.action, data)
             .done((data) => {
+                this.props.dispatch(fetchUserSuccess(this.emailInput.value, data.token))
             })
             .fail((err) => {
+                this.props.dispatch(fetchUserFailed())
             });
-    }
-
-    handleEmailChange(e) {
-        this.setState({email: e.target.value});
-    }
-
-    handlePasswordChange(e) {
-        this.setState({password: e.target.value});
     }
 
     render() {
@@ -36,10 +29,10 @@ export default class Login extends React.Component {
                 <h1>Login</h1>
                 <form method="post" action="/api/authenticate" onSubmit={this.handleFormSubmit}>
                     <div>
-                        <input type="email" placeholder="email" onChange={this.handleEmailChange}/>
+                        <input type="email" placeholder="email" ref={(ref) => this.emailInput = ref}/>
                     </div>
                     <div>
-                        <input type="password" placeholder="password" onChange={this.handlePasswordChange}/>
+                        <input type="password" placeholder="password" ref={(ref) => this.passwordInput = ref}/>
                     </div>
                     <div>
                         <input type="submit" value="go"/>
@@ -49,3 +42,5 @@ export default class Login extends React.Component {
         );
     }
 }
+
+export default connect()(Login)
