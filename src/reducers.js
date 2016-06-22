@@ -6,6 +6,8 @@ function user(state = {}, action) {
         case act.FETCH_USER_SUCCESS:
         case act.CREATE_USER_SUCCESS:
             return { email: action.email, token: action.token }
+        case act.LOGOUT:
+            return {}
         default:
             return state
     }

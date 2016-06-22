@@ -17,10 +17,12 @@ const logger = createLogger()
 let initialState = {}
 
 if (sessionStorage.email) {
-    Object.assign(initialState, { user: {
-        email: sessionStorage.email,
-        token: sessionStorage.token
-    }})
+    if (sessionStorage.email) {
+        Object.assign(initialState, { user: {
+            email: sessionStorage.email,
+            token: sessionStorage.token
+        }})
+    }
 }
 
 const store = createStore(moleMarch, initialState, applyMiddleware(logger))
@@ -28,8 +30,13 @@ const store = createStore(moleMarch, initialState, applyMiddleware(logger))
 // probably a security vulnerability
 const unsubscribe = store.subscribe(() => {
     const state = store.getState()
-    sessionStorage.email = state.user.email
-    sessionStorage.token = state.user.token
+    if (state.user.email) {
+        sessionStorage.email = state.user.email
+        sessionStorage.token = state.user.token
+    } else {
+        sessionStorage.removeItem('email')
+        sessionStorage.removeItem('token')
+    }
 })
 
 ReactDOM.render((

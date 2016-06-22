@@ -35,3 +35,9 @@ export function createUserSuccess(email, token) {
 export function createUserFailed() {
     return { type: CREATE_USER_FAILED }
 }
+
+export const LOGOUT = 'LOGOUT'
+
+export function logout() {
+    return { type: LOGOUT }
+}

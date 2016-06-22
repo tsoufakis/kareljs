@@ -1,16 +1,39 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router';
+import { logout } from '../actions'
 
 class App extends React.Component {
+    constructor() {
+        super()
+        this.handleLogout = this.handleLogout.bind(this)
+    }
+
+    handleLogout(e) {
+        e.preventDefault()
+        this.props.dispatch(logout())
+    }
+
     render() {
+        const loggedIn = !!this.props.email
+        let loginLinks
+        if (loggedIn) {
+            loginLinks = [
+                <li key="0"><a href='#' onClick={this.handleLogout}>Logout</a></li>
+            ]
+        } else {
+            loginLinks = [
+                <li key="0"><Link to="/login">Login</Link></li>,
+                <li key="1"><Link to="/signup">Signup</Link></li>
+            ]
+        }
+
         return (
             <div>
                 <h1>Mole March</h1>
-                <div>{this.props.email ? `logged in as ${this.props.email}` : ''}</div>
+                { loggedIn ?  <div>{`logged in as ${this.props.email}`}</div> : null }
                 <ul>
-                    <li><Link to="/login">Login</Link></li>
-                    <li><Link to="/signup">Signup</Link></li>
+                    {loginLinks}
                     <li><Link to="/level-select">Select Level</Link></li>
                 </ul>
                 {this.props.children}
