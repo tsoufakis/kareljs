@@ -1,0 +1,42 @@
+nav bar
+    - if logged in
+        - logout
+        - "logged in as..." message
+        - level select link
+    - else
+        - shows login and signup links 
+
+    - home link
+
+homepage
+- login, signup, level select links
+- description
+
+login
+- has signup link
+- redirects to level select on login
+
+signup
+- redirects to level select on complete
+
+level select
+- show levels list, completion status (started, completed)
+
+level description
+- shows before and after
+- description of task
+- start and back buttons
+
+level
+- code box
+- run code button
+- reset board button
+- link to description
+- feedback box (errors, success, printout, etc.)
+- visual
+- complete or not notifier / checkmark
+- link to cheat sheet
+- auto saves / loads code
+- saves completion event
+- multiple versions of board
+- saving spinner

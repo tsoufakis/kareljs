@@ -2,9 +2,10 @@ import React from 'react';
 import $ from 'jquery';
 import AnimatedBoard from './AnimatedBoard';
 import CodeEditor from './CodeEditor';
+import { connect } from 'react-redux'
 
 
-export default class Level extends React.Component {
+class Level extends React.Component {
     constructor() {
         super();
 
@@ -16,6 +17,16 @@ export default class Level extends React.Component {
 
     handleCodeChange(code) {
         this.setState({ codeInEditor: code });
+        const data = {
+            code: code,
+            token: this.props.token
+        }
+        $.ajax(`/api/user/code/${this.props.params.id}`, {
+            method: 'PUT',
+            data: data,
+        }).done((res) => {
+            console.log('saved code', res)
+        })
     }
 
     componentDidMount() {
@@ -23,6 +34,12 @@ export default class Level extends React.Component {
             const level = levels.find(level => level.id === Number(this.props.params.id));
             this.setState({level: level});
         });
+        $.get(`/api/user/code/${this.props.params.id}?token=${this.props.token}`)
+            .done((data) => {
+                if (data.success) {
+                    this.setState({codeToRun: data.code})
+                }
+            })
     }
 
     handleSubmitCode(e) {
@@ -51,3 +68,11 @@ export default class Level extends React.Component {
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        token: state.user.token
+    }
+}
+
+export default connect(mapStateToProps)(Level)

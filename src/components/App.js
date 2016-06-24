@@ -30,7 +30,7 @@ class App extends React.Component {
 
         return (
             <div>
-                <h1>Mole March</h1>
+                <Link to="/"><h1>Mole March</h1></Link>
                 { loggedIn ?  <div>{`logged in as ${this.props.email}`}</div> : null }
                 <ul>
                     {loginLinks}

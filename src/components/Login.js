@@ -17,6 +17,7 @@ class Login extends React.Component {
         $.post(e.target.action, data)
             .done((data) => {
                 this.props.dispatch(fetchUserSuccess(this.emailInput.value, data.token))
+                this.props.history.push('/level-select')
             })
             .fail((err) => {
                 this.props.dispatch(fetchUserFailed())

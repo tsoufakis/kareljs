@@ -49,6 +49,14 @@ export default moleMarch
     loggingIn: true,
     signupForm: {
         message: 'adfljssdf'
-    }
+    },
+    currentLevel: {
+        id: 1,
+        code: '',
+        completed: true,
+        savingCode: false,
+        loadingCode: false,
+    },
+    levels: { id: {}}
 }
 */
