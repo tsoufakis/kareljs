@@ -34,7 +34,8 @@ class App extends React.Component {
                 { loggedIn ?  <div>{`logged in as ${this.props.email}`}</div> : null }
                 <ul>
                     {loginLinks}
-                    <li><Link to="/level-select">Select Level</Link></li>
+                    <li><Link to="/level-select">Level Select</Link></li>
+                    <li><Link to="/reference">Reference</Link></li>
                 </ul>
                 {this.props.children}
             </div>

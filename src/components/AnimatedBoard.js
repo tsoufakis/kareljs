@@ -16,7 +16,9 @@ export default class AnimatedBoard extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.updateKarel(nextProps);
+        if (nextProps.code !== this.props.code) {
+            this.updateKarel(nextProps);
+        }
     }
 
     updateKarel(props) {

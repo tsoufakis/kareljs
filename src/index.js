@@ -11,16 +11,17 @@ import { Provider } from 'react-redux'
 import createLogger from 'redux-logger'
 import { createStore, applyMiddleware } from 'redux'
 import moleMarch from './reducers'
+import Reference from './components/Reference'
 
 const logger = createLogger()
 
 let initialState = {}
 
-if (sessionStorage.email) {
-    if (sessionStorage.email) {
+if (localStorage.email) {
+    if (localStorage.email) {
         Object.assign(initialState, { user: {
-            email: sessionStorage.email,
-            token: sessionStorage.token
+            email: localStorage.email,
+            token: localStorage.token
         }})
     }
 }
@@ -31,11 +32,11 @@ const store = createStore(moleMarch, initialState, applyMiddleware(logger))
 const unsubscribe = store.subscribe(() => {
     const state = store.getState()
     if (state.user.email) {
-        sessionStorage.email = state.user.email
-        sessionStorage.token = state.user.token
+        localStorage.email = state.user.email
+        localStorage.token = state.user.token
     } else {
-        sessionStorage.removeItem('email')
-        sessionStorage.removeItem('token')
+        localStorage.removeItem('email')
+        localStorage.removeItem('token')
     }
 })
 
@@ -48,6 +49,7 @@ ReactDOM.render((
                 <Route path="/level-select" component={LevelSelect}/>
                 <Route path="/level-description/:id" component={LevelDescription}/>
                 <Route path="/level/:id" component={Level}/>
+                <Route path="/reference" component={Reference}/>
             </Route>
         </Router>
     </Provider>
