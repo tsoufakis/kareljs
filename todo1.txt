@@ -33,10 +33,11 @@ x run code button
 x reset board button
 - link to description
 - feedback box (errors, success, printout, etc.)
-- visual
+x visual
 - complete or not notifier / checkmark
 x link to cheat sheet
 x auto saves / loads code
 - saves completion event
 - multiple versions of board
 - saving spinner
+- prevent user from having two code windows open at once

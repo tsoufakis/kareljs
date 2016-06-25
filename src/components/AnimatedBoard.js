@@ -1,6 +1,7 @@
-import React from 'react';
-import BoardView from './BoardView';
-import { Board } from '../models';
+import React from 'react'
+import BoardView from './BoardView'
+import { Board } from '../models'
+import { isEqual } from 'lodash'
 
 
 export default class AnimatedBoard extends React.Component {
@@ -53,6 +54,16 @@ export default class AnimatedBoard extends React.Component {
         }
     }
 
+    notifyComplete(error) {
+        const finalState = this.state.karel.toJSON()
+        const { karel: desiredFinalKarel } = Board.fromConfig(this.props.config, true)
+        const desiredFinalState = desiredFinalKarel.toJSON()
+        const completedBoard = isEqual(finalState, desiredFinalState)
+        setTimeout(() => {
+            this.props.onComplete(completedBoard, error)
+        }, AnimatedBoard.MS_PER_FRAME);
+    }
+
     renderFrames() {
         const id = setInterval(() => {
             const frame = this.state.karel.frames.shift();
@@ -60,12 +71,9 @@ export default class AnimatedBoard extends React.Component {
 
             if (this.state.karel.frames.length === 0) {
                 clearInterval(this.state.intervalId);
-                if (this.state.error) {
-                    setTimeout(() => {
-                        alert(this.state.error);
-                        this.setState({error: null});
-                    }, AnimatedBoard.MS_PER_FRAME);
-                }
+                const error = this.state.error
+                this.setState({error: null});
+                this.notifyComplete(error)
             }
         }, AnimatedBoard.MS_PER_FRAME);
 

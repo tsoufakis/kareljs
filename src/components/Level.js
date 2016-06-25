@@ -5,12 +5,14 @@ import CodeEditor from './CodeEditor'
 import { connect } from 'react-redux'
 import CodeMirror from 'react-codemirror'
 import 'codemirror/mode/javascript/javascript'
+import { Link } from 'react-router'
 
 
 class Level extends React.Component {
     constructor() {
         super()
 
+        this.handleAnimationComplete = this.handleAnimationComplete.bind(this)
         this.persistCodeToServer = this.persistCodeToServer.bind(this)
         this.handleCodeChange = this.handleCodeChange.bind(this)
         this.handleSubmitCode = this.handleSubmitCode.bind(this)
@@ -18,6 +20,7 @@ class Level extends React.Component {
         this.state = {
             codeToRun: '',
             codeInEditor: 'Type your commands here...',
+            consoleLines: []
         }
     }
 
@@ -29,6 +32,18 @@ class Level extends React.Component {
             data: data,
         }).done((res) => {
         })
+    }
+
+    handleAnimationComplete(completedBoard, errorMessage) {
+        let message
+        if (completedBoard) {
+            message = 'Congratulations, you completed the level'
+        } else if (errorMessage) {
+            message = errorMessage
+        } else {
+            message = 'Your code has finished, but you didn\'t reach your goal'
+        }
+        this.setState({ consoleLines: [ ...this.state.consoleLines, message ] })
     }
 
     handleCodeChange(code) {
@@ -69,11 +84,16 @@ class Level extends React.Component {
             indentUnit: 4
         }
 
+        const lines = this.state.consoleLines.map((line, i) => {
+            return <p key={i}>{line}</p>
+        })
+
         return (
             <div>
                 <h1>Level {this.props.params.id}</h1>
                 <button type="button" onClick={this.handleSubmitCode}>Run Code</button>
                 <button type="button" onClick={this.handleResetBoard}>Reset Board</button>
+                <Link to={`/app/level-description/${this.props.params.id}`} target="_blank">Description</Link>
                 <div id="container">
                     <section id="col1" className="columns">
                         <CodeMirror
@@ -88,8 +108,12 @@ class Level extends React.Component {
                             <AnimatedBoard
                                 config={this.state.level}
                                 code={this.state.codeToRun}
+                                onComplete={this.handleAnimationComplete}
                             />
                         }
+                        <div id="console">
+                            {lines}
+                        </div>
                     </section>
                 </div>
             </div>

@@ -23,6 +23,8 @@
     "express": "^4.13.4",
     "jquery": "^2.2.3",
     "jsonwebtoken": "^6.2.0",
+    "lodash": "^4.13.1",
+    "lodash.eq": "^4.0.0",
     "mongoose": "^4.4.13",
     "morgan": "^1.7.0",
     "react": "^0.14.7",
