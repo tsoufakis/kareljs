@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Router, Route, hashHistory, IndexRoute } from 'react-router'
+import { Router, Route, hashHistory, browserHistory, IndexRoute } from 'react-router'
 import App from './components/App'
 import LevelSelect from './components/LevelSelect'
 import Level from './components/Level'
@@ -42,14 +42,14 @@ const unsubscribe = store.subscribe(() => {
 
 ReactDOM.render((
     <Provider store={store}>
-        <Router history={hashHistory}>
-            <Route path="/" component={App}>
-                <Route path="/login" component={Login}/>
-                <Route path="/signup" component={Signup}/>
-                <Route path="/level-select" component={LevelSelect}/>
-                <Route path="/level-description/:id" component={LevelDescription}/>
-                <Route path="/level/:id" component={Level}/>
-                <Route path="/reference" component={Reference}/>
+        <Router history={browserHistory}>
+            <Route path="/app" component={App}>
+                <Route path="/app/login" component={Login}/>
+                <Route path="/app/signup" component={Signup}/>
+                <Route path="/app/level-select" component={LevelSelect}/>
+                <Route path="/app/level-description/:id" component={LevelDescription}/>
+                <Route path="/app/level/:id" component={Level}/>
+                <Route path="/app/reference" component={Reference}/>
             </Route>
         </Router>
     </Provider>

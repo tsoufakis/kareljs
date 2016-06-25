@@ -32,7 +32,7 @@ class Signup extends React.Component {
         $.post(e.target.action, data)
             .done((data) => {
                 dispatch(createUserSuccess(email, data.token))
-                this.props.history.push('/level-select')
+                this.props.history.push('/app/level-select')
             })
             .fail((err) => {
                 dispatch(signupFormMessage(err.responseJSON.msg))

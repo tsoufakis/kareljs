@@ -42,7 +42,7 @@ class Level extends React.Component {
     }
 
     componentDidMount() {
-        $.get('./levels.json', (levels) => {
+        $.get('/static/levels.json', (levels) => {
             const level = levels.find(level => level.id === Number(this.props.params.id));
             this.setState({level: level});
         });

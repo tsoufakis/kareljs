@@ -23,19 +23,19 @@ class App extends React.Component {
             ]
         } else {
             loginLinks = [
-                <li key="0"><Link to="/login">Login</Link></li>,
-                <li key="1"><Link to="/signup">Signup</Link></li>
+                <li key="0"><Link to="/app/login">Login</Link></li>,
+                <li key="1"><Link to="/app/signup">Signup</Link></li>
             ]
         }
 
         return (
             <div>
-                <Link to="/"><h1>Mole March</h1></Link>
+                <Link to="/app"><h1>Mole March</h1></Link>
                 { loggedIn ?  <div>{`logged in as ${this.props.email}`}</div> : null }
                 <ul>
                     {loginLinks}
-                    <li><Link to="/level-select">Level Select</Link></li>
-                    <li><Link to="/reference">Reference</Link></li>
+                    <li><Link to="/app/level-select">Level Select</Link></li>
+                    <li><Link to="/app/reference">Reference</Link></li>
                 </ul>
                 {this.props.children}
             </div>

@@ -10,7 +10,7 @@ export default class LevelDescription extends React.Component {
         this.state = {};
     }
     componentDidMount() {
-        $.get('./levels.json', (levels) => {
+        $.get('/static/levels.json', (levels) => {
             const level = levels.find(level => level.id === Number(this.props.params.id));
             this.setState({level: level});
         });
@@ -44,7 +44,7 @@ export default class LevelDescription extends React.Component {
                         <BoardView rows={afterRows}/>
                     </div>
                 </div>
-                <Link to={`/level/${this.props.params.id}/`}>Start!</Link>
+                <Link to={`/app/level/${this.props.params.id}/`}>Start!</Link>
             </div>
         );
     }

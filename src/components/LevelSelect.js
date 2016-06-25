@@ -8,8 +8,8 @@ export default React.createClass({
     },
     componentDidMount() {
         $.when(
-            $.get('./levels.json'),
-            $.get('./progress.json')
+            $.get('/static/levels.json'),
+            $.get('/static/progress.json')
         ).done((d1, d2) => {
             this.setState({ levels: d1[0], progress: d2[0] });
         });
@@ -17,7 +17,7 @@ export default React.createClass({
     render() {
         function makeLevel(level) {
             const isCompleted = this.state.progress.indexOf(level.id) !== -1 ? '(completed)': '';
-            return <li key={level.id}><Link to={`/level-description/${level.id}`}>{`${level.title} ${isCompleted}`}</Link></li>
+            return <li key={level.id}><Link to={`/app/level-description/${level.id}`}>{`${level.title} ${isCompleted}`}</Link></li>
         }
         const levels = this.state.levels.map(makeLevel.bind(this));
         return (

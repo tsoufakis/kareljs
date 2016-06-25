@@ -13,9 +13,9 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use('/static', express.static(path.join(__dirname, '../public')));
 app.use('/api', api);
-app.get('/', (req, res) => {
-    res.json({ msg: 'hi' });
-});
+app.get('/app*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../public', 'index.html'))
+})
 
 app.listen(app.get('port'), function() {
     console.log('Server started: http://localhost:' + app.get('port') + '/');
