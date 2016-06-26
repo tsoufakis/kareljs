@@ -1,0 +1,48 @@
+body {
+    margin: 0px;
+}
+
+header {
+    padding: 8px;
+    background-color: #1c85c1;
+    height: 44px;
+}
+
+#logoHeading {
+    display: inline-block;
+    margin: 0px;
+    vertical-align: middle;
+}
+
+#logoText {
+    font-family: Arial;
+    text-decoration: none;
+    color: white;
+}
+
+.nav, .navList, .navItem {
+    display: inline-block;
+    text-align: center;
+}
+
+.navList {
+    margin: 0px;
+}
+
+.rightNav {
+    float: right;
+}
+
+.navItem {
+    padding-right: 20px;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+}
+
+#loginMessage {
+    color: white;
+}

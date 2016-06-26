@@ -16,27 +16,31 @@ class App extends React.Component {
 
     render() {
         const loggedIn = !!this.props.email
-        let loginLinks
-        if (loggedIn) {
-            loginLinks = [
-                <li key="0"><a href='#' onClick={this.handleLogout}>Logout</a></li>
-            ]
-        } else {
-            loginLinks = [
-                <li key="0"><Link to="/app/login">Login</Link></li>,
-                <li key="1"><Link to="/app/signup">Signup</Link></li>
-            ]
-        }
 
         return (
             <div>
-                <Link to="/app"><h1>Mole March</h1></Link>
-                { loggedIn ?  <div>{`logged in as ${this.props.email}`}</div> : null }
-                <ul>
-                    {loginLinks}
-                    <li><Link to="/app/level-select">Level Select</Link></li>
-                    <li><Link to="/app/reference">Reference</Link></li>
-                </ul>
+                <header>
+                    <h1 id="logoHeading"><Link to="/app" id="logoText">Mole March</Link></h1>
+                    { loggedIn && <nav className="nav">
+                        <ul className="navList">
+                            <li className="navItem"><Link className="navLink" to="/app/level-select">Level Select</Link></li>
+                            <li className="navItem"><Link className="navLink" to="/app/reference">Reference</Link></li>
+                        </ul>
+                    </nav> }
+                    <nav className="nav rightNav">
+                        <span id="loginMessage">{loggedIn ? `${this.props.email}` : null}</span>
+                        { loggedIn ? (
+                            <ul className="navList">
+                                <li className="navItem"><a className="navLink" href='#' onClick={this.handleLogout}>Logout</a></li>
+                            </ul>
+                        ) : (
+                            <ul className="navList">
+                                <li className="navItem"><Link className="navLink" to="/app/login">Login</Link></li>
+                                <li className="navItem"><Link className="navLink" to="/app/signup">Signup</Link></li>
+                            </ul>
+                        )}
+                    </nav>
+                </header>
                 {this.props.children}
             </div>
         )
