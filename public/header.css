@@ -5,7 +5,7 @@ body {
 header {
     padding: 8px;
     background-color: #1c85c1;
-    height: 44px;
+    font-family: Arial;
 }
 
 #logoHeading {
@@ -21,26 +21,22 @@ header {
 }
 
 .nav, .navList, .navItem {
+    display: inline;
+}
+
+#logoutBox {
     display: inline-block;
-    text-align: center;
+    position: absolute;
+    right: 0px;
 }
 
-.navList {
-    margin: 0px;
-}
-
-.rightNav {
-    float: right;
-}
-
-.navItem {
-    padding-right: 20px;
-}
 
 .navLink {
     color: white;
     text-decoration: none;
     text-align: center;
+    display: inline-block;
+    padding: 10px 20px;
 }
 
 #loginMessage {

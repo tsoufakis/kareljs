@@ -7,18 +7,50 @@
             }
             .header {
                 padding: 8px;
-                height: 44px;
                 background-color: cyan;
             }
             .heading {
+                display: inline;
+            }
+            .heading h1 {
                 display: inline-block;
-                text-align: center;
+                margin: 0px;
+            }
+
+            .menu {
+                display: inline-block;
+                height: 100%;
+                margin: 0px;
+                padding: 0px;
+                text-align: top;
+                list-style: none;
+            }
+
+            .menu li {
+                display: inline;
+            }
+
+            .menu a, .right a {
+                display: inline-block;
+                padding: 10px;
+            }
+            .right {
+                position: absolute;
+                right: 0px;
             }
         </style>
     </head>
     <body>
         <header class="header">
-            <div class="heading">Mole March</div>
+            <div class="heading">
+            </div>
+            <ul class="menu">
+                <li><a href="/">hello</a></li>
+                <li><a href="/">login</a></li>
+                <li><a href="/">i am a poo</a></li>
+            </ul>
+            <span class="right"><a href="/">turd fountain</a></span>
         </header>
+                <h1>Mole March</h1>
     </body>
 </html>

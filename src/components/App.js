@@ -17,29 +17,37 @@ class App extends React.Component {
     render() {
         const loggedIn = !!this.props.email
 
+        let list, logoutNodes
+        if (loggedIn) {
+            list = (
+                <ul className="navList">
+                    <li className="navItem"><Link className="navLink" to="/app/level-select">Level Select</Link></li>
+                    <li className="navItem"><Link className="navLink" to="/app/reference">Reference</Link></li>
+                </ul>
+            )
+            logoutNodes = (
+                <span id="logoutBox">
+                    {`Welcome ${this.props.email}`}
+                    <Link className="navLink" to='/app' onClick={this.handleLogout}>Logout</Link>
+                </span>
+            )
+        } else {
+            list = (
+                <ul className="navList">
+                    <li className="navItem"><Link className="navLink" to="/app/signup">Signup</Link></li>
+                    <li className="navItem"><Link className="navLink" to="/app/login">Login</Link></li>
+                </ul>
+            )
+        }
+
         return (
             <div>
                 <header>
                     <h1 id="logoHeading"><Link to="/app" id="logoText">Mole March</Link></h1>
-                    { loggedIn && <nav className="nav">
-                        <ul className="navList">
-                            <li className="navItem"><Link className="navLink" to="/app/level-select">Level Select</Link></li>
-                            <li className="navItem"><Link className="navLink" to="/app/reference">Reference</Link></li>
-                        </ul>
-                    </nav> }
-                    <nav className="nav rightNav">
-                        <span id="loginMessage">{loggedIn ? `${this.props.email}` : null}</span>
-                        { loggedIn ? (
-                            <ul className="navList">
-                                <li className="navItem"><a className="navLink" href='#' onClick={this.handleLogout}>Logout</a></li>
-                            </ul>
-                        ) : (
-                            <ul className="navList">
-                                <li className="navItem"><Link className="navLink" to="/app/login">Login</Link></li>
-                                <li className="navItem"><Link className="navLink" to="/app/signup">Signup</Link></li>
-                            </ul>
-                        )}
+                    <nav className="nav">
+                        {list}
                     </nav>
+                    {logoutNodes}
                 </header>
                 {this.props.children}
             </div>
