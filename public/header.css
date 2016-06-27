@@ -24,7 +24,12 @@ header {
     display: inline;
 }
 
+.navList {
+    padding-left: 20px;
+}
+
 #logoutBox {
+    font-size: 12px;
     display: inline-block;
     position: absolute;
     right: 0px;
@@ -37,6 +42,7 @@ header {
     text-align: center;
     display: inline-block;
     padding: 10px 20px;
+    font-size: 16px;
 }
 
 #loginMessage {
