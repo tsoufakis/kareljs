@@ -48,3 +48,45 @@ header {
 #loginMessage {
     color: white;
 }
+
+#main {
+    margin: 8px;
+}
+
+.pageTitle {
+    font-size: 32px;
+    font-family: Arial;
+    text-align: center;
+}
+
+.centeredColumn {
+    width: 600px;
+    margin: auto;
+}
+
+.generalText {
+    font-size: 18px;
+    font-family: Arial;
+}
+
+.postBoxContainer {
+    text-align: center;
+}
+
+.postBox {
+    padding: 20px;
+    border: 1px black;
+    display: inline-block;
+    border: 1px solid #1c85c1;
+    border-radius: 10px;
+}
+
+.inputHolder {
+    padding-bottom: 10px;
+}
+
+.credentialInput {
+    padding: 5px;
+    font-size: 14px;
+    font-family: Arial;
+}

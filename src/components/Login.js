@@ -26,19 +26,23 @@ class Login extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>Login</h1>
-                <form method="post" action="/api/authenticate" onSubmit={this.handleFormSubmit}>
-                    <div>
-                        <input type="email" placeholder="email" ref={(ref) => this.emailInput = ref}/>
+            <div className="centeredColumn">
+                <h1 className="pageTitle">Login</h1>
+                <div className="postBoxContainer">
+                    <div className="postBox">
+                        <form method="post" action="/api/authenticate" onSubmit={this.handleFormSubmit}>
+                            <div className="inputHolder">
+                                <input className="credentialInput" size="30" type="email" placeholder="email" ref={(ref) => this.emailInput = ref}/>
+                            </div>
+                            <div className="inputHolder">
+                                <input className="credentialInput" size="30" type="password" placeholder="password" ref={(ref) => this.passwordInput = ref}/>
+                            </div>
+                            <div>
+                                <input className="credentialInput" type="submit" value="Log In"/>
+                            </div>
+                        </form>
                     </div>
-                    <div>
-                        <input type="password" placeholder="password" ref={(ref) => this.passwordInput = ref}/>
-                    </div>
-                    <div>
-                        <input type="submit" value="go"/>
-                    </div>
-                </form>
+                </div>
             </div>
         );
     }

@@ -21,8 +21,8 @@ export default React.createClass({
         }
         const levels = this.state.levels.map(makeLevel.bind(this));
         return (
-            <div>
-                <h1>LevelSelect</h1>
+            <div className="centeredColumn generalText">
+                <h1 className="pageTitle">LevelSelect</h1>
                 <ol>
                     {levels}
                 </ol>

@@ -49,7 +49,9 @@ class App extends React.Component {
                     </nav>
                     {logoutNodes}
                 </header>
-                {this.props.children}
+                <div id="main">
+                    {this.props.children}
+                </div>
             </div>
         )
     }
