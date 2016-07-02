@@ -41,3 +41,6 @@ x auto saves / loads code
 - multiple versions of board
 - saving spinner
 - prevent user from having two code windows open at once
+
+BUGs
+- token expires but app still thinks it's logged in

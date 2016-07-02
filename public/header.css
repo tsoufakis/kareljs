@@ -2,6 +2,10 @@ body {
     margin: 0px;
 }
 
+h1, h2, h3, a {
+    font-family: Arial;
+}
+
 header {
     padding: 8px;
     background-color: #1c85c1;
@@ -89,4 +93,31 @@ header {
     padding: 5px;
     font-size: 14px;
     font-family: Arial;
+}
+
+.exampleHolder {
+    text-align: center;
+}
+
+.exBoard {
+    display: inline-block;
+    padding: 20px;
+}
+
+.bigButton {
+    display: block;
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #1c85c1;
+    color: white;
+    margin: auto;
+    font-size: 24px;
+    line-height: 50px;
+    border: 3px solid #1c85c1;
+}
+
+.bigButton:hover {
+    border: 3px solid #ffa906;
 }

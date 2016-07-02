@@ -32,19 +32,22 @@ export default class LevelDescription extends React.Component {
 
         return (
             <div>
-                <h1>Level {this.props.params.id}: {title}</h1>
-                <h2>Objective</h2>
-                <p>{objective}</p>
-                <h2>Before and After</h2>
-                <div>
-                    <div className="exBefore">
+                <h1 className="pageTitle">Level {this.props.params.id}: {title}</h1>
+                <div className="centeredColumn">
+                    <Link className="bigButton" to={`/app/level/${this.props.params.id}/`}>Start!</Link>
+                    <h2>Objective</h2>
+                    <p>{objective}</p>
+                </div>
+                <div className="exampleHolder">
+                    <div className="exBoard">
+                        <h2>Before</h2>
                         <BoardView rows={beforeRows}/>
                     </div>
-                    <div className="exAfter">
+                    <div className="exBoard">
+                        <h2>After</h2>
                         <BoardView rows={afterRows}/>
                     </div>
                 </div>
-                <Link to={`/app/level/${this.props.params.id}/`}>Start!</Link>
             </div>
         );
     }

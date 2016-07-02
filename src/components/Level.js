@@ -90,7 +90,7 @@ class Level extends React.Component {
 
         return (
             <div>
-                <h1>Level {this.props.params.id}</h1>
+                <h1 className="pageTitle">Level {this.props.params.id}</h1>
                 <button type="button" onClick={this.handleSubmitCode}>Run Code</button>
                 <button type="button" onClick={this.handleResetBoard}>Reset Board</button>
                 <Link to={`/app/level-description/${this.props.params.id}`} target="_blank">Description</Link>
