@@ -55,3 +55,6 @@ x auto saves / loads code
 
 BUGs
 - token expires but app still thinks it's logged in
+- wipe state on logout, redirect to home page
+- protect pages with auth?
+- notify on syntax error

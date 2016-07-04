@@ -1,29 +1,38 @@
-import React from 'react';
-import { Link } from 'react-router';
-import $ from 'jquery';
+import React from 'react'
+import { Link } from 'react-router'
+import { connect } from 'react-redux'
+import $ from 'jquery'
 
-// class LevelSelect extends React.Component {
-// }
+import { fetchProgressAllLevelsSuccess } from '../actions'
 
-export default React.createClass({
-    getInitialState() {
-        return { levels: [], progress: [] };
-    },
+class LevelSelect extends React.Component {
+    constructor() {
+        super()
+        this.state = { levels: [], progress: [] }
+    }
+
     componentDidMount() {
-        $.when(
-            $.get('/static/levels.json'),
-            $.get('/static/progress.json')
-            //$.get('/api/user/progress?token=')
-        ).done((d1, d2) => {
-            this.setState({ levels: d1[0], progress: d2[0] });
-        });
-    },
+        $.get('/static/levels.json', (data) => {
+            this.setState({ levels: data })
+        })
+
+        $.get(`/api/user/progress?token=${this.props.token}`, (data) => {
+            this.props.dispatch(fetchProgressAllLevelsSuccess(data.progress))
+        })
+    }
+
     render() {
+        if (!this.props.progress || !this.state.levels) {
+            return null
+        }
+
         function makeLevel(level) {
-            const isCompleted = this.state.progress.indexOf(level.id) !== -1 ? '(completed)': '';
-            return <li key={level.id}><Link to={`/app/level-description/${level.id}`}>{`${level.title} ${isCompleted}`}</Link></li>
+            const levelProgress = this.props.progress[level.id] || {}
+            const completedNotification = levelProgress.completed ? ' (completed)': ''
+            return <li key={level.id}><Link to={`/app/level-description/${level.id}`}>{`${level.title}${completedNotification}`}</Link></li>
         }
         const levels = this.state.levels.map(makeLevel.bind(this));
+
         return (
             <div className="centeredColumn generalText">
                 <h1 className="pageTitle">LevelSelect</h1>
@@ -33,4 +42,13 @@ export default React.createClass({
             </div>
         );
     }
-});
+}
+
+function mapStateToProps(state) {
+    return {
+        token: state.user.token,
+        progress: state.levelStatus
+    }
+}
+
+export default connect(mapStateToProps)(LevelSelect)

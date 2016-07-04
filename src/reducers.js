@@ -56,6 +56,13 @@ function levelStatus(state = {}, action) {
             return Object.assign({}, state, {
                 [action.id] : status(state[action.id], action)
             })
+        case act.FETCH_PROGRESS_ALL_LEVELS_SUCCESS:
+            const nextState = {}
+            action.progress.forEach((el) => {
+                const { levelId: id, completed } = el
+                nextState[id] = { id, completed }
+            })
+            return nextState
         default:
             return state
     }

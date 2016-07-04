@@ -54,6 +54,13 @@ export function fetchLevelStatusSuccess(id, completed) {
     return { type: FETCH_LEVEL_STATUS_SUCCESS, completed, id }
 }
 
+export const FETCH_PROGRESS_ALL_LEVELS_SUCCESS = 'FETCH_PROGRESS_ALL_LEVELS_SUCCESS'
+
+export function fetchProgressAllLevelsSuccess(progress) {
+    return { type: FETCH_PROGRESS_ALL_LEVELS_SUCCESS, progress }
+}
+
+
 export const PUT_LEVEL_STATUS_REQUEST = 'PUT_LEVEL_STATUS_REQUEST'
 export const PUT_LEVEL_STATUS_SUCCESS = 'PUT_LEVEL_STATUS_SUCCESS'
 

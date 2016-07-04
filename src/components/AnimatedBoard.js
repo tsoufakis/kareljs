@@ -58,7 +58,7 @@ export default class AnimatedBoard extends React.Component {
         const finalState = this.state.karel.toJSON()
         const { karel: desiredFinalKarel } = Board.fromConfig(this.props.config, true)
         const desiredFinalState = desiredFinalKarel.toJSON()
-        const completedBoard = isEqual(finalState, desiredFinalState)
+        const completedBoard = isEqual(finalState, desiredFinalState) && !error
         setTimeout(() => {
             this.props.onComplete(completedBoard, error)
         }, AnimatedBoard.MS_PER_FRAME);
