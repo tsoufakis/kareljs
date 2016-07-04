@@ -1,3 +1,13 @@
+Todo
+----
+- saving / displaying level completion status
+- style signup page
+- note on the home page
+- build up reference a bit
+- polish levels
+- email M
+
+
 nav bar
     - if logged in
         - logout
@@ -41,6 +51,7 @@ x auto saves / loads code
 - multiple versions of board
 - saving spinner
 - prevent user from having two code windows open at once
+
 
 BUGs
 - token expires but app still thinks it's logged in

@@ -156,7 +156,8 @@ function getProgress(req, res) {
     const levelId = req.params.level_id;
     var progress;
     if (levelId) {
-        progress = user.levels.find((x) => x.levelId === levelId) || {levelId: levelId, completed: false};
+        const level = user.levels.find((x) => x.levelId === levelId)
+        progress = level ? { levelId, completed: level.completed } : { levelId: levelId, completed: false }
     } else {
         progress = user.levels.map((x) => ({ levelId: x.levelId, completed: x.completed }))
     }

@@ -41,3 +41,26 @@ export const LOGOUT = 'LOGOUT'
 export function logout() {
     return { type: LOGOUT }
 }
+
+export const FETCH_LEVEL_STATUS_REQUEST = 'FETCH_LEVEL_STATUS_REQUEST'
+export const FETCH_LEVEL_STATUS_SUCCESS = 'FETCH_LEVEL_STATUS_SUCCESS'
+export const FETCH_LEVEL_STATUS_FAILED = 'FETCH_LEVEL_STATUS_FAILED'
+
+export function fetchLevelStatusRequest() {
+    return { type: FETCH_LEVEL_STATUS_REQUEST }
+}
+
+export function fetchLevelStatusSuccess(id, completed) {
+    return { type: FETCH_LEVEL_STATUS_SUCCESS, completed, id }
+}
+
+export const PUT_LEVEL_STATUS_REQUEST = 'PUT_LEVEL_STATUS_REQUEST'
+export const PUT_LEVEL_STATUS_SUCCESS = 'PUT_LEVEL_STATUS_SUCCESS'
+
+export function putLevelStatusRequest() {
+    return { type: PUT_LEVEL_STATUS_REQUEST }
+}
+
+export function putLevelStatusSuccess(id, completed) {
+    return { type: PUT_LEVEL_STATUS_SUCCESS, id, completed }
+}

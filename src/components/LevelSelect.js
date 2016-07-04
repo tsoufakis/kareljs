@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router';
 import $ from 'jquery';
 
+// class LevelSelect extends React.Component {
+// }
+
 export default React.createClass({
     getInitialState() {
         return { levels: [], progress: [] };
@@ -10,6 +13,7 @@ export default React.createClass({
         $.when(
             $.get('/static/levels.json'),
             $.get('/static/progress.json')
+            //$.get('/api/user/progress?token=')
         ).done((d1, d2) => {
             this.setState({ levels: d1[0], progress: d2[0] });
         });

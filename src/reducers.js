@@ -37,7 +37,36 @@ function signupForm(state = {}, action) {
     }
 }
 
-const moleMarch = combineReducers({user, showLoginSpinner, signupForm})
+function status(state = {}, action) {
+    switch(action.type) {
+        case act.FETCH_LEVEL_STATUS_SUCCESS:
+        case act.PUT_LEVEL_STATUS_SUCCESS:
+            return Object.assign({}, state, {
+                id: action.id, completed: action.completed
+            })
+        default:
+            return state
+    }
+}
+
+function levelStatus(state = {}, action) {
+    switch (action.type) {
+        case act.FETCH_LEVEL_STATUS_SUCCESS:
+        case act.PUT_LEVEL_STATUS_SUCCESS:
+            return Object.assign({}, state, {
+                [action.id] : status(state[action.id], action)
+            })
+        default:
+            return state
+    }
+}
+
+const moleMarch = combineReducers({
+    user,
+    showLoginSpinner,
+    signupForm,
+    levelStatus
+})
 export default moleMarch
 
 /*
@@ -58,5 +87,6 @@ export default moleMarch
         loadingCode: false,
     },
     levels: { id: {}}
+    levelStatus: { id: true }
 }
 */

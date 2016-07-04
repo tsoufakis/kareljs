@@ -1,12 +1,18 @@
 import React from 'react'
 import $ from 'jquery'
-import AnimatedBoard from './AnimatedBoard'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import CodeMirror from 'react-codemirror'
 import 'codemirror/mode/javascript/javascript'
-import { Link } from 'react-router'
-import Console from './Console'
 
+import AnimatedBoard from './AnimatedBoard'
+import Console from './Console'
+import {
+    fetchLevelStatusRequest,
+    fetchLevelStatusSuccess,
+    putLevelStatusRequest,
+    putLevelStatusSuccess
+} from '../actions'
 
 class Level extends React.Component {
     constructor() {
@@ -38,6 +44,13 @@ class Level extends React.Component {
         let message
         if (completedBoard) {
             message = 'Congratulations, you completed the level'
+            this.props.dispatch(putLevelStatusRequest())
+            $.ajax(`/api/user/progress/${this.props.params.id}`, {
+                method: 'PUT',
+                data: { token: this.props.token, completed: true }
+            }).done((res) => {
+                this.props.dispatch(putLevelStatusSuccess(this.props.params.id, true))
+            })
         } else if (errorMessage) {
             message = errorMessage
         } else {
@@ -67,6 +80,14 @@ class Level extends React.Component {
                     this.setState({codeInEditor: data.code})
                 }
             })
+
+        this.props.dispatch(fetchLevelStatusRequest())
+        $.get(`/api/user/progress/${this.props.params.id}?token=${this.props.token}`, (data) => {
+            if (data.progress) {
+                const { levelId, completed } = data.progress
+                this.props.dispatch(fetchLevelStatusSuccess(levelId, completed))
+            }
+        })
     }
 
     handleSubmitCode(e) {
@@ -83,11 +104,12 @@ class Level extends React.Component {
             lineNumbers: true,
             indentUnit: 4
         }
+        console.log('props',this.props)
 
         return (
             <div>
                 <link rel="stylesheet" type="text/css" href="/static/level.css"/>
-                <h1 className="pageTitle">Level {this.props.params.id}</h1>
+                <h1 className="pageTitle">Level {this.props.params.id} completed: {this.props.completed ? 'yes': 'no' }</h1>
                 <button type="button" onClick={this.handleSubmitCode}>Run Code</button>
                 <button type="button" onClick={this.handleResetBoard}>Reset Board</button>
                 <Link to={`/app/level-description/${this.props.params.id}`} target="_blank">Description</Link>
@@ -116,9 +138,14 @@ class Level extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+    const status = state.levelStatus[ownProps.params.id]
+    const completed = status && status.completed || false
+    console.log('completed', completed)
+
     return {
-        token: state.user.token
+        token: state.user.token,
+        completed
     }
 }
 
