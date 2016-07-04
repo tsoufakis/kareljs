@@ -14,6 +14,12 @@ import {
     putLevelStatusSuccess
 } from '../actions'
 
+const CODE_MIRROR_OPTIONS = {
+    mode:  'javascript',
+    lineNumbers: true,
+    indentUnit: 4
+}
+
 class Level extends React.Component {
     constructor() {
         super()
@@ -99,17 +105,17 @@ class Level extends React.Component {
     }
 
     render() {
-        const codeMirrorOptions = {
-            mode:  'javascript',
-            lineNumbers: true,
-            indentUnit: 4
+        const completedNotification = this.props.completed ? ' (completed)' : ''
+        let pageTitle
+        if (this.state.level) {
+            const { id, title } = this.state.level
+            pageTitle = `Level ${id}: ${title}${completedNotification}`
         }
-        console.log('props',this.props)
 
         return (
             <div>
                 <link rel="stylesheet" type="text/css" href="/static/level.css"/>
-                <h1 className="pageTitle">Level {this.props.params.id} completed: {this.props.completed ? 'yes': 'no' }</h1>
+                <h1 className="pageTitle">{pageTitle}</h1>
                 <button type="button" onClick={this.handleSubmitCode}>Run Code</button>
                 <button type="button" onClick={this.handleResetBoard}>Reset Board</button>
                 <Link to={`/app/level-description/${this.props.params.id}`} target="_blank">Description</Link>
@@ -118,7 +124,7 @@ class Level extends React.Component {
                         <CodeMirror
                             value={this.state.codeInEditor}
                             onChange={this.handleCodeChange}
-                            options={codeMirrorOptions}
+                            options={CODE_MIRROR_OPTIONS}
                             className="editor"
                         />
                     </section>
@@ -141,7 +147,6 @@ class Level extends React.Component {
 function mapStateToProps(state, ownProps) {
     const status = state.levelStatus[ownProps.params.id]
     const completed = status && status.completed || false
-    console.log('completed', completed)
 
     return {
         token: state.user.token,
