@@ -1,7 +1,6 @@
 import React from 'react'
 import $ from 'jquery'
 import AnimatedBoard from './AnimatedBoard'
-import CodeEditor from './CodeEditor'
 import { connect } from 'react-redux'
 import CodeMirror from 'react-codemirror'
 import 'codemirror/mode/javascript/javascript'
