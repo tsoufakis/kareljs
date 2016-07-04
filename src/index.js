@@ -43,7 +43,7 @@ const unsubscribe = store.subscribe(() => {
 ReactDOM.render((
     <Provider store={store}>
         <Router history={browserHistory}>
-            <Route path="/app" component={App}>
+            <Route path="/" component={App}>
                 <Route path="/app/login" component={Login}/>
                 <Route path="/app/signup" component={Signup}/>
                 <Route path="/app/level-select" component={LevelSelect}/>

@@ -28,7 +28,7 @@ class App extends React.Component {
             logoutNodes = (
                 <span id="logoutBox">
                     {`Welcome ${this.props.email}`}
-                    <Link className="navLink" to='/app' onClick={this.handleLogout}>Logout</Link>
+                    <Link className="navLink" to="/" onClick={this.handleLogout}>Logout</Link>
                 </span>
             )
         } else {
@@ -43,7 +43,7 @@ class App extends React.Component {
         return (
             <div>
                 <header>
-                    <h1 id="logoHeading"><Link to="/app" id="logoText">Mole March</Link></h1>
+                    <h1 id="logoHeading"><Link to="/" id="logoText">Mole March</Link></h1>
                     <nav className="nav">
                         {list}
                     </nav>
