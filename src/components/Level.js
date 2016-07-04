@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import CodeMirror from 'react-codemirror'
 import 'codemirror/mode/javascript/javascript'
 import { Link } from 'react-router'
+import Console from './Console'
 
 
 class Level extends React.Component {
@@ -20,7 +21,7 @@ class Level extends React.Component {
         this.state = {
             codeToRun: '',
             codeInEditor: 'Type your commands here...',
-            consoleLines: []
+            consoleLines: ['Welcome to the console']
         }
     }
 
@@ -84,18 +85,15 @@ class Level extends React.Component {
             indentUnit: 4
         }
 
-        const lines = this.state.consoleLines.map((line, i) => {
-            return <p key={i}>{line}</p>
-        })
-
         return (
             <div>
+                <link rel="stylesheet" type="text/css" href="/static/level.css"/>
                 <h1 className="pageTitle">Level {this.props.params.id}</h1>
                 <button type="button" onClick={this.handleSubmitCode}>Run Code</button>
                 <button type="button" onClick={this.handleResetBoard}>Reset Board</button>
                 <Link to={`/app/level-description/${this.props.params.id}`} target="_blank">Description</Link>
                 <div id="container">
-                    <section id="col1" className="columns">
+                    <section id="codePadContainer">
                         <CodeMirror
                             value={this.state.codeInEditor}
                             onChange={this.handleCodeChange}
@@ -103,7 +101,7 @@ class Level extends React.Component {
                             className="editor"
                         />
                     </section>
-                    <section id="col2" className="columns">
+                    <section id="boardContainer">
                         { this.state.level &&
                             <AnimatedBoard
                                 config={this.state.level}
@@ -111,10 +109,8 @@ class Level extends React.Component {
                                 onComplete={this.handleAnimationComplete}
                             />
                         }
-                        <div id="console">
-                            {lines}
-                        </div>
                     </section>
+                    <Console lines={this.state.consoleLines}/>
                 </div>
             </div>
         );

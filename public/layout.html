@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            header, section, div {
+                border: 1px solid black;
+            }
+
+            html, body {
+                height: 100%;
+                margin: 0px;
+                position: relative;
+            }
+
+            header {
+                height: 50px;
+            }
+            header, section {
+                box-sizing: border-box;
+            }
+
+            #container {
+                position: absolute;
+                top: 50px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;
+                margin-top: 8px;
+                margin-left: 8px;
+                margin-right: 8px;
+                margin-bottom: 8px;
+            }
+            #codePad {
+                position: absolute;
+                width: 550px;
+                height: 100%;
+            }
+            #board {
+                margin-left: 550px;
+                position: absolute;
+                top: 0px;
+                bottom: 150px;
+                left: 0px;
+                right: 0px;
+            }
+
+            #console {
+                margin-left: 550px;
+                position: absolute;
+                bottom: 0px;
+                right: 0px;
+                left: 0px;
+                height: 150px;
+            }
+
+            #boardBorder, .row, .cell {
+                border: 1px solid black;
+            }
+
+            #boardBorder {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+            .row {
+                display: flex;
+                flex: 1 100%;
+            }
+            .cell {
+                flex: 1 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <header>header</header>
+        <section id="container">
+            <section id="codePad">codepad</section>
+            <section id="board">
+                <div id="boardBorder">
+                    <div class="row">
+                        <div class="cell">hi</div>
+                        <div class="cell">hi</div>
+                        <div class="cell">hi</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">hi</div>
+                        <div class="cell">hi</div>
+                        <div class="cell">hi</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">hi</div>
+                        <div class="cell">hi</div>
+                        <div class="cell">hi</div>
+                    </div>
+                </div>
+            </section>
+            <section id="console">console</section>
+        </section>
+    </body>
+</html>

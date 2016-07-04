@@ -1,0 +1,65 @@
+html, body {
+    height: 100%;
+    margin: 0px;
+    position: relative;
+}
+
+#container, #codePadContainer, #boardContainer, #console {
+    border: 1px solid black;
+    box-sizing: border-box;
+}
+
+#container {
+    position: absolute;
+    top: 150px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin: 8px;
+}
+
+#codePadContainer {
+    position: absolute;
+    width: 550px;
+    height: 100%;
+}
+
+#boardContainer {
+    margin-left: 550px;
+    position: absolute;
+    top: 0px;
+    bottom: 150px;
+    left: 0px;
+    right: 0px;
+}
+
+#console {
+    position: absolute;
+    margin-left: 550px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    height: 150px;
+    overflow: scroll;
+    background: white;
+    padding: 8px;
+}
+
+.consoleText {
+    padding: 0;
+    margin: 0;
+    font-family: monospace;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.editor {
+    width: 100%;
+    height: 100%
+}
+
+.CodeMirror {
+    font-size: 14px;
+    width: 100%;
+    height: 100%;
+}
