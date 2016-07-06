@@ -25,7 +25,7 @@
             }
         ],
         "objective": "Have Karel pick up the beeper at (2, 0) and move it to (3, 1).",
-        "title": "On the ledge",
+        "title": "Around the corner",
         "id": 1
     },
     {
@@ -76,7 +76,7 @@
                 "width": 8
             }
         ],
-        "objective": "Have Karel lay down beepers on every other square along the bottom row.",
+        "objective": "Have Karel lay down beepers on every other square along the bottom row. The square she starts on should have a beeper.",
         "title": "Every Other",
         "id": 3
     }
