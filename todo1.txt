@@ -1,6 +1,6 @@
 Todo
 ----
-- saving / displaying level completion status
+x saving / displaying level completion status
 - style signup page
 - note on the home page
 - build up reference a bit
@@ -58,3 +58,9 @@ BUGs
 - wipe state on logout, redirect to home page
 - protect pages with auth?
 - notify on syntax error
+
+refactoring
+- thunk
+- make more things use redux
+- functionalize karel
+- play with promises / fetch instead of jquery

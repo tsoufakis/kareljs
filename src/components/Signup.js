@@ -42,23 +42,27 @@ class Signup extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>Signup</h1>
-                <form method="post" action="/api/users" onSubmit={this.handleFormSubmit}>
-                    <div>{this.props.message}</div>
-                    <div>
-                        <input type="email" placeholder="email" ref={(ref) => this.emailInput = ref}/>
+            <div className="centeredColumn">
+                <h1 className="pageTitle">Signup</h1>
+                <div className="postBoxContainer">
+                    <div className="postBox">
+                        <form method="post" action="/api/users" onSubmit={this.handleFormSubmit}>
+                            <div>{this.props.message}</div>
+                            <div className="inputHolder">
+                                <input className="credentialInput" type="email" placeholder="email" ref={(ref) => this.emailInput = ref}/>
+                            </div>
+                            <div className="inputHolder">
+                                <input className="credentialInput" type="password" placeholder="password" ref={(ref) => this.passwordInput = ref}/>
+                            </div>
+                            <div className="inputHolder">
+                                <input className="credentialInput" type="password" placeholder="password (again)" ref={(ref) => this.passwordAgainInput = ref}/>
+                            </div>
+                            <div>
+                                <input className="credentialInput" type="submit" value="Sign Up"/>
+                            </div>
+                        </form>
                     </div>
-                    <div>
-                        <input type="password" placeholder="password" ref={(ref) => this.passwordInput = ref}/>
-                    </div>
-                    <div>
-                        <input type="password" placeholder="password (again)" ref={(ref) => this.passwordAgainInput = ref}/>
-                    </div>
-                    <div>
-                        <input type="submit" value="go"/>
-                    </div>
-                </form>
+                </div>
             </div>
         );
     }
