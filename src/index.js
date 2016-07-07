@@ -12,6 +12,7 @@ import createLogger from 'redux-logger'
 import { createStore, applyMiddleware } from 'redux'
 import moleMarch from './reducers'
 import Reference from './components/Reference'
+import Home from './components/Home'
 
 const logger = createLogger()
 
@@ -44,6 +45,7 @@ ReactDOM.render((
     <Provider store={store}>
         <Router history={browserHistory}>
             <Route path="/" component={App}>
+                <IndexRoute component={Home}/>
                 <Route path="/app/login" component={Login}/>
                 <Route path="/app/signup" component={Signup}/>
                 <Route path="/app/level-select" component={LevelSelect}/>
