@@ -28,7 +28,7 @@ api.route('/user/progress/:level_id').get(getProgress).put(putProgress);
 
 api.route('/user/levels').get(listLevels);
 
-// api.route('/user/token').get(exchangeToken);
+api.route('/user/token').get(getToken);
 
 
 function createUser(req, res) {
@@ -77,10 +77,7 @@ function authenticate(req, res) {
         if (user) {
             bcrypt.compare(req.body.password, user.password, (err, match) => {
                 if (match) {
-                    const payload = { id: user._id, email: user.email, admin: user.admin };
-                    const token = jwt.sign(payload, config.secret, {
-                        expiresIn: '1440m'
-                    });
+                    const token = makeAuthToken(user)
                     res.json({
                         success: true,
                         msg: 'enjoy',
@@ -187,7 +184,9 @@ function listLevels(req, res) {
     res.json({ levels: req.user.levels });
 }
 
-// function exchangeToken(req, res) {
-// }
+function getToken(req, res) {
+    const token = makeAuthToken(req.user)
+    res.json({ token: token })
+}
 
 module.exports = api;

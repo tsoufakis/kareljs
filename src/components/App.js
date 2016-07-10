@@ -1,12 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router';
-import { logout } from '../actions'
+
+import { logout, refreshToken } from '../actions'
 
 class App extends React.Component {
     constructor() {
         super()
         this.handleLogout = this.handleLogout.bind(this)
+    }
+
+    componentDidMount() {
+        this.props.dispatch(refreshToken())
     }
 
     handleLogout(e) {

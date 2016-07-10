@@ -70,6 +70,21 @@ class TestUser {
                 t.end();
             });
         });
+
+        tape('new token', (t) => {
+            setTimeout(() => {
+                request(app)
+                    .get('/api/user/token')
+                    .query({token: `${this.token}`})
+                    .expect(200).end((err, res) => {
+                        const newToken = res.body.token
+                        t.ok(newToken, 'received new token')
+                        t.notEqual(newToken, this.token, 'new token is different')
+                        this.token = newToken
+                        t.end()
+                    })
+            }, 1100)
+        });
     }
 
     testSavingCodeAndProgress() {

@@ -6,6 +6,8 @@ function user(state = {}, action) {
         case act.FETCH_USER_SUCCESS:
         case act.CREATE_USER_SUCCESS:
             return { email: action.email, token: action.token }
+        case act.UPDATE_TOKEN:
+            return Object.assign({}, state, { token })
         case act.LOGOUT:
             return {}
         default:
@@ -56,7 +58,7 @@ function levelStatus(state = {}, action) {
             return Object.assign({}, state, {
                 [action.id] : status(state[action.id], action)
             })
-        case act.FETCH_PROGRESS_ALL_LEVELS_SUCCESS:
+        case act.RECEIVE_PROGRESS_ALL_LEVELS:
             const nextState = {}
             action.progress.forEach((el) => {
                 const { levelId: id, completed } = el

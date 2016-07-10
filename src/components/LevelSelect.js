@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import $ from 'jquery'
 
-import { fetchProgressAllLevelsSuccess } from '../actions'
+import { fetchProgressAllLevels } from '../actions'
 
 class LevelSelect extends React.Component {
     constructor() {
@@ -16,9 +16,7 @@ class LevelSelect extends React.Component {
             this.setState({ levels: data })
         })
 
-        $.get(`/api/user/progress?token=${this.props.token}`, (data) => {
-            this.props.dispatch(fetchProgressAllLevelsSuccess(data.progress))
-        })
+        this.props.dispatch(fetchProgressAllLevels())
     }
 
     render() {
