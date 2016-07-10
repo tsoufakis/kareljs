@@ -28,6 +28,8 @@ api.route('/user/progress/:level_id').get(getProgress).put(putProgress);
 
 api.route('/user/levels').get(listLevels);
 
+// api.route('/user/token').get(exchangeToken);
+
 
 function createUser(req, res) {
     bcrypt.hash(req.body.password, config.saltRounds, (err, hash) => {
@@ -99,15 +101,16 @@ function tokenValidationMiddleware(req, res, next) {
     if (token) {
         jwt.verify(token, config.secret, (err, decoded) => {
             if (err) {
-                return res.json({ success: false, msg: 'failed to auth' });
+                return res.status(401).send({
+                    msg: err.message
+                })
             } else {
                 req.decoded = decoded;
                 next();
             }
         });
     } else {
-        return res.status(403).send({
-            success: false,
+        return res.status(401).send({
             msg: 'no token provided'
         });
     }
@@ -183,5 +186,8 @@ function putProgress(req, res) {
 function listLevels(req, res) {
     res.json({ levels: req.user.levels });
 }
+
+// function exchangeToken(req, res) {
+// }
 
 module.exports = api;

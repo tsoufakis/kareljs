@@ -48,6 +48,22 @@ class TestUser {
             });
         });
 
+        tape('auth failure', (t) => {
+            const postData = { email: this.email, password: `${this.password}blah` };
+
+            request(app)
+                .post('/api/authenticate')
+                .send(postData)
+                .expect(401, t.end)
+        });
+
+        tape('token failure', (t) => {
+            request(app)
+                .get('/api/user')
+                .query({token: `${this.token}nope`})
+                .expect(401, t.end)
+        });
+
         tape('reflection', (t) => {
             request(app).get('/api/user').query({token: this.token}).end((err, res) => {
                 t.same(res.body, {success: true, user: {email: this.email}});
