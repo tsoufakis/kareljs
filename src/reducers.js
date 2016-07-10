@@ -7,7 +7,7 @@ function user(state = {}, action) {
         case act.CREATE_USER_SUCCESS:
             return { email: action.email, token: action.token }
         case act.UPDATE_TOKEN:
-            return Object.assign({}, state, { token })
+            return Object.assign({}, state, { token: action.token })
         case act.LOGOUT:
             return {}
         default:

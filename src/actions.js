@@ -117,11 +117,17 @@ export function refreshToken() {
         fetch(`/api/user/token?token=${token}`)
             .then(response => {
                 if (response.ok) {
-                    const newToken = response.json().token
-                    dispatch(updateToken(token))
+                    return response
                 } else {
-                    dispatch(logout())
+                    throw new Error(response.statusText)
                 }
+            })
+            .then(response => response.json())
+            .then(json => {
+                dispatch(updateToken(json.token))
+            })
+            .catch(err => {
+                dispatch(logout())
             })
     }
 }
