@@ -236,5 +236,6 @@ module.exports = {
     Karel: Karel,
     Cell: Cell,
     Board, Board,
+    CELL_SIZE: 80,
     Compass
 };

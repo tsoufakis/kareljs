@@ -1,7 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import BoardView from './BoardView';
-import { Board } from '../models';
+import { Board, CELL_SIZE } from '../models';
 import { Link } from 'react-router';
 
 export default class LevelDescription extends React.Component {
@@ -21,6 +21,7 @@ export default class LevelDescription extends React.Component {
         let objective;
         let beforeRows = [[]];
         let afterRows = [[]];
+        let width = 0
 
         if (this.state.level) {
             const level = this.state.level;
@@ -28,7 +29,9 @@ export default class LevelDescription extends React.Component {
             objective = level.objective;
             beforeRows = Board.fromConfig(level).karel.toJSON();
             afterRows = Board.fromConfig(level, true).karel.toJSON();
+            width = CELL_SIZE * this.state.level.boards[0].width
         }
+
 
         return (
             <div>
@@ -41,11 +44,11 @@ export default class LevelDescription extends React.Component {
                 <div className="exampleHolder">
                     <div className="exBoard">
                         <h2>Before</h2>
-                        <BoardView rows={beforeRows}/>
+                        <BoardView rows={beforeRows} width={width}/>
                     </div>
                     <div className="exBoard">
                         <h2>After</h2>
-                        <BoardView rows={afterRows}/>
+                        <BoardView rows={afterRows} width={width}/>
                     </div>
                 </div>
             </div>

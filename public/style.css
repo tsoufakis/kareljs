@@ -9,13 +9,24 @@
 }
 
 .cell {
-    box-sizing: border-box;
+    flex: 1;
     border: 1px dotted gray;
     position: relative;
+    box-sizing: border-box;
 }
 
-.cellObj {
+.cell:before {
+    content:'';
+    float:left;
+    padding-top:100%;
+}
+
+.cellContent {
     position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .wallNorth {

@@ -13,9 +13,6 @@ export default class AnimatedBoard extends React.Component {
         this.updateKarel(this.props);
     }
 
-    componentDidMount() {
-    }
-
     componentWillReceiveProps(nextProps) {
         if (nextProps.code !== this.props.code) {
             this.updateKarel(nextProps);
@@ -81,7 +78,7 @@ export default class AnimatedBoard extends React.Component {
     }
 
     render() {
-        return <BoardView rows={this.state.currentRows}/>;
+        return <BoardView rows={this.state.currentRows} width={this.props.width}/>;
     }
 }
 

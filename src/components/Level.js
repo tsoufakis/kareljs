@@ -6,6 +6,7 @@ import CodeMirror from 'react-codemirror'
 import 'codemirror/mode/javascript/javascript'
 
 import AnimatedBoard from './AnimatedBoard'
+import { CELL_SIZE } from '../models'
 import Console from './Console'
 import {
     fetchLevelStatusRequest,
@@ -29,10 +30,12 @@ class Level extends React.Component {
         this.handleCodeChange = this.handleCodeChange.bind(this)
         this.handleSubmitCode = this.handleSubmitCode.bind(this)
         this.handleResetBoard = this.handleResetBoard.bind(this)
+        this.resizeBoard = this.resizeBoard.bind(this)
         this.state = {
             codeToRun: '',
             codeInEditor: 'Type your commands here...',
-            consoleLines: ['Welcome to the console']
+            consoleLines: ['Welcome to the console'],
+            boardWidth: '0px'
         }
     }
 
@@ -44,6 +47,33 @@ class Level extends React.Component {
             data: data,
         }).done((res) => {
         })
+    }
+
+    resizeBoard() {
+        if (!this.state.level || !this.boardContainer) {
+            return
+        }
+
+        const { width: boardWidth, height: boardHeight } = this.state.level.boards[0]
+        const boardAspect = boardWidth / boardHeight
+
+        const containerWidth = this.boardContainer.clientWidth
+        const containerHeight = this.boardContainer.clientHeight
+        const containerAspect = containerWidth / containerHeight
+
+        let newWidth
+        const naturalWidth = boardWidth * CELL_SIZE
+        if (boardAspect >= containerAspect) {
+            if (containerWidth < naturalWidth) {
+                newWidth = '100%'
+            } else {
+                newWidth = naturalWidth
+            }
+        } else {
+            newWidth = `${Math.min(containerHeight * boardAspect, naturalWidth)}px`
+        }
+
+        this.setState({ boardWidth: newWidth })
     }
 
     handleAnimationComplete(completedBoard, errorMessage) {
@@ -77,8 +107,9 @@ class Level extends React.Component {
 
     componentDidMount() {
         $.get('/static/levels.json', (levels) => {
-            const level = levels.find(level => level.id === Number(this.props.params.id));
-            this.setState({level: level});
+            const level = levels.find(level => level.id === Number(this.props.params.id))
+            this.setState({level: level})
+            this.resizeBoard()
         });
         $.get(`/api/user/code/${this.props.params.id}?token=${this.props.token}`)
             .done((data) => {
@@ -94,6 +125,8 @@ class Level extends React.Component {
                 this.props.dispatch(fetchLevelStatusSuccess(levelId, completed))
             }
         })
+
+        window.addEventListener('resize', this.resizeBoard)
     }
 
     handleSubmitCode(e) {
@@ -128,12 +161,13 @@ class Level extends React.Component {
                             className="editor"
                         />
                     </section>
-                    <section id="boardContainer">
+                    <section id="boardContainer" ref={(ref) => this.boardContainer = ref}>
                         { this.state.level &&
                             <AnimatedBoard
                                 config={this.state.level}
                                 code={this.state.codeToRun}
                                 onComplete={this.handleAnimationComplete}
+                                width={this.state.boardWidth}
                             />
                         }
                     </section>

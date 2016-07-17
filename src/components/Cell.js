@@ -19,20 +19,16 @@ export default class Cell extends React.Component {
         }));
 
         if (cell.beepers > 0) {
-            children.push(<CellObject key={1} src="/static/beeper.png" cellSize={this.props.size}/>)
+            children.push(<CellObject key={1} src="/static/beeper.png"/>)
         }
 
         if (cell.karel) {
-            children.push(<CellObject key={2} src={`/static/karel${cell.karelBearing}.png`} cellSize={this.props.size}/>)
+            children.push(<CellObject key={2} src={`/static/karel${cell.karelBearing}.png`}/>)
         }
 
-        const style = {
-            width: this.props.size + 'px',
-            height: this.props.size + 'px'
-        };
 
         return (
-            <div className={classes.join(' ')} style={style}>
+            <div className={classes.join(' ')}>
                 {children}
             </div>
         );
