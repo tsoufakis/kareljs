@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import CodeMirror from 'react-codemirror'
 import 'codemirror/mode/javascript/javascript'
+import { parse } from 'esprima'
 
 import AnimatedBoard from './AnimatedBoard'
 import { CELL_SIZE } from '../models'
@@ -126,7 +127,21 @@ class Level extends React.Component {
     }
 
     handleSubmitCode(e) {
-        this.setState({ codeToRun: this.state.codeInEditor });
+        const code = this.state.codeInEditor
+        try {
+            parse(code)
+        } catch(e) {
+            const msg = (
+                `Syntax error on line ${e.lineNumber}: ${e.description}`
+            )
+            this.setState({ consoleLines: [ ...this.state.consoleLines, msg ] })
+            return
+        }
+
+        this.setState({
+            codeToRun: code,
+            consoleLines: []
+        });
     }
 
     handleResetBoard(e) {

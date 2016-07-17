@@ -6,6 +6,7 @@ x note on the home page
 x build up reference a bit
 - polish levels
 x email M
+- sound effects :-)
 
 
 nav bar
@@ -44,10 +45,10 @@ x reset board button
 - link to description
 - feedback box (errors, success, printout, etc.)
 x visual
-- complete or not notifier / checkmark
+x complete or not notifier / checkmark
 x link to cheat sheet
 x auto saves / loads code
-- saves completion event
+x saves completion event
 - multiple versions of board
 - saving spinner
 - prevent user from having two code windows open at once
@@ -57,7 +58,7 @@ BUGs
 x token expires but app still thinks it's logged in
 - wipe state on logout, redirect to home page
 - protect pages with auth?
-- notify on syntax error
+x notify on syntax error
 - better description when final state doesn't match desired state
 - make sure every character gets saved
 

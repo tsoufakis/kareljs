@@ -32,22 +32,33 @@ export default class AnimatedBoard extends React.Component {
         });
 
         if (props.code) {
-            this.runCode(props.code, karel);
-            this.renderFrames();
+            const error = this.runCode(props.code, karel)
+            if (error) {
+                this.props.onComplete(false, error)
+            } else {
+                this.renderFrames()
+            }
         }
+    }
+
+    getLineNumber(e) {
+        const stack = e.stack.split('\n', 2)[1]
+        const spl = stack.split(':')
+        return spl[spl.length - 2]
     }
 
     runCode(code, karel) {
         AnimatedBoard.KAREL_COMMANDS.map((cmd) => {
             window[cmd] = () => {
-                return karel[cmd]();
+                return karel[cmd]()
             };
         });
 
         try {
             eval(code);
         } catch(e) {
-            this.setState({error: `error: ${e}`});
+            const line = this.getLineNumber(e)
+            return `Error running code on line ${line}: ${e.message}`
         }
     }
 

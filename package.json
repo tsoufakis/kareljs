@@ -21,6 +21,7 @@
     "chai": "^3.5.0",
     "codemirror": "^5.13.4",
     "es6-promise": "^3.2.1",
+    "esprima": "^2.7.2",
     "express": "^4.13.4",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^2.2.3",
