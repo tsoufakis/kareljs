@@ -1,7 +1,5 @@
 .board {
-    border: 3px solid;
     margin: auto;
-    text-align: initial;
 }
 
 .row {
@@ -9,16 +7,9 @@
 }
 
 .cell {
-    flex: 1;
     border: 1px dotted gray;
     position: relative;
     box-sizing: border-box;
-}
-
-.cell:before {
-    content:'';
-    float:left;
-    padding-top:100%;
 }
 
 .cellContent {

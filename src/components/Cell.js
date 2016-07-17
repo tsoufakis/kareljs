@@ -26,9 +26,11 @@ export default class Cell extends React.Component {
             children.push(<CellObject key={2} src={`/static/karel${cell.karelBearing}.png`}/>)
         }
 
+        const style = { width: this.props.width, height: this.props.width }
+
 
         return (
-            <div className={classes.join(' ')}>
+            <div className={classes.join(' ')} style={style}>
                 {children}
             </div>
         );

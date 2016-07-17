@@ -64,13 +64,9 @@ class Level extends React.Component {
         let newWidth
         const naturalWidth = boardWidth * CELL_SIZE
         if (boardAspect >= containerAspect) {
-            if (containerWidth < naturalWidth) {
-                newWidth = '100%'
-            } else {
-                newWidth = naturalWidth
-            }
+            newWidth = Math.min(containerWidth, naturalWidth)
         } else {
-            newWidth = `${Math.min(containerHeight * boardAspect, naturalWidth)}px`
+            newWidth = Math.min(containerHeight * boardAspect, naturalWidth)
         }
 
         this.setState({ boardWidth: newWidth })
