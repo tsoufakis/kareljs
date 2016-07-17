@@ -105,8 +105,69 @@
                 "width": 7
             }
         ],
-        "objective": "Have Karel lay down a diagonal line of beepers going from the bottom left corner to the top right.",
+        "objective": "Have Karel lay down a diagonal line of beepers going from the bottom left corner to the top right. This is similar to the original diagonal level but the board is bigger. Try to write code that would work for both levels",
         "title": "Diagonal 2",
         "id": 4
+    },
+    {
+        "boards": [
+            {
+                "finalState": {
+                    "beepers": [
+                        { "cnt": 1, "x": 0, "y": 0 },
+                        { "cnt": 1, "x": 2, "y": 0 },
+                        { "cnt": 1, "x": 4, "y": 0 },
+                        { "cnt": 1, "x": 6, "y": 0 }
+                    ],
+                    "karel": { "bearing": 1, "x": 6, "y": 0 }
+                },
+                "height": 3,
+                "initialState": {
+                    "beepers": [],
+                    "karel": { "bearing": 1, "x": 0, "y": 0 }
+                },
+                "notes": "Just a simple board",
+                "walls": [],
+                "width": 7
+            }
+        ],
+        "objective": "Have Karel lay down beepers on every other square along the bottom row. The square she starts on should have a beeper. This is similar to the original Every Other level, but the board is slightly smaller. Try to write code that would work for both levels.",
+        "title": "Every Other 2",
+        "id": 5
+    },
+    {
+        "boards": [
+            {
+                "finalState": {
+                    "beepers": [
+                        { "cnt": 1, "x": 1, "y": 1 },
+                        { "cnt": 1, "x": 3, "y": 1 },
+                        { "cnt": 1, "x": 6, "y": 1 }
+                    ],
+                    "karel": { "bearing": 1, "x": 7, "y": 0 }
+                },
+                "height": 5,
+                "initialState": {
+                    "beepers": [],
+                    "karel": { "bearing": 1, "x": 0, "y": 0 }
+                },
+                "notes": "Just a simple board",
+                "walls": [
+                    { "bearing": 1, "x": 1, "y": 1 },
+                    { "bearing": 2, "x": 1, "y": 1 },
+                    { "bearing": 3, "x": 1, "y": 1 },
+                    { "bearing": 1, "x": 3, "y": 1 },
+                    { "bearing": 2, "x": 3, "y": 1 },
+                    { "bearing": 3, "x": 3, "y": 1 },
+                    { "bearing": 1, "x": 6, "y": 1 },
+                    { "bearing": 2, "x": 6, "y": 1 },
+                    { "bearing": 3, "x": 6, "y": 1 }
+                ],
+                "width": 8
+            }
+        ],
+        "objective": "Have Karel put beepers in each of the alcoves. HINT: Try breaking up your code into two parts--one that can find the next alcove (regardless how far apart the alcoves are), and another that can put the beeper in an alcove and return Karel back into position to continue her search",
+        "title": "Alcoves",
+        "id": 6
     }
 ]
