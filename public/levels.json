@@ -79,5 +79,34 @@
         "objective": "Have Karel lay down beepers on every other square along the bottom row. The square she starts on should have a beeper.",
         "title": "Every Other",
         "id": 3
+    },
+    {
+        "boards": [
+            {
+                "finalState": {
+                    "beepers": [
+                        { "cnt": 1, "x": 0, "y": 0 },
+                        { "cnt": 1, "x": 1, "y": 1 },
+                        { "cnt": 1, "x": 2, "y": 2 },
+                        { "cnt": 1, "x": 3, "y": 3 },
+                        { "cnt": 1, "x": 4, "y": 4 },
+                        { "cnt": 1, "x": 5, "y": 5 },
+                        { "cnt": 1, "x": 6, "y": 6 }
+                    ],
+                    "karel": { "bearing": 1, "x": 6, "y": 6 }
+                },
+                "height": 7,
+                "initialState": {
+                    "beepers": [],
+                    "karel": { "bearing": 1, "x": 0, "y": 0 }
+                },
+                "notes": "Just a simple board",
+                "walls": [],
+                "width": 7
+            }
+        ],
+        "objective": "Have Karel lay down a diagonal line of beepers going from the bottom left corner to the top right.",
+        "title": "Diagonal 2",
+        "id": 4
     }
 ]

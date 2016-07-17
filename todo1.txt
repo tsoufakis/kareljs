@@ -1,11 +1,11 @@
 Todo
 ----
 x saving / displaying level completion status
-- style signup page
-- note on the home page
-- build up reference a bit
+x style signup page
+x note on the home page
+x build up reference a bit
 - polish levels
-- email M
+x email M
 
 
 nav bar
@@ -54,13 +54,15 @@ x auto saves / loads code
 
 
 BUGs
-- token expires but app still thinks it's logged in
+x token expires but app still thinks it's logged in
 - wipe state on logout, redirect to home page
 - protect pages with auth?
 - notify on syntax error
+- better description when final state doesn't match desired state
+- make sure every character gets saved
 
 refactoring
-- thunk
+x thunk
 - make more things use redux
 - functionalize karel
-- play with promises / fetch instead of jquery
+x play with promises / fetch instead of jquery
