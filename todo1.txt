@@ -59,6 +59,7 @@ x token expires but app still thinks it's logged in
 - wipe state on logout, redirect to home page
 - protect pages with auth?
 x notify on syntax error
+- notify on Karel error
 - better description when final state doesn't match desired state
 - make sure every character gets saved
 

@@ -1,6 +1,5 @@
 'use strict';
 
-const util = require('util');
 class Compass {
     static projectToXY(bearing) {
         switch(bearing) {
@@ -224,8 +223,8 @@ class Board {
     }
 }
 
-Board.fromConfig = function(config, useFinalState=false) {
-    const b1 = config.boards[0];
+Board.fromConfig = function(config, index, useFinalState=false) {
+    const b1 = config.boards[index];
     const init = useFinalState ? b1.finalState:b1.initialState;
     const board = new Board(b1.width, b1.height, init.beepers, b1.walls);
     const karel = new Karel(init.karel.x, init.karel.y, init.karel.bearing, board);
