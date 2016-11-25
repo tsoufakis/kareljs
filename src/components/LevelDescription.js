@@ -1,7 +1,8 @@
 import React from 'react';
 import $ from 'jquery';
 import BoardView from './BoardView';
-import { Board, CELL_SIZE } from '../Karel';
+import { CELL_SIZE } from '../Karel';
+import KarelInterface from '../KarelInterface';
 import { Link } from 'react-router';
 
 export default class LevelDescription extends React.Component {
@@ -27,8 +28,9 @@ export default class LevelDescription extends React.Component {
             const level = this.state.level;
             title = level.title;
             objective = level.objective;
-            beforeRows = Board.fromConfig(level, 0).karel.toJSON();
-            afterRows = Board.fromConfig(level, 0, true).karel.toJSON();
+            const karel = new KarelInterface(level)
+            beforeRows = karel.initialRows;
+            afterRows = karel.finalRows;
             width = CELL_SIZE * this.state.level.boards[0].width
         }
 

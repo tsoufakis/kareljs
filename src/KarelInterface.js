@@ -19,10 +19,12 @@ class KarelInterface {
         this.boards = config.boards
         this.boardIndex = boardIndex
         this.config = config
+        this.initialRows = prepForUI(this._initKarel().toJSON()).rows
+        this.finalRows = prepForUI(this._initKarel(true).toJSON()).rows
     }
 
-    _initKarel() {
-        const { karel } = Board.fromConfig(this.config, this.boardIndex)
+    _initKarel(useFinalState=false) {
+        const { karel } = Board.fromConfig(this.config, this.boardIndex, useFinalState)
         return karel
     }
 
