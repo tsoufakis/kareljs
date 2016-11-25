@@ -34,11 +34,7 @@ export default class AnimatedBoard extends React.Component {
 
         if (props.code) {
             const { frames, error } = karel.evalCode(props.code)
-            if (error) {
-                this.props.onComplete(false, error)
-            } else {
-                this.renderFrames(frames)
-            }
+            this.renderFrames(frames, error)
         }
     }
 
@@ -47,21 +43,18 @@ export default class AnimatedBoard extends React.Component {
         const desiredFinalState = this.state.karel.finalRows
 
         const completedBoard = isEqual(finalState, desiredFinalState) && !error
-        setTimeout(() => {
-            this.props.onComplete(completedBoard, error)
-        }, AnimatedBoard.MS_PER_FRAME);
+        this.props.onComplete(completedBoard, error && error.message)
     }
 
-    renderFrames(frames) {
+    renderFrames(frames, error) {
         const id = setInterval(() => {
-            const frame = frames.shift();
-            this.setState({currentRows: frame.rows});
 
             if (frames.length === 0) {
                 clearInterval(this.state.intervalId);
-                const error = this.state.error
-                this.setState({error: null});
                 this.notifyComplete(error)
+            } else {
+                const frame = frames.shift();
+                this.setState({currentRows: frame.rows});
             }
         }, AnimatedBoard.MS_PER_FRAME);
 

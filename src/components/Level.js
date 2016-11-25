@@ -73,7 +73,7 @@ class Level extends React.Component {
         this.setState({ boardWidth: newWidth })
     }
 
-    handleAnimationComplete(completedBoard, errorMessage) {
+    handleAnimationComplete(completedBoard, error) {
         let message
         if (completedBoard) {
             message = 'Congratulations, you completed the level'
@@ -84,8 +84,9 @@ class Level extends React.Component {
             }).done((res) => {
                 this.props.dispatch(putLevelStatusSuccess(this.props.params.id, true))
             })
-        } else if (errorMessage) {
-            message = errorMessage
+        } else if (error) {
+            //message = JSON.stringify({ line: error.line, name: error.name, message: error.message })
+            message = error
         } else {
             message = 'Your code has finished, but you didn\'t reach your goal'
         }

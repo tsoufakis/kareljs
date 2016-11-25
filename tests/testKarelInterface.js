@@ -13,6 +13,12 @@ const CONFIG = {
                 ],
                 karel: {x: 0, y: 0, bearing: 1}
             },
+            finalState: {
+                beepers: [
+                    {x: 3, y: 1, cnt: 1}
+                ],
+                karel: {x: 4, y: 1, bearing: 1}
+            },
             walls: [
                 {x: 3, y: 0, bearing: 0},
                 {x: 3, y: 0, bearing: 3},
