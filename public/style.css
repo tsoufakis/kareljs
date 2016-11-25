@@ -7,9 +7,12 @@
 }
 
 .cell {
-    border: 1px dotted gray;
     position: relative;
     box-sizing: border-box;
+}
+
+.cellGrid {
+    border: 1px dotted gray;
 }
 
 .cellContent {

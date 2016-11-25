@@ -13,7 +13,8 @@ export const CONFIG = {
             },
             walls: []
         }
-    ]
+    ],
+    gridOff: true
 }
 
 const CODE_FN = () => {

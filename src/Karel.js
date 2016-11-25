@@ -57,7 +57,7 @@ class NoBeepersPresentError extends Error {
 }
 
 class Karel {
-    constructor(x, y, bearing, board, storeFrames=true) {
+    constructor(x, y, bearing, board, showGrid=true, storeFrames=true) {
         this.x = x;
         this.y = y;
         this.bearing = bearing;
@@ -65,6 +65,7 @@ class Karel {
         this.cell = board.getCell(x, y);
         this.storeFrames = storeFrames;
         this.frames = [];
+        this.showGrid = showGrid
     }
 
     turnLeft() {
@@ -152,6 +153,7 @@ class Karel {
             json.push([]);
             for (let y = 0; y < this.board.height; y++) {
                 let cell = this.board.board[x][y]
+                cell.showGrid = this.showGrid
                 json[x][y] = cell.toJSON();
                 if (x == this.x && y == this.y) {
                     json[x][y].karel = true;
@@ -168,6 +170,7 @@ class Cell {
         this.beepers = 0;
         this.walls = {}
         this.painted = false;
+        this.showGrid = true;
     }
 
     addWall(direction) {
@@ -186,7 +189,12 @@ class Cell {
         var walls = Object.keys(this.walls).filter(function(bearing) {
             return this.walls[bearing] == true;
         }.bind(this)).map(function(n) { return parseInt(n, 10) });
-        return {walls: walls, beepers: this.beepers, painted: this.painted};
+        return {
+            walls: walls,
+            beepers: this.beepers,
+            painted: this.painted,
+            showGrid: this.showGrid
+        };
     }
 }
 
@@ -249,10 +257,11 @@ class Board {
 }
 
 Board.fromConfig = function(config, index, useFinalState=false) {
+    const showGrid = !config.gridOff;
     const b1 = config.boards[index];
     const init = useFinalState ? b1.finalState : b1.initialState;
     const board = new Board(b1.width, b1.height, init.beepers, b1.walls);
-    const karel = new Karel(init.karel.x, init.karel.y, init.karel.bearing, board);
+    const karel = new Karel(init.karel.x, init.karel.y, init.karel.bearing, board, showGrid);
     return {board: board, karel: karel};
 }
 

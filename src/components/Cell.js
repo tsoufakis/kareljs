@@ -14,9 +14,12 @@ export default class Cell extends React.Component {
         const children = [];
         let classes = ['cell'];
 
-        classes = classes.concat(cell.walls.map(function(bearing) {
-            return BEARING_TO_CLASS_NAME[bearing]; 
-        }));
+        if (cell.showGrid) {
+            classes = classes.concat(cell.walls.map(function(bearing) {
+                return BEARING_TO_CLASS_NAME[bearing];
+            }));
+            classes.push('cellGrid')
+        }
 
         if (cell.beepers > 0) {
             children.push(<CellObject key={1} src="/static/beeper.png"/>)

@@ -14,6 +14,12 @@ export default class AnimatedBoard extends React.Component {
         this.updateKarel(this.props);
     }
 
+    componentWillUnmount() {
+        if (typeof this.state.intervalId !== 'undefined') {
+            clearInterval(this.state.intervalId);
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.code !== this.props.code) {
             this.updateKarel(nextProps);
