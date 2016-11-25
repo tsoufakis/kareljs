@@ -1,5 +1,5 @@
 import React from 'react';
-import { Compass } from '../models'
+import { Compass } from '../Karel'
 import CellObject from './CellObject'
 
 const BEARING_TO_CLASS_NAME = {};

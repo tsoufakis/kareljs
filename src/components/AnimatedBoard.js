@@ -1,6 +1,7 @@
 import React from 'react'
 import BoardView from './BoardView'
-import { Board } from '../models'
+import { Board } from '../Karel'
+import KarelInterface from '../KarelInterface'
 import { isEqual } from 'lodash'
 
 
@@ -24,64 +25,36 @@ export default class AnimatedBoard extends React.Component {
             clearInterval(this.state.intervalId);
         }
 
-        const { board, karel } = Board.fromConfig(props.config);
+        const karel = new KarelInterface(props.config)
 
         this.setState({
             karel: karel,
-            currentRows: karel.toJSON()
+            currentRows: karel.initialRows
         });
 
         if (props.code) {
-            const error = this.runCode(props.code, karel)
-            if (error) {
-                this.props.onComplete(false, error)
-            } else {
-                this.renderFrames()
-            }
-        }
-    }
-
-    getLineNumber(e) {
-        const stack = e.stack.split('\n', 2)[1]
-        const spl = stack.split(':')
-        return spl[spl.length - 2]
-    }
-
-    runCode(code, karel) {
-        AnimatedBoard.KAREL_COMMANDS.map((cmd) => {
-            window[cmd] = () => {
-                return karel[cmd]()
-            };
-        });
-
-        try {
-            eval(code);
-        } catch(e) {
-            const line = this.getLineNumber(e)
-            return `Error running code on line ${line}: ${e.message}`
+            const { frames, error } = karel.evalCode(props.code)
+            this.renderFrames(frames, error)
         }
     }
 
     notifyComplete(error) {
-        const finalState = this.state.karel.toJSON()
-        const { karel: desiredFinalKarel } = Board.fromConfig(this.props.config, true)
-        const desiredFinalState = desiredFinalKarel.toJSON()
+        const finalState = this.state.currentRows
+        const desiredFinalState = this.state.karel.finalRows
+
         const completedBoard = isEqual(finalState, desiredFinalState) && !error
-        setTimeout(() => {
-            this.props.onComplete(completedBoard, error)
-        }, AnimatedBoard.MS_PER_FRAME);
+        this.props.onComplete(completedBoard, error)
     }
 
-    renderFrames() {
+    renderFrames(frames, error) {
         const id = setInterval(() => {
-            const frame = this.state.karel.frames.shift();
-            this.setState({currentRows: frame});
 
-            if (this.state.karel.frames.length === 0) {
+            if (frames.length === 0) {
                 clearInterval(this.state.intervalId);
-                const error = this.state.error
-                this.setState({error: null});
                 this.notifyComplete(error)
+            } else {
+                const frame = frames.shift();
+                this.setState({currentRows: frame});
             }
         }, AnimatedBoard.MS_PER_FRAME);
 

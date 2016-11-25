@@ -4,10 +4,9 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import CodeMirror from 'react-codemirror'
 import 'codemirror/mode/javascript/javascript'
-import { parse } from 'esprima'
 
 import AnimatedBoard from './AnimatedBoard'
-import { CELL_SIZE } from '../models'
+import { CELL_SIZE } from '../Karel'
 import Console from './Console'
 import {
     fetchLevelStatusRequest,
@@ -36,7 +35,7 @@ class Level extends React.Component {
             codeToRun: '',
             codeInEditor: 'Type your commands here...',
             consoleLines: ['Welcome to the console'],
-            boardWidth: '0px'
+            boardWidth: 0
         }
     }
 
@@ -73,7 +72,7 @@ class Level extends React.Component {
         this.setState({ boardWidth: newWidth })
     }
 
-    handleAnimationComplete(completedBoard, errorMessage) {
+    handleAnimationComplete(completedBoard, error) {
         let message
         if (completedBoard) {
             message = 'Congratulations, you completed the level'
@@ -84,8 +83,8 @@ class Level extends React.Component {
             }).done((res) => {
                 this.props.dispatch(putLevelStatusSuccess(this.props.params.id, true))
             })
-        } else if (errorMessage) {
-            message = errorMessage
+        } else if (error) {
+            message = `error on line ${error.line}: ${error.message}`
         } else {
             message = 'Your code has finished, but you didn\'t reach your goal'
         }
@@ -128,16 +127,6 @@ class Level extends React.Component {
 
     handleSubmitCode(e) {
         const code = this.state.codeInEditor
-        try {
-            parse(code)
-        } catch(e) {
-            const msg = (
-                `Syntax error on line ${e.lineNumber}: ${e.description}`
-            )
-            this.setState({ consoleLines: [ ...this.state.consoleLines, msg ] })
-            return
-        }
-
         this.setState({
             codeToRun: code,
             consoleLines: []
