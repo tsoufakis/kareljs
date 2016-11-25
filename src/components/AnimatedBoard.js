@@ -54,7 +54,7 @@ export default class AnimatedBoard extends React.Component {
                 this.notifyComplete(error)
             } else {
                 const frame = frames.shift();
-                this.setState({currentRows: frame.rows});
+                this.setState({currentRows: frame});
             }
         }, AnimatedBoard.MS_PER_FRAME);
 

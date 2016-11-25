@@ -8,21 +8,13 @@ const KAREL_COMMANDS = [
     'leftIsClear', 'rightIsBlocked', 'rightIsClear'
 ]
 
-class Frame {
-    constructor(rows=[], errorMessage='') {
-        this.error = !!errorMessage
-        this.rows = rows
-        this.message = errorMessage
-    }
-}
-
 class KarelInterface {
     constructor(config, boardIndex=0) {
         this.boards = config.boards
         this.boardIndex = boardIndex
         this.config = config
-        this.initialRows = prepForUI(this._initKarel().toJSON()).rows
-        this.finalRows = prepForUI(this._initKarel(true).toJSON()).rows
+        this.initialRows = prepForUI(this._initKarel().toJSON())
+        this.finalRows = prepForUI(this._initKarel(true).toJSON())
     }
 
     _initKarel(useFinalState=false) {
@@ -40,8 +32,6 @@ class KarelInterface {
                 return karel[cmd]()
             };
         });
-
-
 
         let error
 
@@ -75,7 +65,7 @@ function prepForUI(coordSys) {
             cells.push(coordSys[x][y]);
         }
     }
-    return new Frame(rows)
+    return rows
 }
 
 function getLineNumber(e) {
