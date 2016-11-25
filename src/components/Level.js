@@ -36,7 +36,7 @@ class Level extends React.Component {
             codeToRun: '',
             codeInEditor: 'Type your commands here...',
             consoleLines: ['Welcome to the console'],
-            boardWidth: '0px'
+            boardWidth: 0
         }
     }
 
