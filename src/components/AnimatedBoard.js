@@ -43,7 +43,7 @@ export default class AnimatedBoard extends React.Component {
         const desiredFinalState = this.state.karel.finalRows
 
         const completedBoard = isEqual(finalState, desiredFinalState) && !error
-        this.props.onComplete(completedBoard, error && error.message)
+        this.props.onComplete(completedBoard, error)
     }
 
     renderFrames(frames, error) {

@@ -1,3 +1,5 @@
+const { parse } = require('esprima')
+
 const { Karel, Cell, Board, Compass } = require('./Karel');
 
 const KAREL_COMMANDS = [
@@ -39,7 +41,17 @@ class KarelInterface {
             };
         });
 
+
+
         let error
+
+        try {
+            parse(code)
+        } catch(e) {
+            error = { line: e.lineNumber, message: e.description, name: e.name }
+            return { frames: [], error }
+        }
+
         try {
             global_scope.eval(code);
         } catch(e) {
