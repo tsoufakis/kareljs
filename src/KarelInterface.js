@@ -5,7 +5,8 @@ const { Karel, Cell, Board, Compass } = require('./Karel');
 const KAREL_COMMANDS = [
     'turnLeft', 'turnRight', 'move', 'beepersPresent', 'pickBeeper',
     'putBeeper', 'frontIsBlocked', 'frontIsClear', 'leftIsBlocked',
-    'leftIsClear', 'rightIsBlocked', 'rightIsClear'
+    'leftIsClear', 'rightIsBlocked', 'rightIsClear', 'paintCell',
+    'unpaintCell'
 ]
 
 class KarelInterface {

@@ -108,6 +108,14 @@ class Karel {
         this.checkStoreFrames();
     }
 
+    paintCell() {
+        this.cell.painted = true
+    }
+
+    unpaintCell() {
+        this.cell.painted = false
+    }
+
     checkStoreFrames() {
         if (this.storeFrames) {
             this.frames.push(this.toJSON());
@@ -159,6 +167,7 @@ class Cell {
     constructor() {
         this.beepers = 0;
         this.walls = {}
+        this.painted = false;
     }
 
     addWall(direction) {
@@ -177,7 +186,7 @@ class Cell {
         var walls = Object.keys(this.walls).filter(function(bearing) {
             return this.walls[bearing] == true;
         }.bind(this)).map(function(n) { return parseInt(n, 10) });
-        return {walls: walls, beepers: this.beepers};
+        return {walls: walls, beepers: this.beepers, painted: this.painted};
     }
 }
 

@@ -20,6 +20,10 @@
     bottom: 0;
 }
 
+.beeperBg {
+    background-color: #1c85c1;
+}
+
 .wallNorth {
     border-top: 3px solid black
 }

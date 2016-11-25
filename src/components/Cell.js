@@ -22,6 +22,10 @@ export default class Cell extends React.Component {
             children.push(<CellObject key={1} src="/static/beeper.png"/>)
         }
 
+        if (cell.painted) {
+            classes.push('beeperBg')
+        }
+
         if (cell.karel) {
             children.push(<CellObject key={2} src={`/static/karel${cell.karelBearing}.png`}/>)
         }
