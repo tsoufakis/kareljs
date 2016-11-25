@@ -1,4 +1,4 @@
-const { Karel, Cell, Board, Compass } = require('karel');
+const { Karel, Cell, Board, Compass } = require('./Karel');
 
 const KAREL_COMMANDS = [
     'turnLeft', 'turnRight', 'move', 'beepersPresent', 'pickBeeper',
@@ -28,16 +28,18 @@ class KarelInterface {
 
     evalCode(code) {
         const karel = this._initKarel()
+        // depends on if we're running in node or browser
+        const global_scope = typeof window === 'undefined' ? global : window;
 
         KAREL_COMMANDS.map((cmd) => {
-            window[cmd] = () => {
+            global_scope[cmd] = () => {
                 return karel[cmd]()
             };
         });
 
         let error
         try {
-            window.eval(code);
+            global_scope.eval(code);
         } catch(e) {
             const line = getLineNumber(e)
             error = `Error running code on line ${line}: ${e.message}`
@@ -59,7 +61,7 @@ function prepForUI(coordSys) {
             cells.push(coordSys[x][y]);
         }
     }
-    return Frame(rows)
+    return new Frame(rows)
 }
 
 function getLineNumber(e) {
@@ -67,3 +69,5 @@ function getLineNumber(e) {
     const spl = stack.split(':')
     return spl[spl.length - 2]
 }
+
+module.exports = KarelInterface

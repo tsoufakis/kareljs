@@ -40,6 +40,22 @@ Compass.EAST = 1;
 Compass.SOUTH = 2;
 Compass.WEST = 3;
 
+class RanIntoWallError extends Error {
+    constructor() {
+        super()
+        this.name = 'RanIntoWallError'
+        this.message = 'Karel ran into a wall.'
+    }
+}
+
+class NoBeepersPresentError extends Error {
+    constructor() {
+        super()
+        this.name = 'NoBeepersPresentError'
+        this.message = 'There are no beepers on this spot.'
+    }
+}
+
 class Karel {
     constructor(x, y, bearing, board, storeFrames=true) {
         this.x = x;
@@ -63,7 +79,7 @@ class Karel {
 
     move() {
         if (this.cell.directionIsBlocked(this.bearing)) {
-            throw 'RanIntoWallError';
+            throw new RanIntoWallError();
         }
 
         const [dx, dy] = Compass.projectToXY(this.bearing);
@@ -80,7 +96,7 @@ class Karel {
 
     pickBeeper() {
         if (this.cell.beepers == 0) {
-            throw "NoBeepersPresentError";
+            throw new NoBeepersPresentError();
         } else {
             this.cell.beepers--;
         }
@@ -225,7 +241,7 @@ class Board {
 
 Board.fromConfig = function(config, index, useFinalState=false) {
     const b1 = config.boards[index];
-    const init = useFinalState ? b1.finalState:b1.initialState;
+    const init = useFinalState ? b1.finalState : b1.initialState;
     const board = new Board(b1.width, b1.height, init.beepers, b1.walls);
     const karel = new Karel(init.karel.x, init.karel.y, init.karel.bearing, board);
     return {board: board, karel: karel};

@@ -2,7 +2,7 @@
 
 const assert = require('chai').assert;
 const util = require('util');
-const { Karel, Cell, Board, Compass } = require('../src/models');
+const { Karel, Cell, Board, Compass } = require('../src/Karel');
 
 function testCompass() {
     assert.equal(Compass.WEST, Compass.left90(Compass.NORTH));
@@ -106,7 +106,7 @@ function testBoardConfig() {
         ]
     };
 
-    const r = Board.fromConfig(config);
+    const r = Board.fromConfig(config, 0);
     assert(r.board.width == 5);
     assert(r.board.height == 4);
     assert(r.board.getCell(2, 0).beepers == 1);
