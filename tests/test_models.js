@@ -2,7 +2,7 @@
 
 const assert = require('chai').assert;
 const util = require('util');
-const { Karel, Cell, Board, Compass } = require('../src/Karel');
+const { Karel, Cell, Board, Compass, RanIntoWallError, NoBeepersPresentError } = require('../src/Karel');
 
 function testCompass() {
     assert.equal(Compass.WEST, Compass.left90(Compass.NORTH));
@@ -136,7 +136,7 @@ function testKarel() {
 
     karel.move();
     assert(karel.frontIsBlocked());
-    assert.throws(karel.move.bind(karel), 'RanIntoWallError');
+    assert.throws(karel.move.bind(karel), RanIntoWallError);
 
     karel.turnRight();
     assert(karel.frontIsClear());
@@ -144,7 +144,7 @@ function testKarel() {
     assert(karel.frontIsBlocked());
 
     assert(!karel.beepersPresent());
-    assert.throws(karel.pickBeeper.bind(karel), 'NoBeepersPresentError');
+    assert.throws(karel.pickBeeper.bind(karel), NoBeepersPresentError);
     karel.putBeeper();
     assert(karel.beepersPresent());
     karel.putBeeper();

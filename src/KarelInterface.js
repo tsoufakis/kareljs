@@ -42,7 +42,7 @@ class KarelInterface {
             global_scope.eval(code);
         } catch(e) {
             const line = getLineNumber(e)
-            error = `Error running code on line ${line}: ${e.message}`
+            error = { line, name: e.name, message: e.message }
         }
 
         const frames = karel.frames.map(prepForUI)
@@ -65,9 +65,11 @@ function prepForUI(coordSys) {
 }
 
 function getLineNumber(e) {
-    const stack = e.stack.split('\n', 2)[1]
-    const spl = stack.split(':')
-    return spl[spl.length - 2]
+    const stack = e.stack.split('\n')
+    const evalLine = stack.find(el => el.indexOf('at eval') >= 0)
+
+    const spl = evalLine.split(':')
+    return Number(spl[spl.length - 2] || -1)
 }
 
 module.exports = KarelInterface

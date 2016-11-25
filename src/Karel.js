@@ -44,7 +44,7 @@ class RanIntoWallError extends Error {
     constructor() {
         super()
         this.name = 'RanIntoWallError'
-        this.message = 'Karel ran into a wall.'
+        this.message = 'Karel ran into a wall'
     }
 }
 
@@ -52,7 +52,7 @@ class NoBeepersPresentError extends Error {
     constructor() {
         super()
         this.name = 'NoBeepersPresentError'
-        this.message = 'There are no beepers on this spot.'
+        this.message = 'There are no beepers on this spot'
     }
 }
 

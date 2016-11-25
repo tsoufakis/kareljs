@@ -39,36 +39,31 @@ describe('KarelInterface', () => {
         it('should flag syntax error - Unexpected end of input', () => {
             const { frames, error } = karel.evalCode('move(');
             assert.equal(frames.length, 0)
-            assert.ok(error)
-            console.log(error)
+            assert(error.line, -1)
         })
 
-        it('should flag syntax error - marv is not defined', () => {
+        it('should flag reference error - marv is not defined', () => {
             const { frames, error } = karel.evalCode('move();\nmarv()');
             assert.equal(frames.length, 1)
-            assert.ok(error)
-            console.log(error)
+            assert(error.line, 2)
         })
 
         it('should flag syntax error - Unexpected identifier', () => {
             const { frames, error } = karel.evalCode('move()n');
             assert.equal(frames.length, 0)
-            assert.ok(error)
-            console.log(error)
+            assert(error.line, -1)
         })
 
         it('should flag RanIntoWallError', () => {
             const { frames, error } = karel.evalCode('move()\nmove()\nmove()');
             assert.equal(frames.length, 2)
-            assert.ok(error)
-            console.log(error)
+            assert(error.line, 3)
         })
 
         it('should flag NoBeepersPresentError', () => {
             const { frames, error } = karel.evalCode('pickBeeper()');
             assert.equal(frames.length, 0)
-            assert.ok(error)
-            console.log(error)
+            assert(error.line, 1)
         })
     })
 })
