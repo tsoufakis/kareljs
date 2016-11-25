@@ -7,7 +7,7 @@ import 'codemirror/mode/javascript/javascript'
 import { parse } from 'esprima'
 
 import AnimatedBoard from './AnimatedBoard'
-import { CELL_SIZE } from '../models'
+import { CELL_SIZE } from '../Karel'
 import Console from './Console'
 import {
     fetchLevelStatusRequest,

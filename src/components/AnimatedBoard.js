@@ -1,6 +1,6 @@
 import React from 'react'
 import BoardView from './BoardView'
-import { Board } from '../models'
+import { Board } from '../Karel'
 import { isEqual } from 'lodash'
 
 
@@ -24,7 +24,7 @@ export default class AnimatedBoard extends React.Component {
             clearInterval(this.state.intervalId);
         }
 
-        const { board, karel } = Board.fromConfig(props.config);
+        const { board, karel } = Board.fromConfig(props.config, 0);
 
         this.setState({
             karel: karel,
@@ -64,7 +64,7 @@ export default class AnimatedBoard extends React.Component {
 
     notifyComplete(error) {
         const finalState = this.state.karel.toJSON()
-        const { karel: desiredFinalKarel } = Board.fromConfig(this.props.config, true)
+        const { karel: desiredFinalKarel } = Board.fromConfig(this.props.config, 0, true)
         const desiredFinalState = desiredFinalKarel.toJSON()
         const completedBoard = isEqual(finalState, desiredFinalState) && !error
         setTimeout(() => {
