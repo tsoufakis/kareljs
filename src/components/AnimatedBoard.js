@@ -56,7 +56,7 @@ export default class AnimatedBoard extends React.Component {
                 const frame = frames.shift();
                 this.setState({currentRows: frame});
             }
-        }, AnimatedBoard.MS_PER_FRAME);
+        }, this.props.msPerFrame);
 
         this.setState({ intervalId: id });
     }
@@ -68,15 +68,8 @@ export default class AnimatedBoard extends React.Component {
 
 AnimatedBoard.propTypes = {
     config: React.PropTypes.object.isRequired,
-    code: React.PropTypes.string
+    code: React.PropTypes.string,
+    msPerFrame: React.PropTypes.number
 };
 
-AnimatedBoard.defaultProps = { code: '' };
-
-AnimatedBoard.MS_PER_FRAME = 250;
-
-AnimatedBoard.KAREL_COMMANDS = [
-    'turnLeft', 'turnRight', 'move', 'beepersPresent', 'pickBeeper',
-    'putBeeper', 'frontIsBlocked', 'frontIsClear', 'leftIsBlocked',
-    'leftIsClear', 'rightIsBlocked', 'rightIsClear'
-];
+AnimatedBoard.defaultProps = { code: '', msPerFrame: 250 };
