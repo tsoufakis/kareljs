@@ -28,7 +28,7 @@
     "jsonwebtoken": "^6.2.0",
     "lodash": "^4.13.1",
     "lodash.eq": "^4.0.0",
-    "mongoose": "^4.4.13",
+    "mongoose": "^5.7.12",
     "morgan": "^1.7.0",
     "react": "^0.14.7",
     "react-codemirror": "^0.2.6",
