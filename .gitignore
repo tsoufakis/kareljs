@@ -2,3 +2,4 @@ node_modules
 *.sw*
 public/*bundle.js
 npm-debug.log
+todo1.txt
