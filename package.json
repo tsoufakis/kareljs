@@ -6,7 +6,7 @@
   "scripts": {
     "test": "tape tests/test_api.js | tap-spec",
     "start": "node src/server.js",
-    "postinstall": "/bin/sh ./build.sh",
+    "postinstall": "make build",
     "watch": "watchify -t [ babelify --presets [ es2015 react ] ] ./src/index.js -o ./public/appbundle.js"
   },
   "author": "Chris Tsoufakis",
