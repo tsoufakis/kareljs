@@ -1,5 +1,5 @@
 import React from 'react'
-import reference from '../../public/reference'
+import reference from '../reference'
 
 export default class Reference extends React.Component {
     render() {
