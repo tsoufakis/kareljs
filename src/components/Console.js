@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react'
 
 export default class Console extends React.Component {
@@ -27,5 +28,5 @@ export default class Console extends React.Component {
 }
 
 Console.propTypes = {
-    lines: React.PropTypes.array.isRequired
+    lines: PropTypes.array.isRequired
 }

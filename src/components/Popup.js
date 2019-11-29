@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 export default class Popup extends React.Component {
@@ -20,5 +21,5 @@ export default class Popup extends React.Component {
 }
 
 Popup.propTypes = {
-    onClose: React.PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired
 }

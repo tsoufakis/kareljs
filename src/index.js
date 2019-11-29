@@ -4,7 +4,7 @@ import { Router, Route, hashHistory, browserHistory, IndexRoute } from 'react-ro
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
-import createLogger from 'redux-logger'
+import { createLogger } from 'redux-logger'
 import es6Promise from 'es6-promise'
 
 import App from './components/App'

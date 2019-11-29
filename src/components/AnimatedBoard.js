@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react'
 import BoardView from './BoardView'
 import { Board } from '../Karel'
@@ -67,8 +68,8 @@ export default class AnimatedBoard extends React.Component {
 }
 
 AnimatedBoard.propTypes = {
-    config: React.PropTypes.object.isRequired,
-    code: React.PropTypes.string
+    config: PropTypes.object.isRequired,
+    code: PropTypes.string
 };
 
 AnimatedBoard.defaultProps = { code: '' };

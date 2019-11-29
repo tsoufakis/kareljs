@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 export default class CodeEditor extends React.Component {
@@ -47,6 +48,6 @@ export default class CodeEditor extends React.Component {
 }
 
 CodeEditor.propTypes = {
-    defaultValue: React.PropTypes.string,
-    onChange: React.PropTypes.func.isRequired
+    defaultValue: PropTypes.string,
+    onChange: PropTypes.func.isRequired
 }
