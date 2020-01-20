@@ -5,6 +5,7 @@ services:
     image: mongo:4.2.1-bionic
   web:
     build: .
+    image: alpinetest
     environment:
         - MONGODB_URI=mongodb://db:27017/molemarch
     ports:
