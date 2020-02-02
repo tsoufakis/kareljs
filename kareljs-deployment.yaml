@@ -18,7 +18,7 @@ spec:
         spec:
             containers:
                 - name: kareljs
-                  image: kareljs:1.0
+                  image: alpinetest:1.0
                   env:
                       - name: PORT
                         value: "80"

@@ -10,7 +10,7 @@ start:
 	npm start
 
 docker-image:
-	docker image build -t kareljs:1.0 .
+	docker image build -t alpinetest:1.0 .
 
 run-docker:
 	docker container run -p 8000:3000 -p 27017:27017 test1
