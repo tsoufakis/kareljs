@@ -3,18 +3,16 @@ version: '3'
 services:
   db:
     image: mongo:4.2.1-bionic
-    volumes:
-        - mongo-data:/data/db
-        - mongo-config:/data/configdb
   web:
-    build: .
-    image: alpinetest
+    build:
+        context: .
+        dockerfile: Dockerfile.development
+    image: karel-dev:latest
+    volumes:
+        - .:/app
     environment:
         - MONGODB_URI=mongodb://db:27017/molemarch
     ports:
       - "8000:3000"
     depends_on:
       - db
-volumes:
-    mongo-data:
-    mongo-config:

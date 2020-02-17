@@ -1,0 +1,8 @@
+FROM node:12.14.1-alpine3.11
+
+RUN apk add make python g++
+
+VOLUME /app
+WORKDIR /app
+
+CMD ["node", "src/server.js"]
