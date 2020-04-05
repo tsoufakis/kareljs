@@ -3,7 +3,7 @@ import $ from 'jquery';
 import BoardView from './BoardView';
 import { CELL_SIZE } from '../Karel';
 import KarelInterface from '../KarelInterface';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 export default class LevelDescription extends React.Component {
     constructor() {
@@ -12,7 +12,7 @@ export default class LevelDescription extends React.Component {
     }
     componentDidMount() {
         $.get('/static/levels.json', (levels) => {
-            const level = levels.find(level => level.id === Number(this.props.params.id));
+            const level = levels.find(level => level.id === Number(this.props.match.params.id));
             this.setState({level: level});
         });
     }
@@ -37,9 +37,9 @@ export default class LevelDescription extends React.Component {
 
         return (
             <div>
-                <h1 className="pageTitle">Level {this.props.params.id}: {title}</h1>
+                <h1 className="pageTitle">Level {this.props.match.params.id}: {title}</h1>
                 <div className="centeredColumn">
-                    <Link className="bigButton" to={`/app/level/${this.props.params.id}/`}>Start!</Link>
+                    <Link className="bigButton" to={`/app/level/${this.props.match.params.id}/`}>Start!</Link>
                     <h2>Objective</h2>
                     <p>{objective}</p>
                 </div>

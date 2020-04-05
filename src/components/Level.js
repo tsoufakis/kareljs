@@ -1,7 +1,7 @@
 import React from 'react'
 import $ from 'jquery'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import CodeMirror from 'react-codemirror'
 import 'codemirror/mode/javascript/javascript'
 
@@ -42,7 +42,7 @@ class Level extends React.Component {
     persistCodeToServer() {
         this.setState({ savePending: false })
         const data = { code: this.state.codeInEditor, token: this.props.token }
-        $.ajax(`/api/user/code/${this.props.params.id}`, {
+        $.ajax(`/api/user/code/${this.props.match.params.id}`, {
             method: 'PUT',
             data: data,
         }).done((res) => {
@@ -77,11 +77,11 @@ class Level extends React.Component {
         if (completedBoard) {
             message = 'Congratulations, you completed the level'
             this.props.dispatch(putLevelStatusRequest())
-            $.ajax(`/api/user/progress/${this.props.params.id}`, {
+            $.ajax(`/api/user/progress/${this.props.match.params.id}`, {
                 method: 'PUT',
                 data: { token: this.props.token, completed: true }
             }).done((res) => {
-                this.props.dispatch(putLevelStatusSuccess(this.props.params.id, true))
+                this.props.dispatch(putLevelStatusSuccess(this.props.match.params.id, true))
             })
         } else if (error) {
             message = `error on line ${error.line}: ${error.message}`
@@ -103,11 +103,11 @@ class Level extends React.Component {
 
     componentDidMount() {
         $.get('/static/levels.json', (levels) => {
-            const level = levels.find(level => level.id === Number(this.props.params.id))
+            const level = levels.find(level => level.id === Number(this.props.match.params.id))
             this.setState({level: level})
             this.resizeBoard()
         });
-        $.get(`/api/user/code/${this.props.params.id}?token=${this.props.token}`)
+        $.get(`/api/user/code/${this.props.match.params.id}?token=${this.props.token}`)
             .done((data) => {
                 if (data.success) {
                     this.setState({codeInEditor: data.code})
@@ -115,7 +115,7 @@ class Level extends React.Component {
             })
 
         this.props.dispatch(fetchLevelStatusRequest())
-        $.get(`/api/user/progress/${this.props.params.id}?token=${this.props.token}`, (data) => {
+        $.get(`/api/user/progress/${this.props.match.params.id}?token=${this.props.token}`, (data) => {
             if (data.progress) {
                 const { levelId, completed } = data.progress
                 this.props.dispatch(fetchLevelStatusSuccess(levelId, completed))
@@ -151,7 +151,7 @@ class Level extends React.Component {
                 <h1 className="pageTitle">{pageTitle}</h1>
                 <button type="button" onClick={this.handleSubmitCode}>Run Code</button>
                 <button type="button" onClick={this.handleResetBoard}>Reset Board</button>
-                <Link to={`/app/level-description/${this.props.params.id}`} target="_blank">Description</Link>
+                <Link to={`/app/level-description/${this.props.match.params.id}`} target="_blank">Description</Link>
                 <div id="container">
                     <section id="codePadContainer">
                         <CodeMirror
@@ -179,7 +179,7 @@ class Level extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
-    const status = state.levelStatus[ownProps.params.id]
+    const status = state.levelStatus[ownProps.match.params.id]
     const completed = status && status.completed || false
 
     return {

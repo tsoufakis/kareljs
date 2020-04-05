@@ -1,5 +1,10 @@
 all: install build
 
+dev:
+	PWD=$(pwd)
+	docker build -t kareljs-dev -f Dockerfile.development .
+	docker run -it -v $(PWD):/app kareljs-dev make
+
 install:
 	npm install
 

@@ -1,8 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Link } from 'react-router';
+import { Link, Route } from 'react-router-dom';
 
 import { logout, refreshToken } from '../actions'
+
+import LevelSelect from './LevelSelect'
+import Level from './Level'
+import LevelDescription from './LevelDescription'
+import Login from './Login'
+import Signup from './Signup'
+import Reference from './Reference'
+import Home from './Home'
+
+function requireAuth(nextState, replace) {
+    console.log('hi', nextState, replace)
+}
 
 class App extends React.Component {
     constructor() {
@@ -55,7 +67,13 @@ class App extends React.Component {
                     {logoutNodes}
                 </header>
                 <div id="main">
-                    {this.props.children}
+                    <Route exact path="/" component={Home}/>
+                    <Route path="/app/login" component={Login}/>
+                    <Route path="/app/signup" component={Signup}/>
+                    <Route path="/app/level-select" component={LevelSelect} onEnter={requireAuth}/>
+                    <Route path="/app/level-description/:id" component={LevelDescription}/>
+                    <Route path="/app/level/:id" component={Level}/>
+                    <Route path="/app/reference" component={Reference}/>
                 </div>
             </div>
         )
