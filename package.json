@@ -4,7 +4,7 @@
   "description": "Implementation of Karel the Robot in JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "tape tests/test_api.js | tap-spec",
+    "test": "tape tests/test_api.js | tap-spec && mocha tests/testKarelInterface.js && node tests/test_models.js && node ./tests/validate_levels.js ../public/levels.json",
     "start": "node src/server.js",
     "postinstall": "make build",
     "watch": "watchify -t [ babelify --presets [ es2015 react ] ] ./src/index.js -o ./public/appbundle.js"
@@ -52,6 +52,7 @@
     "@babel/preset-react": "^7.9.4",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
+    "mocha": "^7.1.1",
     "react-codemod": "^5.2.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
