@@ -8,16 +8,11 @@ services:
         - mongo-config:/data/configdb
   web:
     build: .
-    image: kareljs-dev:latest
-    command: /bin/bash
-    stdin_open: true
-    tty: true
+    image: karelprod:latest
     environment:
         - MONGODB_URI=mongodb://db:27017/molemarch
     ports:
         - "8000:3000"
-    volumes:
-        - .:/app
     depends_on:
         - db
 volumes:

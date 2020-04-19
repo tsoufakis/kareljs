@@ -8,6 +8,9 @@ services:
         context: .
         dockerfile: Dockerfile.development
     image: karel-dev:latest
+    command: /bin/bash
+    stdin_open: true
+    tty: true
     volumes:
         - .:/app
     environment:

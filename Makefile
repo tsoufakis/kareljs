@@ -1,4 +1,4 @@
-all: install build
+all: install
 
 dev:
 	PWD=$(pwd)
