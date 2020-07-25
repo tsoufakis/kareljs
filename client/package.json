@@ -4,7 +4,7 @@
   "description": "Implementation of Karel the Robot in JavaScript",
   "main": "index.js",
   "scripts": {
-    "test": "tape tests/test_api.js | tap-spec && mocha tests/testKarelInterface.js && node tests/test_models.js && node ./tests/validate_levels.js ../public/levels.json",
+    "test": "mocha tests/testKarelInterface.js && node tests/test_models.js && node ./tests/validate_levels.js ../public/levels.json",
     "start": "node src/server.js",
     "build": "npx webpack-cli --entry ./src/index.js --output public/appbundle.js",
     "watch": "watchify -t [ babelify --presets [ es2015 react ] ] ./src/index.js -o ./public/appbundle.js"
@@ -40,9 +40,6 @@
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "supertest": "^4.0.2",
-    "tap-spec": "^5.0.0",
-    "tape": "^4.13.2",
     "watchify": "^3.11.1",
     "webpack-dev-server": "^3.10.3"
   },

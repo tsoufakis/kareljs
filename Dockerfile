@@ -1,7 +1,21 @@
 FROM node:12.16
 WORKDIR /app
-COPY package.json package-lock.json ./
+
+RUN mkdir server && mkdir client
+
+WORKDIR /app/server
+COPY server/package.json ./
 RUN npm install
+
+WORKDIR /app/client
+COPY client/package.json ./
+RUN npm install
+
+WORKDIR /app
 COPY . .
-RUN npm run build
-CMD [ "node", "src/server.js" ]
+
+WORKDIR /app/client
+RUN npx webpack-cli --entry ./src/index.js --output ./public/appbundle.js
+
+WORKDIR /app
+CMD [ "node", "server/src/server.js" ]

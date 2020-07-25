@@ -7,13 +7,11 @@ services:
         - mongo-data:/data/db
         - mongo-config:/data/configdb
   web:
-    build:
-        context: .
-        dockerfile: Dockerfile.development
-    image: karel-dev:latest
+    image: node:12.16
     command: /bin/bash
-    stdin_open: true
-    tty: true
+    # stdin_open: true
+    # tty: true
+    working_dir: /app
     volumes:
         - .:/app
     environment:
