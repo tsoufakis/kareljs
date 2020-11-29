@@ -1,4 +1,4 @@
 #! /usr/bin/env bash
 
 docker-compose build
-docker-compose run karel-api npm test
+docker-compose run --entrypoint "npm" karel-api test

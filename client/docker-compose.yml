@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  web:
+    # image: node:12.16
+    # command: /bin/bash
+    # stdin_open: true
+    # tty: true
+    # working_dir: /app
+    build: .
+    image: karel-web
+    volumes:
+        - .:/app
+    ports:
+      - "9000:9000"

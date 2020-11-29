@@ -7,30 +7,14 @@ services:
         - mongo-data:/data/db
         - mongo-config:/data/configdb
   api:
-    build: ./server
+    build: .
     image: karel-api
     environment:
         - MONGODB_URI=mongodb://db:27017/molemarch
     ports:
-        - "8081:8081"
+        - "3000:3000"
     depends_on:
         - db
-  web:
-    build: ./client
-    image: karel-web
-    ports:
-        - "8080:8080"
-    depends_on:
-        - api
-  ingress:
-    build: ./ingress
-    image: karel-ingress
-    ports:
-        - "8000:80"
-    depends_on:
-        - api
-        - web
-
 volumes:
     mongo-data:
     mongo-config:

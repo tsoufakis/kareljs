@@ -7,7 +7,7 @@ var config = require('./config');
 var api = require('./api');
 var staticDir = '../../client/public';
 var app = express();
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 8081);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
