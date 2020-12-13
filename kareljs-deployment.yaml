@@ -2,27 +2,40 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: kareljs
-    labels:
-        app: kareljs
 spec:
+    replicas: 1
     selector:
         matchLabels:
             app: kareljs
-            tier: frontend
-    replicas: 1
     template:
         metadata:
+            name: kareljs
             labels:
                 app: kareljs
-                tier: frontend
         spec:
             containers:
-                - name: kareljs
-                  image: alpinetest:1.0
+                - name: web
+                  image: gcr.io/lunch-picker-1529881352684/karel-web
+                  ports:
+                      - containerPort: 8080
+                - name: api
+                  image: gcr.io/lunch-picker-1529881352684/karel-api
                   env:
-                      - name: PORT
-                        value: "80"
                       - name: MONGODB_URI
-                        value: mongodb://mongo:27017/molemarch
+                        value: mongodb://mongodb:27017/molemarch
+                  ports:
+                      - containerPort: 8081
+                - name: ingress
+                  image: nginx:1.19-alpine
                   ports:
                       - containerPort: 80
+                  volumeMounts:
+                      - name: nginx-config
+                        mountPath: /etc/nginx/conf.d
+            volumes:
+                - name: nginx-config
+                  configMap:
+                      name: kareljs
+                      items:
+                          - key: nginx.conf
+                            path: nginx.conf

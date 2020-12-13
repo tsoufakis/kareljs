@@ -2,13 +2,10 @@ apiVersion: v1
 kind: Service
 metadata:
     name: kareljs
-    labels:
-        app: guestbook
-        tier: frontend
 spec:
-    type: NodePort
+    type: LoadBalancer
     ports:
         - port: 80
+          targetPort: 80
     selector:
         app: kareljs
-        tier: frontend
