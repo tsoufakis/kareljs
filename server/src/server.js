@@ -2,6 +2,7 @@ var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
+const process = require('process');
 
 var config = require('./config');
 var api = require('./api');
@@ -26,3 +27,7 @@ app.listen(app.get('port'), function() {
 });
 
 module.exports = app;
+process.on('SIGTERM', function () {
+    console.log('exiting');
+    process.exit();
+});
