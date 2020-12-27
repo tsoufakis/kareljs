@@ -13,6 +13,9 @@ services:
         - MONGODB_URI=mongodb://db:27017/molemarch
     ports:
         - "8081:8081"
+    volumes:
+        - ./server:/app
+        - /app/node_modules
     depends_on:
         - db
   web:
@@ -20,6 +23,9 @@ services:
     image: karel-web
     ports:
         - "8080:8080"
+    volumes:
+        - ./client:/app
+        - /app/node_modules
     depends_on:
         - api
   ingress:

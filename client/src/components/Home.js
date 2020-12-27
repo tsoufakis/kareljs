@@ -8,7 +8,7 @@ export default class Home extends React.Component {
                 <br/>
                 <br/>
                 <br/>
-                <h3>Welcome to Mole March 4. Click one of the links above to get started.</h3>
+                <h3>Welcome to Mole March 6. Click one of the links above to get started.</h3>
             </div>
         )
     }

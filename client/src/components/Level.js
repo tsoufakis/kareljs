@@ -2,7 +2,7 @@ import React from 'react'
 import $ from 'jquery'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import CodeMirror from 'react-codemirror'
+import { Controlled as CodeMirror } from 'react-codemirror2'
 import 'codemirror/mode/javascript/javascript'
 
 import AnimatedBoard from './AnimatedBoard'
@@ -27,6 +27,7 @@ class Level extends React.Component {
 
         this.handleAnimationComplete = this.handleAnimationComplete.bind(this)
         this.persistCodeToServer = this.persistCodeToServer.bind(this)
+        this.handleBeforeCodeChange = this.handleBeforeCodeChange.bind(this)
         this.handleCodeChange = this.handleCodeChange.bind(this)
         this.handleSubmitCode = this.handleSubmitCode.bind(this)
         this.handleResetBoard = this.handleResetBoard.bind(this)
@@ -91,8 +92,12 @@ class Level extends React.Component {
         this.setState({ consoleLines: [ ...this.state.consoleLines, message ] })
     }
 
-    handleCodeChange(code) {
-        this.setState({ codeInEditor: code })
+    handleBeforeCodeChange(editor, data, value) {
+        this.setState({ codeInEditor: value })
+    }
+
+    handleCodeChange(editor, data, value) {
+        // this.setState({ codeInEditor: value })
 
         // Use a semaphore so we don't hammer the server with saves
         if (!this.state.savePending) {
@@ -156,6 +161,7 @@ class Level extends React.Component {
                     <section id="codePadContainer">
                         <CodeMirror
                             value={this.state.codeInEditor}
+                            onBeforeChange={this.handleBeforeCodeChange}
                             onChange={this.handleCodeChange}
                             options={CODE_MIRROR_OPTIONS}
                             className="editor"
