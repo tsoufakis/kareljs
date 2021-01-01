@@ -4,6 +4,7 @@ metadata:
     name: kareljs
 spec:
     type: LoadBalancer
+    loadBalancerIP: "104.198.219.39"
     ports:
         - port: 80
           targetPort: 80

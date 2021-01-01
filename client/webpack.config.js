@@ -20,6 +20,7 @@ module.exports = {
   },
   devtool: 'eval-source-map',
   devServer: {
+      allowedHosts: ['www.kareljs.com'],
       clientLogLevel: 'debug',
       publicPath: '/static/',
       contentBase: path.join(__dirname, 'public'),
