@@ -23,9 +23,9 @@ services:
   web:
     build: ./client
     image: karel-web
-    volumes:
-        - ./client:/app
-        - /app/node_modules
+    #volumes:
+    #    - ./client:/app
+    #    - /app/node_modules
     network_mode: "service:api"
     depends_on:
         - api

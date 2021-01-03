@@ -11,6 +11,10 @@ import App from './components/App'
 import moleMarch from './reducers'
 
 
+if (process.env.NODE_ENV !== 'production') {
+    console.log('You\'re in development mode');
+}
+
 es6Promise.polyfill()
 
 const logger = createLogger()

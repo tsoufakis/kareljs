@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   entry: './src/index.js',
@@ -17,16 +17,5 @@ module.exports = {
   },
   resolve: {
     extensions: ['*', '.js', '.jsx', '.json']
-  },
-  devtool: 'eval-source-map',
-  devServer: {
-      allowedHosts: ['www.kareljs.com'],
-      clientLogLevel: 'debug',
-      publicPath: '/static/',
-      contentBase: path.join(__dirname, 'public'),
-      contentBasePublicPath: ['/static/', '/'],
-      historyApiFallback: true,
-      port: 8080,
-      host: '0.0.0.0'
   }
 };
