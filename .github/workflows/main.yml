@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  #PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GCP_PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: cluster-1
   GKE_ZONE: us-central1-c
   DEPLOYMENT_NAME: kareljs
@@ -22,8 +22,13 @@ jobs:
       - name: Hello
         run: echo Hello World!
 
-      - name: multi-hello
+      - name: Build
         run: |
-          echo hello1
-          echo hello2
-
+          build () {
+            context=$1
+            image=$2
+            docker build --tag "gcr.io/$GCP_PROJECT_ID/$image:test" $context
+          }
+          build ./server karel-api
+          build ./client karel-web
+          docker image ls
