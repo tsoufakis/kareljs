@@ -5,11 +5,15 @@ services:
     image: karel-web:dev
     volumes:
         - ./client:/app
-        - /app/node_modules
+        - web-node-modules:/app/node_modules
   api:
     build:
         target: dev
     image: karel-api:dev
     volumes:
         - ./server:/app
-        - /app/node_modules
+        - api-node-modules:/app/node_modules
+
+volumes:
+  web-node-modules:
+  api-node-modules:
