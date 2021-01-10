@@ -1,43 +1,28 @@
-# This is a basic workflow to help you get started with Actions
+name: Build and deploy to GKE
 
-name: staging deploy
-
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  release:
+    types: [created]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+  #PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: cluster-1
+  GKE_ZONE: us-central1-c
+  DEPLOYMENT_NAME: kareljs
+
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    # Runs a single command using the runners shell
-    - name: Run a one-line script
-      run: echo Hello, world!
+      - name: Hello
+        run: echo Hello World!
 
-    # Runs a set of commands using the runners shell
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
-           
-    # Deploy to Heroku
-    - name: Build, Push and Deploy to Heroku #set the whatever name you want to this step
-      id: heroku
-      uses: jctaveras/heroku-deploy@v1.0.0  # use the latest version of the action
-      with:
-        email: ${{ secrets.HEROKU_EMAIL }} # your heroku email
-        api_key: ${{ secrets.HEROKU_API_KEY }} # your  heroku api key
-        app_name: ${{ secrets.HEROKU_APP_NAME }} # you aplication name
-        dockerfile: '.' # set the path to the folder wher the Dokerfile is located
+      - name: multi-hello
+        run: |
+          echo hello1
+          echo hello2
+

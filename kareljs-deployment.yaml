@@ -15,11 +15,11 @@ spec:
         spec:
             containers:
                 - name: web
-                  image: gcr.io/lunch-picker-1529881352684/karel-web:v4
+                  image: gcr.io/lunch-picker-1529881352684/karel-web:v5
                   ports:
                       - containerPort: 8080
                 - name: api
-                  image: gcr.io/lunch-picker-1529881352684/karel-api:v4
+                  image: gcr.io/lunch-picker-1529881352684/karel-api:v5
                   env:
                       - name: MONGODB_URI
                         value: mongodb://mongodb:27017/molemarch
