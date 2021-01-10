@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   GKE_CLUSTER: cluster-1
   GKE_ZONE: us-central1-c
   DEPLOYMENT_NAME: kareljs
@@ -43,8 +44,24 @@ jobs:
           build () {
             context=$1
             image=$2
-            docker build --tag "gcr.io/${{ secrets.GCP_PROJECT_ID }}/$image:test" $context
+            docker build --tag "gcr.io/$PROJECT_ID/$image:$GITHUB_SHA" $context
           }
           build ./server karel-api
           build ./client karel-web
-          docker image ls
+
+      - name: Publish
+        run: |
+          push () {
+            image=$1
+            docker push "gcr.io/$PROJECT_ID/$image:$GITHUB_SHA"
+          }
+          push karel-api
+          push karel-web
+
+      - name: Deploy
+        run: |
+          kubectl set image deployment/$DEPLOYMENT_NAME \
+            web=gcr.io/$PROJECT_ID/karel-web:$GITHUB_SHA \
+            api=gcr.io/$PROJECT_ID/karel-api:$GITHUB_SHA
+          kubectl rollout status deployment/$DEPLOYMENT_NAME
+          kubectl get svc -o wide
