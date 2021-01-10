@@ -41,30 +41,27 @@ jobs:
 
       - name: Build
         run: |
-          TAG="$GITHUB_SHA-$GITHUB_REF"
           build () {
             context=$1
             image=$2
-            docker build --tag "gcr.io/$PROJECT_ID/$image:$TAG" $context
+            docker build --tag "gcr.io/$PROJECT_ID/$image:$GITHUB_SHA" $context
           }
           build ./server karel-api
           build ./client karel-web
 
       - name: Publish
         run: |
-          TAG="$GITHUB_SHA-$GITHUB_REF"
           push () {
             image=$1
-            docker push "gcr.io/$PROJECT_ID/$image:$TAG"
+            docker push "gcr.io/$PROJECT_ID/$image:$GITHUB_SHA"
           }
           push karel-api
           push karel-web
 
       - name: Deploy
         run: |
-          TAG="$GITHUB_SHA-$GITHUB_REF"
           kubectl set image deployment/$DEPLOYMENT_NAME \
-            web=gcr.io/$PROJECT_ID/karel-web:$TAG \
-            api=gcr.io/$PROJECT_ID/karel-api:$TAG
+            web=gcr.io/$PROJECT_ID/karel-web:$GITHUB_SHA \
+            api=gcr.io/$PROJECT_ID/karel-api:$GITHUB_SHA
           kubectl rollout status deployment/$DEPLOYMENT_NAME
           kubectl get svc -o wide
