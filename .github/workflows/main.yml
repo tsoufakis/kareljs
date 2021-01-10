@@ -22,12 +22,29 @@ jobs:
       - name: Hello
         run: echo Hello World!
 
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          service_account_key: ${{ secrets.GKE_SA_KEY }}
+          project_id: $GCP_PROJECT_ID
+
+      - name: Setup docker credential helper
+        run:
+          gcloud --quiet auth configure-docker
+
+      - name: Setup kubectl
+        uses: google-github-actions/get-gke-credentials@v0.2.1
+        with:
+          cluster_name: ${{ env.GKE_CLUSTER }}
+          location: ${{ env.GKE_ZONE }}
+          credentials: ${{ secrets.GKE_SA_KEY }}
+
       - name: Build
         run: |
           build () {
             context=$1
             image=$2
-            docker build --tag "gcr.io/$GCP_PROJECT_ID/$image:test" $context
+            docker build --tag "gcr.io/${{ secrets.GCP_PROJECT_ID }}/$image:test" $context
           }
           build ./server karel-api
           build ./client karel-web
