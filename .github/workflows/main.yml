@@ -10,7 +10,6 @@ env:
   GKE_CLUSTER: cluster-1
   GKE_ZONE: us-central1-c
   DEPLOYMENT_NAME: kareljs
-  TAG: ${{ env.GITHUB_SHA }}-${{ env.GITHUB_REF }}
 
 jobs:
   setup-build-publish-deploy:
@@ -42,6 +41,7 @@ jobs:
 
       - name: Build
         run: |
+          TAG="$GITHUB_SHA-$GITHUB_REF"
           build () {
             context=$1
             image=$2
@@ -52,6 +52,7 @@ jobs:
 
       - name: Publish
         run: |
+          TAG="$GITHUB_SHA-$GITHUB_REF"
           push () {
             image=$1
             docker push "gcr.io/$PROJECT_ID/$image:$TAG"
@@ -61,6 +62,7 @@ jobs:
 
       - name: Deploy
         run: |
+          TAG="$GITHUB_SHA-$GITHUB_REF"
           kubectl set image deployment/$DEPLOYMENT_NAME \
             web=gcr.io/$PROJECT_ID/karel-web:$TAG \
             api=gcr.io/$PROJECT_ID/karel-api:$TAG
