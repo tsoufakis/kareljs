@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  db:
+    image: mongo
+  api:
+    build: .
+    image: api:test
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - db

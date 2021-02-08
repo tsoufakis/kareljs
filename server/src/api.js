@@ -1,4 +1,3 @@
-var mongoose = require('mongoose');
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
@@ -7,8 +6,6 @@ var config = require('./config');
 var User = require('./models/user');
 
 var api = express.Router();
-
-mongoose.connect(process.env.MONGODB_URI || config.database, {useNewUrlParser: true, useUnifiedTopology: true});
 
 api.get('/', (req, res) => res.json({ msg: 'api3' }));
 

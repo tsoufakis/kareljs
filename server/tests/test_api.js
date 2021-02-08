@@ -2,7 +2,8 @@
 
 const tape = require('tape');
 const request = require('supertest');
-const app = require('../src/server.js');
+const server = require('../src/server.js');
+let app = server.createApp();
 
 class TestUser {
     constructor(name) {

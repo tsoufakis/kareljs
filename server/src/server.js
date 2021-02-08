@@ -1,33 +1,90 @@
-var path = require('path');
-var express = require('express');
-var bodyParser = require('body-parser');
-var morgan = require('morgan');
+const path = require('path');
+const express = require('express');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
 const process = require('process');
+const mongoose = require('mongoose');
 
-var config = require('./config');
-var api = require('./api');
-var staticDir = '../../client/public';
-var app = express();
-app.set('port', process.env.PORT || 8081);
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
-app.use(morgan('dev'));
-app.use('/static', express.static(path.join(__dirname, staticDir)));
-app.use('/api', api);
-app.get('/app*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, staticDir, 'index.html'))
-})
+const config = require('./config');
+const api = require('./api');
 
-app.get('/', (req, res) => {
-    res.sendFile(path.resolve(__dirname, staticDir, 'index.html'))
-})
+let APP_SINGLETON;
+let SERVER;
 
-app.listen(app.get('port'), function() {
-    console.log('Server started at hello: http://localhost:' + app.get('port') + '/');
-});
-
-module.exports = app;
 process.on('SIGTERM', function () {
     console.log('exiting');
     process.exit();
 });
+
+
+function connectToMongo(uri, timeout) {
+    mongoose.connect(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        connectTimeoutMS: timeout,
+        serverSelectionTimeoutMS: timeout
+    }).catch(error => {
+            console.log('exiting, could not establish initial connection to mongo', error);
+            process.exit(1);
+    });
+
+    mongoose.connection.on('connected', () => {
+        console.log('mongo connected');
+    });
+}
+
+function createApp(options = {}) {
+    const port = options.port || process.env.PORT || 8081;
+    const mongodb_uri = options.mongodb_uri || process.env.MONGODB_URI || config.database;
+    // defaults to mongoose default
+    const mongoConnTimeoutMS = options.mongoConnTimeoutMS || 30000;
+    console.log(options, mongoConnTimeoutMS);
+
+    if (APP_SINGLETON) {
+        return APP_SINGLETON;
+    } else {
+        const app = express();
+        app.set('port', port);
+        app.use(bodyParser.urlencoded({extended: true}));
+        app.use(bodyParser.json());
+        app.use(morgan('dev'));
+        app.use('/api', api);
+
+        connectToMongo(mongodb_uri, mongoConnTimeoutMS);
+
+        const server = app.listen(app.get('port'), () => {
+            console.log('Server started on ' + app.get('port'));
+        });
+
+        APP_SINGLETON = app;
+        SERVER = server;
+
+        return app;
+    }
+}
+
+function destroyApp() {
+    if (APP_SINGLETON) {
+        mongoose.connection.close();
+        SERVER.close(() => {
+            console.log('stopping app');
+        });
+        APP_SINGLETON = null;
+        SERVER = null;
+    }
+}
+
+function main() {
+    console.log('in main')
+    createApp();
+}
+
+module.exports = {
+    createApp,
+    destroyApp,
+    process,
+};
+
+if (require.main === module) {
+    main();
+}

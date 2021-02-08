@@ -60,7 +60,7 @@ class App extends React.Component {
         return (
             <div>
                 <header>
-                    <h1 id="logoHeading"><Link to="/" id="logoText">Mole March</Link></h1>
+                    <h1 id="logoHeading"><Link to="/" id="logoText">KarelJS</Link></h1>
                     <nav className="nav">
                         {list}
                     </nav>
