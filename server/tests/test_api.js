@@ -3,6 +3,8 @@
 const tape = require('tape');
 const request = require('supertest');
 const server = require('../src/server.js');
+const process = require('process');
+const sinon = require('sinon');
 let app = server.createApp();
 
 class TestUser {
@@ -192,6 +194,23 @@ bert.testSavingCodeAndProgress();
 ernie.testSavingCodeAndProgress();
 bert.testDeleteUser();
 ernie.testDeleteUser();
+
+tape('Process exits if mongo connection times out', (t) => {
+    const stubExit = sinon.stub(process, 'exit').callsFake(() => {
+        t.ok(stubExit.called, 'process.exit() was called');
+        console.log('in stub');
+        process.exit.restore();
+        server.destroyApp(() => {
+            t.end();
+        });
+    });
+    server.destroyApp(() => {
+        const app = server.createApp({
+            mongodb_uri: 'mongodb://fakedb:27017/molemarch',
+            mongoConnTimeoutMS: 1
+        });
+    });
+});
 
 tape.onFinish(() => {
     process.exit(0);

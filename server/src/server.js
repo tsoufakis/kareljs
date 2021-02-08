@@ -24,7 +24,7 @@ function connectToMongo(uri, timeout) {
         connectTimeoutMS: timeout,
         serverSelectionTimeoutMS: timeout
     }).catch(error => {
-            console.log('exiting, could not establish initial connection to mongo', error);
+            console.error('exiting, could not establish initial connection to mongo', error);
             process.exit(1);
     });
 
@@ -38,7 +38,6 @@ function createApp(options = {}) {
     const mongodb_uri = options.mongodb_uri || process.env.MONGODB_URI || config.database;
     // defaults to mongoose default
     const mongoConnTimeoutMS = options.mongoConnTimeoutMS || 30000;
-    console.log(options, mongoConnTimeoutMS);
 
     if (APP_SINGLETON) {
         return APP_SINGLETON;
@@ -63,11 +62,14 @@ function createApp(options = {}) {
     }
 }
 
-function destroyApp() {
+function destroyApp(callback=null) {
     if (APP_SINGLETON) {
         mongoose.connection.close();
         SERVER.close(() => {
             console.log('stopping app');
+            if (callback) {
+                callback();
+            }
         });
         APP_SINGLETON = null;
         SERVER = null;
@@ -82,7 +84,6 @@ function main() {
 module.exports = {
     createApp,
     destroyApp,
-    process,
 };
 
 if (require.main === module) {
