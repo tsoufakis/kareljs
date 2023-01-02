@@ -12,7 +12,7 @@
   "license": "MIT",
   "repository": "https://github.com/tsoufakis/kareljs",
   "dependencies": {
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^8.3.0",
     "chai": "^4.2.0",
     "codemirror": "^5.59.0",
     "es6-promise": "^4.2.8",
